@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000">
+
+        <!-- BARRA SUPERIOR (Toolbar personalizada) -->
+
+        <!-- BUSCADOR -->
+
+        <!-- IMAGEN (BANNER) -->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbarHome"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_marginTop="48dp"
+            android:background="#111111"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp">
+
+            <!-- ICONO HAMBURGUESA -->
+            <ImageView
+                android:id="@+id/btnMenu"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="16dp"
+                android:contentDescription="Menu"
+                android:src="@android:drawable/ic_menu_sort_by_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="#00AEEF" />
+
+            <!-- LOGO CENTRADO -->
+
+            <!-- LEMA DEBAJO DEL LOGO -->
+
+            <ImageView
+                android:id="@+id/imgLogoToolbar"
+                android:layout_width="72dp"
+                android:layout_height="69dp"
+                android:layout_marginTop="4dp"
+                android:src="@drawable/logo_nomi"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvUserWelcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Bienvenido a NOMI"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgLogoToolbar" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <EditText
+            android:id="@+id/etBuscar"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="24dp"
+            android:background="#FFFFFF"
+            android:hint="CONSULTE SU GUÍA"
+            android:inputType="text"
+            android:paddingStart="12dp"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbarHome" />
+
+        <ImageView
+            android:id="@+id/imgBanner"
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="24dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/home_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etBuscar" />
+
+        <!-- BOTONES RÁPIDOS (DEBAJO DE LA IMAGEN) -->
+        <LinearLayout
+            android:id="@+id/llButtonsHome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@id/imgBanner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <Button
+                android:id="@+id/btnCotizaHome"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="COTIZA"
+                android:layout_margin="4dp"
+                android:backgroundTint="#00AEEF"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/btnPQRHome"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="PQRS"
+                android:layout_margin="4dp"
+                android:backgroundTint="#00AEEF"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/btnContactenosHome"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="CONTACTO"
+                android:layout_margin="4dp"
+                android:backgroundTint="#00AEEF"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- PIE DE PÁGINA -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="48dp"
+            android:background="#00AEEF"
+            android:gravity="center"
+            android:text="Trabajamos día a día para ser tu mejor solución."
+            android:textColor="#000000"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- EL MENÚ DESPLEGABLE -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#111111"
+        app:itemTextColor="#FFFFFF"
+        app:itemIconTint="#00AEEF"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/drawer_menu" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

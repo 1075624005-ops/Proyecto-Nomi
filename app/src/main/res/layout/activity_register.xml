@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <!-- LOGO -->
+        <ImageView
+            android:id="@+id/imgLogoRegister"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/logo_nomi"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- TÍTULO -->
+        <TextView
+            android:id="@+id/tvTituloRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CREAR USUARIO"
+            android:textColor="#00AEEF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/imgLogoRegister"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- NOMBRE -->
+        <EditText
+            android:id="@+id/etNombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Nombre completo"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888"
+            android:backgroundTint="#00AEEF"
+            android:inputType="textPersonName"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/tvTituloRegister"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- TIPO DOCUMENTO -->
+        <TextView
+            android:id="@+id/tvLabelDoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo de documento:"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/etNombre"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <Spinner
+            android:id="@+id/spTipoDoc"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="#00AEEF"
+            android:spinnerMode="dropdown"
+            app:layout_constraintTop_toBottomOf="@id/tvLabelDoc"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- NÚMERO DOCUMENTO -->
+        <EditText
+            android:id="@+id/etCedula"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Número de documento"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888"
+            android:backgroundTint="#00AEEF"
+            android:inputType="number"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/spTipoDoc"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- TELÉFONO -->
+        <EditText
+            android:id="@+id/etTelefono"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Teléfono"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888"
+            android:backgroundTint="#00AEEF"
+            android:inputType="phone"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/etCedula"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- CORREO -->
+        <EditText
+            android:id="@+id/etCorreo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Correo electrónico"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888"
+            android:backgroundTint="#00AEEF"
+            android:inputType="textEmailAddress"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/etTelefono"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- DIRECCIÓN -->
+        <EditText
+            android:id="@+id/etDireccion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Dirección"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888"
+            android:backgroundTint="#00AEEF"
+            android:inputType="textPostalAddress"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/etCorreo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- CONTRASEÑA -->
+        <EditText
+            android:id="@+id/etPasswordRegister"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Contraseña"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888"
+            android:backgroundTint="#00AEEF"
+            android:inputType="textPassword"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/etDireccion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- CONFIRMAR CONTRASEÑA -->
+        <EditText
+            android:id="@+id/etConfirmarPassword"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Confirmar contraseña"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888"
+            android:backgroundTint="#00AEEF"
+            android:inputType="textPassword"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/etPasswordRegister"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- BOTÓN CREAR CUENTA -->
+        <Button
+            android:id="@+id/btnRegistrar"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:text="CREAR CUENTA"
+            android:backgroundTint="#00AEEF"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/etConfirmarPassword"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- VOLVER AL LOGIN -->
+        <TextView
+            android:id="@+id/tvVolverLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿Ya tienes cuenta? Inicia sesión"
+            android:textColor="#00AEEF"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintTop_toBottomOf="@id/btnRegistrar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

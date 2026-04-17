@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_perfil"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:title="Mi Perfil" />
+        <item
+            android:id="@+id/nav_cotizar"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="Cotiza" />
+        <item
+            android:id="@+id/nav_pqrs"
+            android:icon="@android:drawable/ic_menu_help"
+            android:title="PQRS" />
+        <item
+            android:id="@+id/nav_contactenos"
+            android:icon="@android:drawable/ic_menu_call"
+            android:title="Contáctenos" />
+        <item
+            android:id="@+id/nav_rastrear"
+            android:icon="@android:drawable/ic_menu_search"
+            android:title="Rastrear Guía" />
+        <item
+            android:id="@+id/nav_pedidos"
+            android:icon="@android:drawable/ic_menu_view"
+            android:title="Mis Pedidos" />
+    </group>
+
+    <item android:title="Sesión">
+        <menu>
+            <item
+                android:id="@+id/nav_login"
+                android:icon="@android:drawable/ic_lock_lock"
+                android:title="Iniciar Sesión" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@android:drawable/ic_menu_delete"
+                android:title="Cerrar Sesión"
+                android:visible="false" />
+        </menu>
+    </item>
+</menu>
