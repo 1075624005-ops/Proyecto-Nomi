@@ -87,7 +87,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- DIMENSIONES (ANCHO, LARGO, ALTO) -->
+        <!-- DIMENSIONES -->
         <GridLayout
             android:id="@+id/gridMedidas"
             android:layout_width="match_parent"
@@ -122,7 +122,7 @@
             app:layout_constraintTop_toBottomOf="@id/gridMedidas">
 
             <LinearLayout android:orientation="vertical" android:gravity="center" android:layout_width="0dp" android:layout_columnWeight="1">
-                <TextView android:text="Peso" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                <TextView android:text="Peso Real" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" />
                 <EditText android:id="@+id/etPeso" android:layout_width="match_parent" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:inputType="numberDecimal" android:gravity="center" android:textColor="#000000" />
             </LinearLayout>
 
@@ -137,57 +137,138 @@
             </LinearLayout>
         </GridLayout>
 
-        <!-- RESULTADO -->
-        <TextView
-            android:id="@+id/tvAyuda"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="¿Necesita ayuda?"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            android:layout_marginTop="32dp"
-            app:layout_constraintTop_toBottomOf="@id/gridPeso"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            app:layout_constraintTop_toTopOf="@id/tvAyuda"
-            app:layout_constraintEnd_toEndOf="parent">
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tu Envío vale" android:textColor="#FFFFFF" android:textStyle="bold" />
-            <TextView android:id="@+id/tvResultado" android:layout_width="140dp" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:gravity="center" android:text="$ 0" android:textColor="#000000" android:textStyle="bold" />
-        </LinearLayout>
-
-        <!-- BOTÓN CONTACTO -->
+        <!-- TABLA DE VALORES -->
         <androidx.cardview.widget.CardView
-            android:id="@+id/btnContactoCotizar"
-            android:layout_width="120dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="8dp"
-            app:cardBackgroundColor="#00AEEF"
-            app:cardCornerRadius="15dp"
-            app:layout_constraintTop_toBottomOf="@id/tvAyuda"
-            app:layout_constraintStart_toStartOf="parent">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
-                <ImageView android:layout_width="40dp" android:layout_height="40dp" android:src="@android:drawable/ic_menu_call" app:tint="#FFFFFF" android:contentDescription="Llamar" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Contáctenos" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" />
+            android:id="@+id/cvTablaValores"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="#1A1A1A"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintTop_toBottomOf="@id/gridPeso">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TABLA DE TARIFAS ESTIMADAS"
+                    android:textColor="#00AEEF"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"/>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="*">
+
+                    <TableRow>
+                        <TextView android:text="Peso" android:textColor="#00AEEF" android:textStyle="bold" android:padding="4dp"/>
+                        <TextView android:text="Valor Base" android:textColor="#00AEEF" android:textStyle="bold" android:padding="4dp" android:gravity="end"/>
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView android:text="Hasta 1 Kg" android:textColor="#FFFFFF" android:padding="4dp"/>
+                        <TextView android:text="$ 10.000" android:textColor="#FFFFFF" android:padding="4dp" android:gravity="end"/>
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView android:text="Hasta 2 Kg" android:textColor="#FFFFFF" android:padding="4dp"/>
+                        <TextView android:text="$ 13.000" android:textColor="#FFFFFF" android:padding="4dp" android:gravity="end"/>
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView android:text="Hasta 3 Kg" android:textColor="#FFFFFF" android:padding="4dp"/>
+                        <TextView android:text="$ 16.000" android:textColor="#FFFFFF" android:padding="4dp" android:gravity="end"/>
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView android:text="Kg Adicional" android:textColor="#4CAF50" android:textStyle="bold" android:padding="4dp"/>
+                        <TextView android:text="+ $ 3.000" android:textColor="#4CAF50" android:padding="4dp" android:gravity="end"/>
+                    </TableRow>
+                </TableLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="* El valor final depende del destino y el manejo de mercancía."
+                    android:textColor="#888888"
+                    android:textSize="10sp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- BOTÓN CALCULAR -->
-        <Button
-            android:id="@+id/btnCalcular"
-            android:layout_width="wrap_content"
+        <!-- RESULTADO -->
+        <LinearLayout
+            android:id="@+id/llResultado"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="CALCULAR"
-            android:backgroundTint="#00AEEF"
-            android:textColor="#FFFFFF"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/btnContactoCotizar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/cvTablaValores">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tu Envío vale"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvResultado"
+                android:layout_width="140dp"
+                android:layout_height="45dp"
+                android:background="@android:drawable/editbox_background_normal"
+                android:gravity="center"
+                android:text="$ 0"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- BOTONES -->
+        <LinearLayout
+            android:id="@+id/llBotones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/llResultado">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/btnContactoCotizar"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="#00AEEF"
+                app:cardCornerRadius="12dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
+                    <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_call" app:tint="#FFFFFF" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Contáctenos" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <View android:layout_width="15dp" android:layout_height="1dp"/>
+
+            <Button
+                android:id="@+id/btnCalcular"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:text="CALCULAR"
+                android:backgroundTint="#00AEEF"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <!-- FOOTER -->
         <TextView
@@ -199,7 +280,7 @@
             android:text="Trabajamos día a día para ser tu mejor solución."
             android:textColor="#000000"
             android:textSize="12sp"
-            app:layout_constraintTop_toBottomOf="@id/btnCalcular"
+            app:layout_constraintTop_toBottomOf="@id/llBotones"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

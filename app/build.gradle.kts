@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -10,8 +11,8 @@ android {
         applicationId = "com.example.nomi"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,8 +52,22 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    
     implementation("org.apache.poi:poi:3.17")
     implementation("org.apache.poi:poi-ooxml:3.17") {
         exclude(group = "org.apache.xmlbeans", module = "xmlbeans")
     }
+
+    // ── FIREBASE (SOLUCIÓN AL ERROR) ────────────────────────
+    // Usamos el BoM para coordinar las versiones
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+
+    // Importamos las librerías estándar (ya incluyen Kotlin)
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-analytics")
+
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }

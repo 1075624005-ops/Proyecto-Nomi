@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <!-- FICHA DEL CLIENTE -->
+        <TextView
+            android:id="@+id/tvAdminDetalleTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="DETALLES DE LA SOLICITUD"
+            android:textColor="#00AEEF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/llFicha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:background="#111111"
+            android:padding="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tvAdminDetalleTitle">
+
+            <TextView android:id="@+id/detNombre" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Nombre: ..." android:textColor="#FFFFFF" android:textSize="16sp"/>
+            <TextView android:id="@+id/detTipoPers" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tipo: ..." android:textColor="#FFFFFF" android:layout_marginTop="4dp"/>
+            <TextView android:id="@+id/detDoc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Documento: ..." android:textColor="#FFFFFF" android:layout_marginTop="4dp"/>
+            <TextView android:id="@+id/detCorreo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Correo: ..." android:textColor="#FFFFFF" android:layout_marginTop="4dp"/>
+            <TextView android:id="@+id/detDir" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Dirección: ..." android:textColor="#FFFFFF" android:layout_marginTop="4dp"/>
+        </LinearLayout>
+
+        <!-- SITUACIÓN -->
+        <TextView
+            android:id="@+id/lbSituacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SITUACIÓN REPORTADA:"
+            android:textColor="#00AEEF"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/llFicha"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/detDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="..."
+            android:textColor="#FFFFFF"
+            android:background="#222222"
+            android:padding="12dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/lbSituacion"/>
+
+        <!-- RESPUESTA -->
+        <EditText
+            android:id="@+id/etAdminRespuesta"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:hint="Escriba aquí su respuesta para el cliente..."
+            android:textColor="#000000"
+            android:background="@android:drawable/editbox_background_normal"
+            android:gravity="top"
+            android:padding="12dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@id/detDesc"/>
+
+        <Button
+            android:id="@+id/btnAdminEnviarResp"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:text="ENVIAR RESPUESTA"
+            android:backgroundTint="#00AEEF"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/etAdminRespuesta"/>
+
+        <Button
+            android:id="@+id/btnAdminVolver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VOLVER"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#333333"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintTop_toBottomOf="@id/btnAdminEnviarResp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

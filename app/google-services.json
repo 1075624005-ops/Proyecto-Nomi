@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "760082047418",
+    "project_id": "nomi-app-d3d4c",
+    "storage_bucket": "nomi-app-d3d4c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760082047418:android:6b3798c83ebc10d255bd83",
+        "android_client_info": {
+          "package_name": "com.example.nomi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3R0m7zD0i5V6zqd8bIKB0tdZcX-vp0dA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

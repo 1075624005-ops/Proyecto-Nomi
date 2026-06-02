@@ -18,6 +18,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var drawerLayout: DrawerLayout
     private var nombreUsuario: String? = null
+    private var correoUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,20 +30,17 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val tvWelcome = findViewById<TextView>(R.id.tvUserWelcome)
         val etBuscar = findViewById<EditText>(R.id.etBuscar)
 
-        // Botones rápidos de la pantalla principal
         val btnCotiza = findViewById<Button>(R.id.btnCotizaHome)
         val btnPQRS = findViewById<Button>(R.id.btnPQRHome)
         val btnContacto = findViewById<Button>(R.id.btnContactenosHome)
 
-        // Configurar el listener del menú lateral
         navView.setNavigationItemSelectedListener(this)
 
-        // Abrir menú al tocar las tres rayas
         btnMenu.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        // --- LÓGICA DEL BUSCADOR DE GUÍA ---
+        // --- BUSCADOR DE GUÍA ---
         etBuscar.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_NULL) {
                 val textoGuia = etBuscar.text.toString().trim()
@@ -59,25 +57,26 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-        // --- LÓGICA DE LOS BOTONES PRINCIPALES CON VALIDACIÓN ---
+        // --- COTIZA (ACCESIBLE PARA TODOS) ---
         btnCotiza.setOnClickListener {
-            if (nombreUsuario != null) {
-                startActivity(Intent(this, CotizarActivity::class.java))
-            } else {
-                Toast.makeText(this, "⚠️ Inicia sesión para realizar una cotización", Toast.LENGTH_SHORT).show()
-            }
+            startActivity(Intent(this, CotizarActivity::class.java))
         }
 
+        // --- PQRS (SOLO CON SESIÓN) ---
         btnPQRS.setOnClickListener { 
-            Toast.makeText(this, "Función PQRS próximamente", Toast.LENGTH_SHORT).show() 
+            val intent = Intent(this, PQRSMenuActivity::class.java)
+            intent.putExtra("correo", correoUsuario)
+            startActivity(intent)
         }
 
+        // --- CONTACTO (ACCESIBLE PARA TODOS) ---
         btnContacto.setOnClickListener { 
-            Toast.makeText(this, "Función Contacto próximamente", Toast.LENGTH_SHORT).show() 
+            startActivity(Intent(this, ContactenosActivity::class.java))
         }
 
-        // Verificar sesión (Recibir nombre del Login)
+        // Recibir datos de sesión
         nombreUsuario = intent.getStringExtra("nombre")
+        correoUsuario = intent.getStringExtra("correo")
         
         val headerView = navView.getHeaderView(0)
         val tvNavName = headerView.findViewById<TextView>(R.id.tvNavName)
@@ -86,11 +85,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (nombreUsuario != null && nombreUsuario!!.isNotEmpty()) {
             tvWelcome.text = "Bienvenido, $nombreUsuario"
             tvNavName.text = nombreUsuario
+            menu.findItem(R.id.nav_perfil).isVisible = true
+            menu.findItem(R.id.nav_pedidos).isVisible = true
             menu.findItem(R.id.nav_login).isVisible = false
             menu.findItem(R.id.nav_logout).isVisible = true
         } else {
             tvWelcome.text = "Bienvenido a NOMI"
             tvNavName.text = "Invitado"
+            menu.findItem(R.id.nav_perfil).isVisible = false
+            menu.findItem(R.id.nav_pedidos).isVisible = false
             menu.findItem(R.id.nav_login).isVisible = true
             menu.findItem(R.id.nav_logout).isVisible = false
         }
@@ -99,20 +102,18 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_perfil -> {
-                if (nombreUsuario != null) {
-                    val intent = Intent(this, PerfilActivity::class.java)
-                    intent.putExtra("nombre", nombreUsuario)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(this, "⚠️ Inicia sesión para ver tu perfil", Toast.LENGTH_SHORT).show()
-                }
+                val intent = Intent(this, PerfilActivity::class.java)
+                intent.putExtra("nombre", nombreUsuario)
+                startActivity(intent)
             }
             R.id.nav_cotizar -> {
-                if (nombreUsuario != null) {
-                    startActivity(Intent(this, CotizarActivity::class.java))
-                } else {
-                    Toast.makeText(this, "⚠️ Inicia sesión para realizar una cotización", Toast.LENGTH_SHORT).show()
-                }
+                startActivity(Intent(this, CotizarActivity::class.java))
+            }
+            R.id.nav_contactenos -> {
+                startActivity(Intent(this, ContactenosActivity::class.java))
+            }
+            R.id.nav_pqrs -> {
+                startActivity(Intent(this, PQRSMenuActivity::class.java))
             }
             R.id.nav_login -> {
                 startActivity(Intent(this, LoginActivity::class.java))
@@ -122,10 +123,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
                 finish()
-                Toast.makeText(this, "Sesión cerrada correctamente", Toast.LENGTH_SHORT).show()
             }
             else -> {
-                Toast.makeText(this, "Función: ${item.title}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Opción: ${item.title}", Toast.LENGTH_SHORT).show()
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)

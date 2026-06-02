@@ -2,25 +2,57 @@ package com.example.nomi
 
 import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
+
+// IMPORTACIONES DE FIREBASE
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var db: DatabaseHelper
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        db = DatabaseHelper(this)
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
 
         val etCorreo        = findViewById<EditText>(R.id.etUsuario)
         val etPassword      = findViewById<EditText>(R.id.etPassword)
         val btnLogin        = findViewById<Button>(R.id.btnLogin)
         val btnCrearUsuario = findViewById<Button>(R.id.btnCrearUsuario)
         val tvOlvido        = findViewById<TextView>(R.id.tvOlvido)
+        val prefs = getSharedPreferences("nomi_prefs", MODE_PRIVATE)
+        val yaVioAviso = prefs.getBoolean("aviso_datos_visto", false)
+
+
+        if (!yaVioAviso) {
+            AlertDialog.Builder(this)
+                .setTitle("🔒 Aviso de Privacidad")
+                .setMessage(
+                    "Bienvenido a Nomi.\n\n" +
+                            "Recolectamos datos como nombre, correo, documento y dirección " +
+                            "para gestionar tu cuenta y pedidos, conforme a la " +
+                            "Ley 1581 de 2012 (Habeas Data).\n\n" +
+                            "Al usar la app aceptas nuestra Política de Datos. " +
+                            "Puedes ejercer tus derechos escribiéndonos a {nomisas@nomi.com]."
+                )
+                .setCancelable(false) // No puede cerrarlo sin aceptar
+                .setPositiveButton("Entendido y Acepto") { _, _ ->
+                    prefs.edit().putBoolean("aviso_datos_visto", true).apply()
+                }
+                .setNegativeButton("Salir") { _, _ ->
+                    finish() // Si no acepta, cierra la app
+                }
+                .show()
+        }
 
         btnLogin.setOnClickListener {
             val correo   = etCorreo.text.toString().trim()
@@ -31,87 +63,81 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val resultado = db.validarLogin(correo, password)
-            if (resultado.startsWith("ok")) {
-                val datos = resultado.split("|")
-                val intent = Intent(this, HomeActivity::class.java)
-                intent.putExtra("nombre", datos[1])
-                intent.putExtra("correo", datos[2])
+            // ── SEGURIDAD PARA EL ADMINISTRADOR ──────────────────
+            if (correo == "admin@nomi.com" && password == "admin123") {
+
+                // Obtenemos el ID único de este celular/computador
+                /*val currentDeviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+
+                // Consultamos en Firebase si este ID está autorizado
+                db.collection("configuracion").document("admin_lock").get()
+                    .addOnSuccessListener { doc ->
+                        val idAutorizado = doc.getString("id_permitido") ?: ""*/
+
+
+                Toast.makeText(this, "👨‍💻 Acceso concedido al Jefe", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, AdminActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
                 finish()
-            } else {
-                Toast.makeText(this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            // ── LOGIN USUARIOS NORMALES (FIREBASE) ────────────────
+            auth.signInWithEmailAndPassword(correo, password)
+                .addOnSuccessListener { resultado ->
+                    val uid = resultado.user?.uid
+                    if (uid != null) {
+                        db.collection("usuarios").document(uid).get()
+                            .addOnSuccessListener { documento ->
+                                val nombre = documento.getString("nombre") ?: "Usuario"
+                                val intent = Intent(this, HomeActivity::class.java)
+                                intent.putExtra("nombre", nombre)
+                                intent.putExtra("correo", correo)
+                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                startActivity(intent)
+                                finish()
+                            }
+                    }
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                }
         }
 
         btnCrearUsuario.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
 
-        // --- FLUJO DE RECUPERAR CONTRASEÑA ---
         tvOlvido.setOnClickListener {
-            mostrarDialogoPedirCorreo()
+            mostrarDialogoRecuperacion()
         }
     }
 
-    private fun mostrarDialogoPedirCorreo() {
+    private fun mostrarDialogoAutorizacion(id: String) {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Recuperar Contraseña")
-        builder.setMessage("Ingrese su correo electrónico registrado:")
+        builder.setTitle("Dispositivo no autorizado")
+        builder.setMessage("Este celular no tiene permiso para ser Administrador.\n\nTu ID de dispositivo es:\n$id\n\nEntrégaselo al desarrollador para que te autorice.")
+        builder.setPositiveButton("Entendido", null)
+        builder.show()
+    }
 
+    private fun mostrarDialogoRecuperacion() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Recuperar contraseña")
+        builder.setMessage("Ingresa tu correo para enviarte el enlace:")
         val input = EditText(this)
         input.hint = "correo@ejemplo.com"
         builder.setView(input)
-
-        builder.setPositiveButton("Siguiente") { _, _ ->
-            val correo = input.text.toString().trim()
-            if (db.existeCorreo(correo)) {
-                mostrarDialogoVerificacion(correo)
-            } else {
-                Toast.makeText(this, "El correo no está registrado", Toast.LENGTH_SHORT).show()
-            }
-        }
-        builder.setNegativeButton("Cancelar", null)
-        builder.show()
-    }
-
-    private fun mostrarDialogoVerificacion(correo: String) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Verificación")
-        builder.setMessage("Se envió un código a su correo. Ingrese '1234' para continuar:")
-
-        val input = EditText(this)
-        input.hint = "Código de 4 dígitos"
-        builder.setView(input)
-
-        builder.setPositiveButton("Verificar") { _, _ ->
-            if (input.text.toString() == "1234") {
-                mostrarDialogoNuevaClave(correo)
-            } else {
-                Toast.makeText(this, "Código incorrecto", Toast.LENGTH_SHORT).show()
-            }
-        }
-        builder.show()
-    }
-
-    private fun mostrarDialogoNuevaClave(correo: String) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Nueva Contraseña")
-        builder.setMessage("Escriba su nueva contraseña:")
-
-        val input = EditText(this)
-        input.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
-        builder.setView(input)
-
-        builder.setPositiveButton("Cambiar") { _, _ ->
-            val nuevaClave = input.text.toString().trim()
-            if (nuevaClave.isNotEmpty()) {
-                if (db.cambiarPassword(correo, nuevaClave)) {
-                    Toast.makeText(this, "✅ Contraseña actualizada. Ya puede iniciar sesión.", Toast.LENGTH_LONG).show()
+        builder.setPositiveButton("Enviar") { _, _ ->
+            val mail = input.text.toString().trim()
+            if (mail.isNotEmpty()) {
+                auth.sendPasswordResetEmail(mail).addOnSuccessListener {
+                    Toast.makeText(this, "✅ Revisa tu correo", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+        builder.setNegativeButton("Cancelar", null)
         builder.show()
     }
 }

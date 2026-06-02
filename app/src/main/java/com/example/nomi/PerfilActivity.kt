@@ -9,17 +9,27 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 
+// ── IMPORTACIONES DE FIREBASE ────────────────────────────
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+
 class PerfilActivity : AppCompatActivity() {
 
-    private lateinit var db: DatabaseHelper
-    private var correoOriginal: String? = null
+    private lateinit var auth: FirebaseAuth
+    private lateinit var dbFirestore: FirebaseFirestore
+    private var userId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil)
 
-        db = DatabaseHelper(this)
-        val busqueda = intent.getStringExtra("nombre") ?: ""
+        // Inicializamos Firebase
+        auth = Firebase.auth
+        dbFirestore = Firebase.firestore
+        userId = auth.currentUser?.uid // Obtenemos el ID del usuario actual
 
         val etNombre = findViewById<EditText>(R.id.etNombrePerfil)
         val spTipoDoc = findViewById<Spinner>(R.id.spTipoDocPerfil)
@@ -46,8 +56,23 @@ class PerfilActivity : AppCompatActivity() {
         }
         spTipoDoc.adapter = adapter
 
-        // --- 1. CARGAR DATOS ---
-        cargarDatos(busqueda, etNombre, spTipoDoc, etNumDoc, etTel, etCorreo)
+        // --- 1. CARGAR DATOS DESDE FIRESTORE ---
+        if (userId != null) {
+            dbFirestore.collection("usuarios").document(userId!!)
+                .get()
+                .addOnSuccessListener { doc ->
+                    if (doc.exists()) {
+                        etNombre.setText(doc.getString("nombre"))
+                        etNumDoc.setText(doc.getString("num_doc"))
+                        etTel.setText(doc.getString("telefono"))
+                        etCorreo.setText(doc.getString("correo"))
+                        
+                        val tipo = doc.getString("tipo_doc") ?: "CC"
+                        val pos = when(tipo) { "NIT" -> 1; "CE" -> 2; "PT" -> 3; else -> 0 }
+                        spTipoDoc.setSelection(pos)
+                    }
+                }
+        }
 
         // --- 2. LÓGICA DE LOS LÁPICES (EDICIÓN) ---
         tilNombre.setEndIconOnClickListener { mostrarDialogoEditar("Editar Nombre", etNombre) }
@@ -60,39 +85,31 @@ class PerfilActivity : AppCompatActivity() {
             }
         }
 
-        // --- 3. ACTUALIZAR EN BD ---
+        // --- 3. ACTUALIZAR EN FIRESTORE ---
         btnGuardar.setOnClickListener {
-            val exito = db.actualizarUsuario(
-                correoOriginal!!,
-                etNombre.text.toString(),
-                spTipoDoc.selectedItem.toString(),
-                etNumDoc.text.toString(),
-                etTel.text.toString(),
-                etCorreo.text.toString()
+            if (userId == null) return@setOnClickListener
+
+            val datosActualizados = hashMapOf(
+                "nombre" to etNombre.text.toString(),
+                "tipo_doc" to spTipoDoc.selectedItem.toString(),
+                "num_doc" to etNumDoc.text.toString(),
+                "telefono" to etTel.text.toString(),
+                "correo" to etCorreo.text.toString(),
+                "direccion" to "No definida" // Puedes añadir este campo si quieres
             )
-            if (exito) {
-                Toast.makeText(this, "✅ Cambios guardados de forma permanente", Toast.LENGTH_SHORT).show()
-                finish()
-            }
+
+            dbFirestore.collection("usuarios").document(userId!!)
+                .update(datosActualizados as Map<String, Any>)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "✅ Nube actualizada correctamente", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "❌ Falló la conexión a la nube", Toast.LENGTH_SHORT).show()
+                }
         }
 
         btnVolver.setOnClickListener { finish() }
-    }
-
-    private fun cargarDatos(busqueda: String, etN: EditText, sp: Spinner, etD: EditText, etT: EditText, etC: EditText) {
-        val sqlite = db.readableDatabase
-        val cursor = sqlite.rawQuery("SELECT * FROM usuarios WHERE nombre = ? OR correo = ?", arrayOf(busqueda, busqueda))
-        if (cursor.moveToFirst()) {
-            correoOriginal = cursor.getString(cursor.getColumnIndexOrThrow("correo"))
-            etN.setText(cursor.getString(cursor.getColumnIndexOrThrow("nombre")))
-            etD.setText(cursor.getString(cursor.getColumnIndexOrThrow("num_doc")))
-            etT.setText(cursor.getString(cursor.getColumnIndexOrThrow("telefono")))
-            etC.setText(correoOriginal)
-            val tipo = cursor.getString(cursor.getColumnIndexOrThrow("tipo_doc"))
-            val pos = when(tipo) { "NIT" -> 1; "CE" -> 2; "PT" -> 3; else -> 0 }
-            sp.setSelection(pos)
-        }
-        cursor.close()
     }
 
     private fun mostrarDialogoEditar(titulo: String, campo: EditText) {

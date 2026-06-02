@@ -2,70 +2,108 @@ package com.example.nomi
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.File
+import java.io.FileOutputStream
 
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "NomiDB.db"
-        private const val DATABASE_VERSION = 2
+        private const val DATABASE_VERSION = 4 // Subimos a 4 para añadir los nuevos campos de datos personales
         private const val TABLE_USERS = "usuarios"
         private const val TABLE_ORDERS = "pedidos"
+        private const val TABLE_PQRS = "pqrs"
         
-        private const val COLUMN_ID = "id"
-        private const val COLUMN_NOMBRE = "nombre"
-        private const val COLUMN_CORREO = "correo"
-        private const val COLUMN_PASSWORD = "password"
-
-        private const val COLUMN_GUIA = "num_guia"
-        private const val COLUMN_ESTADO = "estado"
+        // Columnas PQRS (Ampliadas para el Admin)
+        private const val COL_PQRS_USER_CORREO = "correo_usuario"
+        private const val COL_PQRS_USER_NOMBRE = "nombre_usuario"
+        private const val COL_PQRS_USER_TIPO_PERS = "tipo_persona"
+        private const val COL_PQRS_USER_TIPO_DOC = "tipo_doc"
+        private const val COL_PQRS_USER_NUM_DOC = "num_doc"
+        private const val COL_PQRS_USER_DIR = "direccion"
+        private const val COL_PQRS_TIPO = "tipo_pqr"
+        private const val COL_PQRS_ASUNTO = "asunto"
+        private const val COL_PQRS_DESC = "descripcion"
+        private const val COL_PQRS_ESTADO = "estado"
+        private const val COL_PQRS_RESPUESTA = "respuesta"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL("CREATE TABLE $TABLE_USERS ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_NOMBRE TEXT, $COLUMN_CORREO TEXT UNIQUE, $COLUMN_PASSWORD TEXT, tipo_doc TEXT, num_doc TEXT, telefono TEXT, direccion TEXT)")
-        db?.execSQL("CREATE TABLE $TABLE_ORDERS ($COLUMN_GUIA TEXT PRIMARY KEY, $COLUMN_ESTADO INTEGER)")
-        db?.execSQL("INSERT INTO $TABLE_ORDERS VALUES ('12345', 1)")
-        db?.execSQL("INSERT INTO $TABLE_ORDERS VALUES ('77777777', 2)")
-        db?.execSQL("INSERT INTO $TABLE_ORDERS VALUES ('99999', 4)")
+        db?.execSQL("CREATE TABLE IF NOT EXISTS $TABLE_USERS (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, correo TEXT UNIQUE, password TEXT, tipo_doc TEXT, num_doc TEXT, telefono TEXT, direccion TEXT)")
+        db?.execSQL("CREATE TABLE IF NOT EXISTS $TABLE_ORDERS (num_guia TEXT PRIMARY KEY, estado INTEGER)")
+        
+        // TABLA PQRS ACTUALIZADA CON TODOS LOS DATOS
+        db?.execSQL("CREATE TABLE IF NOT EXISTS $TABLE_PQRS (id INTEGER PRIMARY KEY AUTOINCREMENT, $COL_PQRS_USER_CORREO TEXT, $COL_PQRS_USER_NOMBRE TEXT, $COL_PQRS_USER_TIPO_PERS TEXT, $COL_PQRS_USER_TIPO_DOC TEXT, $COL_PQRS_USER_NUM_DOC TEXT, $COL_PQRS_USER_DIR TEXT, $COL_PQRS_TIPO TEXT, $COL_PQRS_ASUNTO TEXT, $COL_PQRS_DESC TEXT, $COL_PQRS_ESTADO TEXT, $COL_PQRS_RESPUESTA TEXT)")
+
+        db?.execSQL("INSERT OR IGNORE INTO $TABLE_ORDERS VALUES ('12345', 1)")
+        db?.execSQL("INSERT OR IGNORE INTO $TABLE_ORDERS VALUES ('77777777', 2)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
-        db?.execSQL("DROP TABLE IF EXISTS $TABLE_ORDERS")
-        onCreate(db)
+        if (oldVersion < 4) {
+            db?.execSQL("DROP TABLE IF EXISTS $TABLE_PQRS")
+            onCreate(db)
+        }
+    }
+
+    // --- FUNCIÓN GUARDAR PQR CON DATOS COMPLETOS ---
+    fun insertarPQRSCompleta(correo: String, nombre: String, tipoP: String, tDoc: String, nDoc: String, dir: String, tPqr: String, asunto: String, desc: String): Long {
+        val db = this.writableDatabase
+        val v = ContentValues().apply {
+            put(COL_PQRS_USER_CORREO, correo)
+            put(COL_PQRS_USER_NOMBRE, nombre)
+            put(COL_PQRS_USER_TIPO_PERS, tipoP)
+            put(COL_PQRS_USER_TIPO_DOC, tDoc)
+            put(COL_PQRS_USER_NUM_DOC, nDoc)
+            put(COL_PQRS_USER_DIR, dir)
+            put(COL_PQRS_TIPO, tPqr)
+            put(COL_PQRS_ASUNTO, asunto)
+            put(COL_PQRS_DESC, desc)
+            put(COL_PQRS_ESTADO, "Pendiente")
+            put(COL_PQRS_RESPUESTA, "Aún no hay respuesta.")
+        }
+        return db.insert(TABLE_PQRS, null, v)
+    }
+
+    fun obtenerTodasLasPQRS(): Cursor {
+        return readableDatabase.rawQuery("SELECT * FROM $TABLE_PQRS ORDER BY id DESC", null)
+    }
+    
+    fun obtenerPQRPorId(id: Int): Cursor {
+        return readableDatabase.rawQuery("SELECT * FROM $TABLE_PQRS WHERE id = ?", arrayOf(id.toString()))
+    }
+
+    fun responderPQRS(id: Int, respuesta: String): Boolean {
+        val db = this.writableDatabase
+        val v = ContentValues().apply {
+            put(COL_PQRS_ESTADO, "Respondido")
+            put(COL_PQRS_RESPUESTA, respuesta)
+        }
+        return db.update(TABLE_PQRS, v, "id = ?", arrayOf(id.toString())) > 0
+    }
+
+    fun obtenerMisPQRS(correo: String): Cursor {
+        return readableDatabase.rawQuery("SELECT * FROM $TABLE_PQRS WHERE $COL_PQRS_USER_CORREO = ? ORDER BY id DESC", arrayOf(correo))
     }
 
     fun registrarUsuario(nombre: String, tipoDoc: String, numDoc: String, tel: String, correo: String, dir: String, pass: String): Boolean {
         val db = this.writableDatabase
         val v = ContentValues().apply {
-            put(COLUMN_NOMBRE, nombre); put("tipo_doc", tipoDoc); put("num_doc", numDoc)
-            put("telefono", tel); put(COLUMN_CORREO, correo); put("direccion", dir); put(COLUMN_PASSWORD, pass)
+            put("nombre", nombre); put("tipo_doc", tipoDoc); put("num_doc", numDoc)
+            put("telefono", tel); put("correo", correo); put("direccion", dir); put("password", pass)
         }
         return db.insert(TABLE_USERS, null, v) != -1L
     }
 
-    fun actualizarUsuario(correoOriginal: String, nuevoNombre: String, nuevoTipoDoc: String, nuevoNumDoc: String, nuevoTel: String, nuevoCorreo: String): Boolean {
-        val db = this.writableDatabase
-        val v = ContentValues().apply {
-            put(COLUMN_NOMBRE, nuevoNombre); put("tipo_doc", nuevoTipoDoc); put("num_doc", nuevoNumDoc); put("telefono", nuevoTel); put(COLUMN_CORREO, nuevoCorreo)
-        }
-        return db.update(TABLE_USERS, v, "$COLUMN_CORREO = ?", arrayOf(correoOriginal)) > 0
-    }
-
-    // --- NUEVA FUNCIÓN PARA RECUPERAR CONTRASEÑA ---
-    fun cambiarPassword(correo: String, nuevaPass: String): Boolean {
-        val db = this.writableDatabase
-        val v = ContentValues()
-        v.put(COLUMN_PASSWORD, nuevaPass)
-        return db.update(TABLE_USERS, v, "$COLUMN_CORREO = ?", arrayOf(correo)) > 0
-    }
-
     fun validarLogin(correo: String, pass: String): String {
-        val cursor = readableDatabase.rawQuery("SELECT * FROM $TABLE_USERS WHERE $COLUMN_CORREO = ?", arrayOf(correo))
+        val cursor = readableDatabase.rawQuery("SELECT * FROM $TABLE_USERS WHERE correo = ?", arrayOf(correo))
         if (cursor.moveToFirst()) {
-            val passDB = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD))
-            val nombre = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOMBRE))
+            val passDB = cursor.getString(cursor.getColumnIndexOrThrow("password"))
+            val nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre"))
             cursor.close()
             return if (passDB == pass) "ok|$nombre|$correo" else "no_password"
         }
@@ -73,13 +111,54 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return "no_usuario"
     }
 
-    fun existeCorreo(correo: String) = readableDatabase.rawQuery("SELECT * FROM $TABLE_USERS WHERE $COLUMN_CORREO = ?", arrayOf(correo)).count > 0
+    fun existeCorreo(correo: String) = readableDatabase.rawQuery("SELECT * FROM $TABLE_USERS WHERE correo = ?", arrayOf(correo)).count > 0
+
+    fun actualizarUsuario(correoOri: String, n: String, t: String, d: String, tel: String, c: String): Boolean {
+        val db = this.writableDatabase
+        val v = ContentValues().apply {
+            put("nombre", n); put("tipo_doc", t); put("num_doc", d); put("telefono", tel); put("correo", c)
+        }
+        return db.update(TABLE_USERS, v, "correo = ?", arrayOf(correoOri)) > 0
+    }
+
+    fun cambiarPassword(correo: String, nuevaPass: String): Boolean {
+        val db = this.writableDatabase
+        val v = ContentValues().apply { put("password", nuevaPass) }
+        return db.update(TABLE_USERS, v, "correo = ?", arrayOf(correo)) > 0
+    }
 
     fun obtenerEstadoPedido(guia: String): Int {
-        val cursor = readableDatabase.rawQuery("SELECT $COLUMN_ESTADO FROM $TABLE_ORDERS WHERE $COLUMN_GUIA = ?", arrayOf(guia))
+        val cursor = readableDatabase.rawQuery("SELECT estado FROM $TABLE_ORDERS WHERE num_guia = ?", arrayOf(guia))
         var estado = -1
         if (cursor.moveToFirst()) estado = cursor.getInt(0)
         cursor.close()
         return estado
+    }
+
+    fun generarBackupExcel(context: Context): String {
+        try {
+            val workbook = XSSFWorkbook()
+            val sheet = workbook.createSheet("Usuarios_Nomi")
+            val header = sheet.createRow(0)
+            val columnas = arrayOf("ID", "Nombre", "Correo", "Teléfono", "Documento")
+            columnas.forEachIndexed { i, s -> header.createCell(i).setCellValue(s) }
+            val cursor = readableDatabase.rawQuery("SELECT * FROM $TABLE_USERS", null)
+            var rowIdx = 1
+            while (cursor.moveToNext()) {
+                val row = sheet.createRow(rowIdx++)
+                row.createCell(0).setCellValue(cursor.getInt(0).toDouble())
+                row.createCell(1).setCellValue(cursor.getString(1))
+                row.createCell(2).setCellValue(cursor.getString(2))
+                row.createCell(3).setCellValue(cursor.getString(6))
+                row.createCell(4).setCellValue(cursor.getString(5))
+            }
+            cursor.close()
+            val file = File(context.getExternalFilesDir(null), "Backup_Nomi.xlsx")
+            val fos = FileOutputStream(file)
+            workbook.write(fos)
+            fos.close()
+            workbook.close()
+            return file.absolutePath
+        } catch (e: Exception) { return "Error: ${e.message}" }
     }
 }

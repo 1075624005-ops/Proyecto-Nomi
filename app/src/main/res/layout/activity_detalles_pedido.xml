@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <ImageView
+            android:id="@+id/imgLogoDetalles"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/logo_nomi"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="Logo Nomi" />
+
+        <TextView
+            android:id="@+id/tvTituloDetalles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Detalles del Envío"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/imgLogoDetalles"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- INFORMACIÓN RESUMIDA -->
+        <LinearLayout
+            android:id="@+id/llResumenActores"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/tvTituloDetalles">
+
+            <!-- Cards de Remitente y Destinatario omitidas para brevedad pero mantenidas en la lógica real -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#1A1A1A"
+                app:cardCornerRadius="8dp"
+                android:layout_marginBottom="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Remitente"
+                        android:textColor="#00AEEF"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/tvInfoRemitente"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nombre: -\nDirección: -"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#1A1A1A"
+                app:cardCornerRadius="8dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Destinatario"
+                        android:textColor="#00AEEF"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/tvInfoDestinatario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nombre: -\nDirección: -"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <!-- DESCRIPCIÓN -->
+        <TextView
+            android:id="@+id/labelDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿Qué envías? (Descripción)"
+            android:textColor="#00AEEF"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/llResumenActores"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/etDescripcionPedido"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ej: Ropa, documentos, repuestos..."
+            android:textColorHint="#555555"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#00AEEF"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@id/labelDesc" />
+
+        <!-- MEDIDAS -->
+        <TextView
+            android:id="@+id/labelMedidas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Medidas y Peso"
+            android:textColor="#00AEEF"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/etDescripcionPedido"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <GridLayout
+            android:id="@+id/gridMedidas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/labelMedidas">
+            <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_columnWeight="1" android:padding="2dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ancho" android:textColor="#FFFFFF" android:textSize="11sp" />
+                <EditText android:id="@+id/etAnchoPedido" android:layout_width="match_parent" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:inputType="numberDecimal" android:textColor="#000000" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_columnWeight="1" android:padding="2dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Largo" android:textColor="#FFFFFF" android:textSize="11sp" />
+                <EditText android:id="@+id/etLargoPedido" android:layout_width="match_parent" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:inputType="numberDecimal" android:textColor="#000000" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_columnWeight="1" android:padding="2dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Alto" android:textColor="#FFFFFF" android:textSize="11sp" />
+                <EditText android:id="@+id/etAltoPedido" android:layout_width="match_parent" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:inputType="numberDecimal" android:textColor="#000000" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_columnWeight="1" android:padding="2dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Peso Kg" android:textColor="#FFFFFF" android:textSize="11sp" />
+                <EditText android:id="@+id/etPesoPedido" android:layout_width="match_parent" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:inputType="numberDecimal" android:textColor="#000000" />
+            </LinearLayout>
+        </GridLayout>
+
+        <!-- TABLA DE VALORES -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvTablaValoresDetalles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:cardBackgroundColor="#1A1A1A"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintTop_toBottomOf="@id/gridMedidas">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TABLA DE TARIFAS ESTIMADAS"
+                    android:textColor="#00AEEF"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"/>
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="*">
+                    <TableRow>
+                        <TextView android:text="Peso" android:textColor="#00AEEF" android:textStyle="bold" android:padding="4dp"/>
+                        <TextView android:text="Valor Base" android:textColor="#00AEEF" android:textStyle="bold" android:padding="4dp" android:gravity="end"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView android:text="Hasta 1 Kg" android:textColor="#FFFFFF" android:padding="4dp"/>
+                        <TextView android:text="$ 10.000" android:textColor="#FFFFFF" android:padding="4dp" android:gravity="end"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView android:text="Hasta 2 Kg" android:textColor="#FFFFFF" android:padding="4dp"/>
+                        <TextView android:text="$ 13.000" android:textColor="#FFFFFF" android:padding="4dp" android:gravity="end"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView android:text="Hasta 3 Kg" android:textColor="#FFFFFF" android:padding="4dp"/>
+                        <TextView android:text="$ 16.000" android:textColor="#FFFFFF" android:padding="4dp" android:gravity="end"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView android:text="Kg Adicional" android:textColor="#4CAF50" android:textStyle="bold" android:padding="4dp"/>
+                        <TextView android:text="+ $ 3.000" android:textColor="#4CAF50" android:padding="4dp" android:gravity="end"/>
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btnCotizarInterno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#4CAF50"
+            android:text="CALCULAR COSTO"
+            app:layout_constraintTop_toBottomOf="@id/cvTablaValoresDetalles" />
+
+        <RadioGroup
+            android:id="@+id/rgOpcionesEnvio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/btnCotizarInterno">
+            <RadioButton android:id="@+id/rbEstandar" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Económico" android:textColor="#FFFFFF" android:buttonTint="#00AEEF"/>
+            <RadioButton android:id="@+id/rbExpress" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Express" android:textColor="#FFFFFF" android:buttonTint="#00AEEF"/>
+            <RadioButton android:id="@+id/rbPremium" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Premium" android:textColor="#FFFFFF" android:buttonTint="#00AEEF"/>
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/etValorDeclarado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Valor Declarado ($)"
+            android:textColorHint="#555555"
+            android:inputType="number"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#00AEEF"
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@id/rgOpcionesEnvio" />
+
+        <!-- FORMA DE PAGO -->
+        <TextView
+            android:id="@+id/labelMetodoPago"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seleccione Forma de Pago"
+            android:textColor="#00AEEF"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/etValorDeclarado"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/rgMetodoPago"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/labelMetodoPago">
+            <RadioButton
+                android:id="@+id/rbPagoYa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pago Inmediato"
+                android:textColor="#FFFFFF"
+                android:buttonTint="#00AEEF"
+                android:checked="true" />
+            <RadioButton
+                android:id="@+id/rbPagoContraentrega"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contraentrega"
+                android:textColor="#FFFFFF"
+                android:buttonTint="#00AEEF"
+                android:layout_marginStart="20dp" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnSiguienteDetalles"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:text="VER RESUMEN"
+            android:backgroundTint="#00AEEF"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintTop_toBottomOf="@id/rgMetodoPago"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
