@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.NumberFormat
@@ -25,13 +24,13 @@ class FinalizarPedidoActivity : AppCompatActivity() {
         val remNombre = intent.getStringExtra("rem_nombre") ?: "-"
         val remTel    = intent.getStringExtra("rem_tel") ?: "-"
         val remDir    = intent.getStringExtra("rem_dir") ?: "-"
-        
+
         val destNombre = intent.getStringExtra("dest_nombre") ?: "-"
         val destTel    = intent.getStringExtra("dest_tel") ?: "-"
         val destDir    = intent.getStringExtra("dest_dir") ?: "-"
         val codLocalidad = intent.getStringExtra("dest_localidad_cod") ?: "00"
         val nomLocalidad = intent.getStringExtra("dest_localidad_nom") ?: "No especificada"
-        
+
         val desc        = intent.getStringExtra("ped_desc") ?: "Sin descripción"
         val tipoEnvio   = intent.getStringExtra("ped_tipo_envio") ?: "Estándar"
         val ancho       = intent.getStringExtra("ped_ancho") ?: "0"
@@ -52,13 +51,13 @@ class FinalizarPedidoActivity : AppCompatActivity() {
 
         // 3. Poblar la información en las tarjetas
         tvResRem.text = "REMITENTE: $remNombre\nTELÉFONO: $remTel\nDIRECCIÓN: $remDir"
-        
+
         tvResDest.text = "DESTINATARIO: $destNombre\nLOCALIDAD: $nomLocalidad\nDIRECCIÓN: $destDir\nTELÉFONO: $destTel"
-        
+
         tvResPedido.text = "CONTENIDO: $desc\n" +
-                           "SERVICIO: $tipoEnvio\n" +
-                           "DIMENSIONES: ${ancho}x${largo}x${alto} cm\n" +
-                           "PESO: $peso kg"
+                "SERVICIO: $tipoEnvio\n" +
+                "DIMENSIONES: ${ancho}x${largo}x${alto} cm\n" +
+                "PESO: $peso kg"
 
         val format = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
         val modalidadTexto = if (esContraentrega) "Pagar al recibir (Contraentrega)" else "Pago Inmediato (Transferencia/Link)"
@@ -76,7 +75,10 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                 .get()
                 .addOnSuccessListener { documents ->
                     val consecutivo = documents.size() + 1
-                    val guiaGenerada = "N-$codLocalidad-${String.format("%06d", consecutivo)}"
+
+                    // Formato solicitado: N{localidad}-{6 numeros ascendentes}
+                    // Quitamos el primer guion para que quede por ejemplo: N11-000001
+                    val guiaGenerada = "N$codLocalidad-${String.format("%06d", consecutivo)}"
 
                     val pedidoMap = hashMapOf(
                         "guia" to guiaGenerada,
@@ -96,8 +98,8 @@ class FinalizarPedidoActivity : AppCompatActivity() {
 
                     db.collection("pedidos")
                         .add(pedidoMap)
-                        .addOnSuccessListener {
-                            mostrarMensajeExito(guiaGenerada)
+                        .addOnSuccessListener { docRef ->
+                            navegarSegunPago(docRef.id, guiaGenerada, esContraentrega)
                         }
                         .addOnFailureListener {
                             btnFinalizar.isEnabled = true
@@ -117,17 +119,23 @@ class FinalizarPedidoActivity : AppCompatActivity() {
         }
     }
 
-    private fun mostrarMensajeExito(guia: String) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("✅ PEDIDO REGISTRADO")
-        builder.setMessage("Su pedido ha sido creado con éxito.\n\nNúmero de Guía:\n$guia\n\nEl domiciliario se pondrá en contacto pronto.")
-        builder.setCancelable(false)
-        builder.setPositiveButton("ACEPTAR") { _, _ ->
-            val intent = Intent(this, HomeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-            finish()
+    // Según el método de pago, vamos directo al rótulo (contraentrega)
+    // o primero a la pantalla de pago inmediato.
+    private fun navegarSegunPago(pedidoId: String, guia: String, esContraentrega: Boolean) {
+        if (esContraentrega) {
+            val intentRotulo = Intent(this, RotuloActivity::class.java)
+            intentRotulo.putExtras(intent)
+            intentRotulo.putExtra("guia", guia)
+            intentRotulo.putExtra("ped_pago_contraentrega", true)
+            startActivity(intentRotulo)
+        } else {
+            val intentPago = Intent(this, PagoInmediatoActivity::class.java)
+            intentPago.putExtras(intent)
+            intentPago.putExtra("guia", guia)
+            intentPago.putExtra("pedido_id", pedidoId)
+            intentPago.putExtra("ped_pago_contraentrega", false)
+            startActivity(intentPago)
         }
-        builder.show()
+        finish()
     }
 }

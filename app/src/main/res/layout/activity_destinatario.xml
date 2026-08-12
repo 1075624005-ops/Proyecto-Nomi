@@ -8,15 +8,18 @@
     android:background="#000000">
 
     <ScrollView
+        android:id="@+id/scrollDestinatario"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:isScrollContainer="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/main"
+            android:id="@+id/main_destinatario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:paddingBottom="100dp">
 
             <ImageView
                 android:id="@+id/imgLogoAdmin"

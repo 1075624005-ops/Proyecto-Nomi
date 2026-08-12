@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    package="com.example.nomi"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
@@ -16,86 +17,108 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Nomi" >
+        android:theme="@style/Theme.Nomi">
 
-        <!-- FLUJO DE REGISTRO DE PEDIDOS -->
+        <!-- Actividades de Flujo de Pedido -->
         <activity
-            android:name=".FinalizarPedidoActivity"
+            android:name="com.example.nomi.RotuloActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.nomi.PagoInmediatoActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.nomi.FinalizarPedidoActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".DetallesPedidoActivity"
+            android:name="com.example.nomi.DetallesPedidoActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".DestinatarioActivity"
+            android:name="com.example.nomi.DestinatarioActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".RemitenteActivity"
+            android:name="com.example.nomi.RemitenteActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
-        <!-- ADMINISTRACIÓN Y PQRS -->
+        <!-- Actividades de Administración y PQRS -->
         <activity
-            android:name=".AdminListaPQRSActivity"
+            android:name="com.example.nomi.AdminListaPQRSActivity"
             android:exported="false" />
         <activity
-            android:name=".AdminPQRSDetalleActivity"
+            android:name="com.example.nomi.AdminPQRSDetalleActivity"
             android:exported="false" />
         <activity
-            android:name=".DatosPQRSActivity"
+            android:name="com.example.nomi.AdminListaPedidosActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ConsultarPQRSActivity"
-            android:exported="false" />
-        <activity
-            android:name=".GenerarPQRSActivity"
+            android:name="com.example.nomi.DatosPQRSActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".PQRSMenuActivity"
+            android:name="com.example.nomi.ConsultarPQRSActivity"
             android:exported="false" />
         <activity
-            android:name=".ContactenosActivity"
+            android:name="com.example.nomi.GenerarPQRSActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.example.nomi.PQRSMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".AdminActivity"
+            android:name="com.example.nomi.ContactenosActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.nomi.AdminActivity"
             android:exported="false" />
 
-        <!-- OTROS MÓDULOS -->
+        <!-- Otras Actividades -->
         <activity
-            android:name=".CotizarActivity"
+            android:name="com.example.nomi.CotizarActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".RastrearActivity"
+            android:name="com.example.nomi.RastrearActivity"
             android:exported="false" />
         <activity
-            android:name=".PerfilActivity"
+            android:name="com.example.nomi.PerfilActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".SplashActivity"
-            android:exported="true" >
+            android:name="com.example.nomi.SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name="com.example.nomi.RegisterActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".HomeActivity"
+            android:name="com.example.nomi.HomeActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".LoginActivity"
+            android:name="com.example.nomi.LoginActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- FileProvider para compartir PDF -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
     </application>
 
 </manifest>

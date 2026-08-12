@@ -7,15 +7,18 @@
     android:background="#000000">
 
     <ScrollView
+        android:id="@+id/scrollRemitente"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:isScrollContainer="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main_remitente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:paddingBottom="250dp"> <!-- Espacio extra para que el teclado no tape -->
 
             <ImageView
                 android:id="@+id/imgLogoAdmin"

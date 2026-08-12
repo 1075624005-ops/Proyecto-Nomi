@@ -9,9 +9,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 
-class
-
-AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var db: DatabaseHelper
@@ -28,17 +26,22 @@ AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedList
         navView.setNavigationItemSelectedListener(this)
         btnMenu.setOnClickListener { drawerLayout.openDrawer(GravityCompat.START) }
 
-        // BOTÓN GESTIONAR PQRS (Ahora abre una pantalla real)
+        // BOTÓN GESTIONAR PQRS
         findViewById<Button>(R.id.btnGestionarPQRS).setOnClickListener {
             val intent = Intent(this, AdminListaPQRSActivity::class.java)
             startActivity(intent)
         }
+        
+        // BOTÓN REALIZAR PEDIDOS
         findViewById<Button>(R.id.btnRealizarPedidos).setOnClickListener {
             val intent = Intent(this, RemitenteActivity::class.java)
             startActivity(intent)
         }
+        
+        // BOTÓN VER TODOS LOS PEDIDOS (Nueva funcionalidad)
         findViewById<Button>(R.id.btnVerPedidos).setOnClickListener {
-            Toast.makeText(this, "Lista de pedidos próximamente", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, AdminListaPedidosActivity::class.java)
+            startActivity(intent)
         }
 
         findViewById<Button>(R.id.btnCerrarAdmin).setOnClickListener { cerrarSesionAdmin() }

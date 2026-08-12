@@ -1,9 +1,13 @@
 package com.example.nomi
 
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ScrollView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
@@ -12,7 +16,12 @@ class RemitenteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_remitente)
 
-        // 1. Buscamos los componentes con los IDs correctos del XML
+        val scroll = findViewById<ScrollView>(R.id.scrollRemitente)
+        val container = findViewById<ViewGroup>(R.id.main_remitente)
+
+        // --- SOLUCIÓN DEFINITIVA: AUTO-SUBIDA INTELIGENTE ---
+        activarAutoSubida(container, scroll)
+
         val etNombre = findViewById<EditText>(R.id.etNombreRemitente)
         val etTel = findViewById<EditText>(R.id.etTelefonoRemitente)
         val etCorreo = findViewById<EditText>(R.id.etCorreoRemitente)
@@ -20,7 +29,6 @@ class RemitenteActivity : AppCompatActivity() {
         val btnSiguiente = findViewById<Button>(R.id.btnSiguienteRemitente)
         val btnCancelar = findViewById<Button>(R.id.btnCancelarRemitente)
 
-        // 2. Programamos el salto a la siguiente pantalla
         btnSiguiente.setOnClickListener {
             val nombre = etNombre.text.toString().trim()
             val tel = etTel.text.toString().trim()
@@ -32,7 +40,6 @@ class RemitenteActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Enviamos los datos a la pantalla de Destinatario
             val intent = Intent(this, DestinatarioActivity::class.java)
             intent.putExtra("rem_nombre", nombre)
             intent.putExtra("rem_tel", tel)
@@ -41,9 +48,32 @@ class RemitenteActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 3. Botón para volver al Panel Admin
-        btnCancelar.setOnClickListener {
-            finish()
+        btnCancelar.setOnClickListener { finish() }
+    }
+
+    private fun activarAutoSubida(root: ViewGroup, scrollView: ScrollView) {
+        for (i in 0 until root.childCount) {
+            val child = root.getChildAt(i)
+            if (child is EditText) {
+                child.setOnFocusChangeListener { v, hasFocus ->
+                    if (hasFocus) {
+                        scrollView.postDelayed({
+                            val rect = Rect()
+                            v.getGlobalVisibleRect(rect)
+                            
+                            // Obtenemos la posición del cuadro respecto al ScrollView
+                            val childRect = Rect()
+                            v.getDrawingRect(childRect)
+                            scrollView.offsetDescendantRectToMyCoords(v, childRect)
+                            
+                            // Desplazamos para que el cuadro quede en la parte superior
+                            scrollView.smoothScrollTo(0, childRect.top - 100)
+                        }, 300)
+                    }
+                }
+            } else if (child is ViewGroup) {
+                activarAutoSubida(child, scrollView)
+            }
         }
     }
 }

@@ -1,8 +1,10 @@
 package com.example.nomi
 
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
@@ -10,6 +12,12 @@ class DestinatarioActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_destinatario)
+
+        val scroll = findViewById<ScrollView>(R.id.scrollDestinatario)
+        val container = findViewById<ViewGroup>(R.id.main_destinatario)
+
+        // ACTIVAR AUTO-SUBIDA AL TOCAR CAMPOS
+        activarAutoSubida(container, scroll)
 
         // 1. Recibimos los datos del remitente
         val remNombre = intent.getStringExtra("rem_nombre") ?: ""
@@ -43,33 +51,47 @@ class DestinatarioActivity : AppCompatActivity() {
             val correoD = etCorreoDest.text.toString().trim()
             val dirD    = etDirDest.text.toString().trim()
             val localidadSeleccionada = spLocalidad.selectedItem.toString()
-            val codLocalidad = localidadSeleccionada.substring(0, 2) // Extrae los 2 números
+            val codLocalidad = localidadSeleccionada.substring(0, 2)
 
             if (nombreD.isEmpty() || telD.isEmpty() || dirD.isEmpty()) {
                 Toast.makeText(this, "⚠️ Por favor llene los datos del destinatario", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // ── PASO 3: Mandamos TODO a la pantalla de Detalles del Pedido ──
             val intent = Intent(this, DetallesPedidoActivity::class.java)
-            
-            // Datos Remitente
             intent.putExtra("rem_nombre", remNombre)
             intent.putExtra("rem_tel", remTel)
             intent.putExtra("rem_correo", remCorreo)
             intent.putExtra("rem_dir", remDir)
-            
-            // Datos Destinatario
             intent.putExtra("dest_nombre", nombreD)
             intent.putExtra("dest_tel", telD)
             intent.putExtra("dest_correo", correoD)
             intent.putExtra("dest_dir", dirD)
             intent.putExtra("dest_localidad_cod", codLocalidad)
             intent.putExtra("dest_localidad_nom", localidadSeleccionada)
-            
             startActivity(intent)
         }
 
         btnVolver.setOnClickListener { finish() }
+    }
+
+    private fun activarAutoSubida(root: ViewGroup, scrollView: ScrollView) {
+        for (i in 0 until root.childCount) {
+            val child = root.getChildAt(i)
+            if (child is EditText) {
+                child.setOnFocusChangeListener { v, hasFocus ->
+                    if (hasFocus) {
+                        scrollView.postDelayed({
+                            val childRect = Rect()
+                            v.getDrawingRect(childRect)
+                            scrollView.offsetDescendantRectToMyCoords(v, childRect)
+                            scrollView.smoothScrollTo(0, childRect.top - 150)
+                        }, 300)
+                    }
+                }
+            } else if (child is ViewGroup) {
+                activarAutoSubida(child, scrollView)
+            }
+        }
     }
 }

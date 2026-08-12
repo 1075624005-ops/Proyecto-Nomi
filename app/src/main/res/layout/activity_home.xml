@@ -118,13 +118,13 @@
                 android:id="@+id/btnCotizaHome"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:text="Cotiza Tu Envío"
-                android:layout_margin="4dp"
                 android:backgroundTint="#00AEEF"
+                android:text="Cotiza Tu Envío"
                 android:textColor="#FFFFFF"
                 android:textSize="11sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnPQRHome"
