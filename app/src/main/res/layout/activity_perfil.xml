@@ -2,171 +2,220 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#000000"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="24dp">
 
-        <!-- LOGO (Bajado un poco) -->
+        <!-- LOGO -->
         <ImageView
             android:id="@+id/imgLogoPerfil"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:layout_marginTop="12dp"
+            android:contentDescription="Logo Nomi"
             android:src="@drawable/logo_nomi"
-            android:layout_marginTop="40dp"
-            android:contentDescription="Logo"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- TÍTULO (Debajo del logo con espacio) -->
+        <!-- TÍTULO -->
         <TextView
             android:id="@+id/tvTituloPerfil"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:text="MI PERFIL"
             android:textColor="#00AEEF"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/imgLogoPerfil"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/imgLogoPerfil" />
 
-        <!-- NOMBRE -->
+        <!-- NOMBRE COMPLETO -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilNombre"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:hint="Nombre completo"
             android:textColorHint="#888888"
+            app:boxBackgroundColor="#12121A"
+            app:boxStrokeColor="#00AEEF"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:cornerRadius="12dp"
             app:hintTextColor="#00AEEF"
-            app:endIconMode="custom"
-            app:endIconDrawable="@android:drawable/ic_menu_edit"
-            app:endIconTint="#00AEEF"
-            app:layout_constraintTop_toBottomOf="@id/tvTituloPerfil"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            app:layout_constraintTop_toBottomOf="@id/tvTituloPerfil">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNombrePerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
                 android:focusable="false"
-                android:inputType="textPersonName"/>
+                android:inputType="textPersonName"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- TIPO DOCUMENTO -->
-        <TextView android:id="@+id/lbDoc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tipo de Documento" android:textColor="#888888" android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@id/tilNombre" app:layout_constraintStart_toStartOf="parent"/>
-        <Spinner
-            android:id="@+id/spTipoDocPerfil"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:backgroundTint="#00AEEF"
-            app:layout_constraintTop_toBottomOf="@id/lbDoc"
+        <TextView
+            android:id="@+id/lbDoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Tipo de Documento"
+            android:textColor="#A0A0A0"
+            android:textSize="13sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/tilNombre" />
+
+        <FrameLayout
+            android:id="@+id/flContainerSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/ic_launcher_background"
+            android:backgroundTint="#12121A"
+            app:layout_constraintTop_toBottomOf="@id/lbDoc">
+
+            <Spinner
+                android:id="@+id/spTipoDocPerfil"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="#00AEEF"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:spinnerMode="dropdown"
+                tools:listitem="@android:layout/simple_spinner_dropdown_item" />
+        </FrameLayout>
 
         <!-- NÚMERO DOCUMENTO -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilCedula"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:hint="Número de Documento"
             android:textColorHint="#888888"
+            app:boxBackgroundColor="#12121A"
+            app:boxStrokeColor="#00AEEF"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:cornerRadius="12dp"
             app:hintTextColor="#00AEEF"
-            app:endIconMode="custom"
-            app:endIconDrawable="@android:drawable/ic_menu_edit"
-            app:endIconTint="#00AEEF"
-            app:layout_constraintTop_toBottomOf="@id/spTipoDocPerfil"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            app:layout_constraintTop_toBottomOf="@id/flContainerSpinner">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etCedulaPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
                 android:focusable="false"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- TELÉFONO -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilTel"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:hint="Teléfono"
             android:textColorHint="#888888"
+            app:boxBackgroundColor="#12121A"
+            app:boxStrokeColor="#00AEEF"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:cornerRadius="12dp"
             app:hintTextColor="#00AEEF"
-            app:endIconMode="custom"
-            app:endIconDrawable="@android:drawable/ic_menu_edit"
-            app:endIconTint="#00AEEF"
-            app:layout_constraintTop_toBottomOf="@id/tilCedula"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            app:layout_constraintTop_toBottomOf="@id/tilCedula">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTelefonoPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
                 android:focusable="false"
-                android:inputType="phone"/>
+                android:inputType="phone"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- CORREO ELECTRÓNICO -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilCorreo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="16dp"
             android:hint="Correo Electrónico"
             android:textColorHint="#888888"
+            app:boxBackgroundColor="#12121A"
+            app:boxStrokeColor="#00AEEF"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:cornerRadius="12dp"
             app:hintTextColor="#00AEEF"
-            app:endIconMode="custom"
-            app:endIconDrawable="@android:drawable/ic_menu_edit"
-            app:endIconTint="#00AEEF"
-            app:layout_constraintTop_toBottomOf="@id/tilTel"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            app:layout_constraintTop_toBottomOf="@id/tilTel">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etCorreoPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
                 android:focusable="false"
-                android:inputType="textEmailAddress"/>
+                android:inputType="textEmailAddress"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- BOTÓN ACTUALIZAR -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGuardarPerfil"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:text="ACTUALIZAR DATOS"
+            android:layout_height="52dp"
+            android:layout_marginTop="28dp"
             android:backgroundTint="#00AEEF"
+            android:text="ACTUALIZAR DATOS"
             android:textColor="#FFFFFF"
+            android:textSize="15sp"
             android:textStyle="bold"
-            android:layout_marginTop="32dp"
-            app:layout_constraintTop_toBottomOf="@id/tilCorreo"
+            app:cornerRadius="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/tilCorreo" />
 
         <!-- BOTÓN VOLVER -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnVolverPerfil"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:text="VOLVER AL INICIO"
-            android:backgroundTint="#333333"
-            android:textColor="#FFFFFF"
+            android:layout_height="52dp"
             android:layout_marginTop="12dp"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintTop_toBottomOf="@id/btnGuardarPerfil"
+            android:layout_marginBottom="16dp"
+            android:text="VOLVER AL INICIO"
+            android:textColor="#00AEEF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:strokeColor="#00AEEF"
+            app:strokeWidth="1.5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/btnGuardarPerfil" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

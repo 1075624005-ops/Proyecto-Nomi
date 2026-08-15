@@ -2,229 +2,318 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    android:fillViewport="true"
-    android:clipToPadding="false"
-    android:paddingBottom="80dp">
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp"
-        android:paddingBottom="32dp">
+        android:padding="24dp">
 
         <!-- LOGO -->
         <ImageView
             android:id="@+id/imgLogoRegister"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:contentDescription="Logo Nomi"
             android:src="@drawable/logo_nomi"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- TÍTULO -->
         <TextView
             android:id="@+id/tvTituloRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="CREAR USUARIO"
             android:textColor="#00AEEF"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/imgLogoRegister"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/imgLogoRegister" />
 
         <!-- NOMBRE -->
-        <EditText
-            android:id="@+id/etNombre"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilNombre"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:hint="Nombre completo"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#888888"
-            android:backgroundTint="#00AEEF"
-            android:inputType="textPersonName"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@id/tvTituloRegister"
+            android:textColorHint="#A0A0A0"
+            app:boxStrokeColor="#00AEEF"
+            app:boxStrokeWidth="1.5dp"
+            app:cornerRadius="12dp"
+            app:hintTextColor="#00AEEF"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/tvTituloRegister">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- TIPO DOCUMENTO -->
         <TextView
             android:id="@+id/tvLabelDoc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Tipo de documento:"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
-            android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/etNombre"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilNombre" />
 
         <Spinner
             android:id="@+id/spTipoDoc"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_marginTop="4dp"
-            android:backgroundTint="#00AEEF"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/ic_launcher_background"
+            android:backgroundTint="#2A2A38"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:spinnerMode="dropdown"
-            app:layout_constraintTop_toBottomOf="@id/tvLabelDoc"
+            tools:listitem="@android:layout/simple_spinner_dropdown_item"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tvLabelDoc" />
 
         <!-- NÚMERO DOCUMENTO -->
-        <EditText
-            android:id="@+id/etCedula"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilCedula"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:hint="Número de documento"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#888888"
-            android:backgroundTint="#00AEEF"
-            android:inputType="number"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/spTipoDoc"
+            android:textColorHint="#A0A0A0"
+            app:boxStrokeColor="#00AEEF"
+            app:boxStrokeWidth="1.5dp"
+            app:cornerRadius="12dp"
+            app:hintTextColor="#00AEEF"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/spTipoDoc">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCedula"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- TELÉFONO -->
-        <EditText
-            android:id="@+id/etTelefono"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilTelefono"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Teléfono"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#888888"
-            android:backgroundTint="#00AEEF"
-            android:inputType="phone"
             android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/etCedula"
+            android:hint="Teléfono"
+            android:textColorHint="#A0A0A0"
+            app:boxStrokeColor="#00AEEF"
+            app:boxStrokeWidth="1.5dp"
+            app:cornerRadius="12dp"
+            app:hintTextColor="#00AEEF"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/tilCedula">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- CORREO -->
-        <EditText
-            android:id="@+id/etCorreo"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilCorreo"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Correo electrónico"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#888888"
-            android:backgroundTint="#00AEEF"
-            android:inputType="textEmailAddress"
             android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/etTelefono"
+            android:hint="Correo electrónico"
+            android:textColorHint="#A0A0A0"
+            app:boxStrokeColor="#00AEEF"
+            app:boxStrokeWidth="1.5dp"
+            app:cornerRadius="12dp"
+            app:hintTextColor="#00AEEF"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/tilTelefono">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- DIRECCIÓN -->
-        <EditText
-            android:id="@+id/etDireccion"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilDireccion"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Dirección"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#888888"
-            android:backgroundTint="#00AEEF"
-            android:inputType="textPostalAddress"
             android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/etCorreo"
+            android:hint="Dirección"
+            android:textColorHint="#A0A0A0"
+            app:boxStrokeColor="#00AEEF"
+            app:boxStrokeWidth="1.5dp"
+            app:cornerRadius="12dp"
+            app:hintTextColor="#00AEEF"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/tilCorreo">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- CONTRASEÑA -->
-        <EditText
-            android:id="@+id/etPasswordRegister"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPasswordRegister"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Contraseña"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#888888"
-            android:backgroundTint="#00AEEF"
-            android:inputType="textPassword"
             android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/etDireccion"
+            android:hint="Contraseña"
+            android:textColorHint="#A0A0A0"
+            app:boxStrokeColor="#00AEEF"
+            app:boxStrokeWidth="1.5dp"
+            app:cornerRadius="12dp"
+            app:hintTextColor="#00AEEF"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="#00AEEF"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/tilDireccion">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPasswordRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- CONFIRMAR CONTRASEÑA -->
-        <EditText
-            android:id="@+id/etConfirmarPassword"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilConfirmarPassword"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Confirmar contraseña"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#888888"
-            android:backgroundTint="#00AEEF"
-            android:inputType="textPassword"
             android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/etPasswordRegister"
+            android:hint="Confirmar contraseña"
+            android:textColorHint="#A0A0A0"
+            app:boxStrokeColor="#00AEEF"
+            app:boxStrokeWidth="1.5dp"
+            app:cornerRadius="12dp"
+            app:hintTextColor="#00AEEF"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="#00AEEF"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/tilPasswordRegister">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etConfirmarPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- HABEAS DATA -->
         <LinearLayout
             android:id="@+id/llHabeasData"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="16dp"
             android:gravity="center_vertical"
-            app:layout_constraintTop_toBottomOf="@id/etConfirmarPassword"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/tilConfirmarPassword">
 
             <CheckBox
                 android:id="@+id/cbHabeasData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/white" />
+                android:buttonTint="#00AEEF" />
 
             <TextView
                 android:id="@+id/tvVerPolitica"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Acepto la Política de Tratamiento de Datos Personales"
-                android:textColor="#4FC3F7"
-                android:textSize="13sp"
+                android:layout_weight="1"
                 android:paddingStart="6dp"
+                android:text="Acepto la Política de Tratamiento de Datos Personales"
+                android:textColor="#00AEEF"
+                android:textSize="13sp"
                 android:textStyle="bold" />
-
         </LinearLayout>
 
         <!-- BOTÓN CREAR CUENTA -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegistrar"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:text="CREAR CUENTA"
+            android:layout_height="52dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="#00AEEF"
+            android:text="CREAR CUENTA"
             android:textColor="#FFFFFF"
+            android:textSize="15sp"
             android:textStyle="bold"
-            android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/llHabeasData"
+            app:cornerRadius="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/llHabeasData" />
 
-        <!-- VOLVER AL LOGIN — ahora con constraintBottom para que el ScrollView lo mida bien -->
+        <!-- VOLVER AL LOGIN -->
         <TextView
             android:id="@+id/tvVolverLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:padding="8dp"
             android:text="¿Ya tienes cuenta? Inicia sesión"
             android:textColor="#00AEEF"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toBottomOf="@id/btnRegistrar"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnRegistrar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

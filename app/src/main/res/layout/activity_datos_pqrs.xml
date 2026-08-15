@@ -1,87 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
-    android:fillViewport="true"
-    android:paddingBottom="80dp"
-    android:clipToPadding="false">
+    android:background="@color/bg_main"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp">
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/tvPaso1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PASO 1: DATOS PERSONALES"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:text="Paso 1: Datos Personales"
+            android:textColor="@color/text_white"
+            android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <!-- AVISO LEGAL PQRS (Ley 1755 de 2015) -->
-        <LinearLayout
-            android:id="@+id/llAvisoLegal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:background="#1A1A2E"
-            android:padding="12dp"
-            android:gravity="center_vertical"
-            app:layout_constraintTop_toBottomOf="@id/tvPaso1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:text="ℹ"
-                android:textColor="#00AEEF"
-                android:textSize="16sp"
-                android:gravity="center"/>
+        <!-- AVISO LEGAL PQRS -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardAvisoLegal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@color/bg_card"
+            app:cardCornerRadius="12dp"
+            app:layout_constraintTop_toBottomOf="@id/tvPaso1">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="8dp"
-                android:text="Ley 1755 de 2015 — Derecho de Petición. Su solicitud será respondida en máximo 15 días hábiles."
-                android:textColor="#AAAAAA"
-                android:textSize="12sp"
-                android:lineSpacingExtra="2dp"/>
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
 
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:contentDescription="Info"
+                    android:src="@android:drawable/ic_dialog_info"
+                    app:tint="@color/brand_cyan" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="4dp"
+                    android:text="Ley 1755 de 2015 — Derecho de Petición. Su solicitud será respondida en máximo 15 días hábiles."
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <!-- TIPO PERSONA -->
         <RadioGroup
             android:id="@+id/rgTipoPersona"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/llAvisoLegal"
-            app:layout_constraintStart_toStartOf="parent">
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/cardAvisoLegal">
+
             <RadioButton
                 android:id="@+id/rbNatural"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="true"
                 android:text="Natural"
-                android:textColor="#FFFFFF"
-                android:checked="true"/>
+                android:textColor="@color/text_white"
+                app:buttonTint="@color/brand_cyan" />
+
             <RadioButton
                 android:id="@+id/rbJuridica"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="24dp"
                 android:text="Jurídica"
-                android:textColor="#FFFFFF" />
+                android:textColor="@color/text_white"
+                app:buttonTint="@color/brand_cyan" />
         </RadioGroup>
 
         <!-- TIPO DE DOCUMENTO -->
@@ -89,83 +93,101 @@
             android:id="@+id/lbTipoDoc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Tipo de documento:"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/rgTipoPersona"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:textColor="@color/text_muted"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rgTipoPersona" />
 
         <Spinner
             android:id="@+id/spTipoDocPQR"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:backgroundTint="#00AEEF"
-            android:layout_marginTop="4dp"
-            app:layout_constraintTop_toBottomOf="@id/lbTipoDoc"/>
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_input_rounded"
+            android:backgroundTint="@color/brand_cyan"
+            app:layout_constraintTop_toBottomOf="@id/lbTipoDoc" />
 
         <!-- NÚMERO DOCUMENTO -->
         <EditText
             android:id="@+id/etCedulaPQR"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_input_rounded"
             android:hint="Número de documento"
-            android:textColor="#000000"
-            android:background="@android:drawable/editbox_background_normal"
-            android:padding="13dp"
-            android:layout_marginTop="18dp"
             android:inputType="number"
-            app:layout_constraintTop_toBottomOf="@id/spTipoDocPQR"/>
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:textColor="@color/text_white"
+            android:textColorHint="@color/text_muted"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/spTipoDocPQR" />
 
         <!-- NOMBRE -->
         <EditText
             android:id="@+id/etNombrePQR"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nombre completo / Razón social"
-            android:textColor="#000000"
-            android:background="@android:drawable/editbox_background_normal"
-            android:padding="12dp"
+            android:layout_height="48dp"
             android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/etCedulaPQR"/>
+            android:background="@drawable/bg_input_rounded"
+            android:hint="Nombre completo / Razón social"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:textColor="@color/text_white"
+            android:textColorHint="@color/text_muted"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/etCedulaPQR" />
 
         <!-- CORREO -->
         <EditText
             android:id="@+id/etCorreoPQR"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Correo electrónico"
-            android:textColor="#000000"
-            android:background="@android:drawable/editbox_background_normal"
-            android:padding="12dp"
+            android:layout_height="48dp"
             android:layout_marginTop="12dp"
+            android:background="@drawable/bg_input_rounded"
+            android:hint="Correo electrónico"
             android:inputType="textEmailAddress"
-            app:layout_constraintTop_toBottomOf="@id/etNombrePQR"/>
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:textColor="@color/text_white"
+            android:textColorHint="@color/text_muted"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/etNombrePQR" />
 
         <!-- DIRECCIÓN -->
         <EditText
             android:id="@+id/etDireccion"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Dirección"
-            android:textColor="#000000"
-            android:background="@android:drawable/editbox_background_normal"
-            android:padding="12dp"
+            android:layout_height="48dp"
             android:layout_marginTop="12dp"
+            android:background="@drawable/bg_input_rounded"
+            android:hint="Dirección de notificación"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:textColor="@color/text_white"
+            android:textColorHint="@color/text_muted"
+            android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@id/etCorreoPQR" />
 
         <!-- BOTÓN SIGUIENTE -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSiguientePQR"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:text="SIGUIENTE"
-            android:backgroundTint="#00AEEF"
-            android:textColor="#FFFFFF"
+            android:layout_height="52dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/brand_cyan"
+            android:text="Siguiente"
+            android:textAllCaps="false"
+            android:textColor="@color/text_white"
+            android:textSize="15sp"
             android:textStyle="bold"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintTop_toBottomOf="@id/etDireccion"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:cornerRadius="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etDireccion" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -5,177 +5,320 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bg_main">
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- CONTENEDOR CON SCROLL PARA ADAPTARSE A CUALQUIER PANTALLA -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#000000">
-
-        <!-- BARRA SUPERIOR (Toolbar personalizada) -->
-
-        <!-- BUSCADOR -->
-
-        <!-- IMAGEN (BANNER) -->
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/toolbarHome"
             android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:layout_marginTop="48dp"
-            android:background="#111111"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="0dp">
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp">
 
-            <!-- ICONO HAMBURGUESA -->
-            <ImageView
-                android:id="@+id/btnMenu"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+            <!-- 1. HEADER / TOOLBAR -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/toolbarHome"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:background="@color/bg_card"
+                android:paddingTop="24dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/btnMenu"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="16dp"
+                    android:contentDescription="Menu"
+                    android:src="@android:drawable/ic_menu_sort_by_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/brand_cyan" />
+
+                <ImageView
+                    android:id="@+id/imgLogoToolbar"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:src="@drawable/logo_nomi"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvUserWelcome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bienvenido a NOMI"
+                    android:textColor="@color/text_white"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/imgLogoToolbar" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 2. ACCIÓN PRINCIPAL: RASTREO / BUSCADOR DE GUÍA (HERO CARD) -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardSearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:contentDescription="Menu"
-                android:src="@android:drawable/ic_menu_sort_by_size"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="#00AEEF" />
-
-            <!-- LOGO CENTRADO -->
-
-            <!-- LEMA DEBAJO DEL LOGO -->
-
-            <ImageView
-                android:id="@+id/imgLogoToolbar"
-                android:layout_width="72dp"
-                android:layout_height="69dp"
-                android:layout_marginTop="4dp"
-                android:src="@drawable/logo_nomi"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:cardBackgroundColor="@color/bg_card"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/toolbarHome">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rastrear paquete"
+                        android:textColor="@color/text_white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Ingresa el número de guía para consultar el estado"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_input_rounded"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="8dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@android:drawable/ic_menu_search"
+                            app:tint="@color/brand_cyan" />
+
+                        <EditText
+                            android:id="@+id/etBuscar"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:hint="Ej. 1075521005"
+                            android:inputType="number"
+                            android:textColor="@color/text_white"
+                            android:textColorHint="@color/text_muted"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- 3. BANNER PROMOCIONAL O INFORMATIVO -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardBanner"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardSearch">
+
+                <ImageView
+                    android:id="@+id/imgBanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/home_logo" />
+            </androidx.cardview.widget.CardView>
+
+            <!-- 4. TÍTULO DE SERVICIOS -->
             <TextView
-                android:id="@+id/tvUserWelcome"
+                android:id="@+id/tvServicesTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Bienvenido a NOMI"
-                android:textColor="#FFFFFF"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Servicios rápidos"
+                android:textColor="@color/text_white"
                 android:textSize="15sp"
                 android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardBanner" />
+
+            <!-- 5. TARJETAS DE SERVICIOS SECUNDARIOS (OCUPAN EL ESPACIO VACÍO CON ELEGANCIA) -->
+            <LinearLayout
+                android:id="@+id/llButtonsHome"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imgLogoToolbar" />
+                app:layout_constraintTop_toBottomOf="@id/tvServicesTitle">
+
+                <!-- TARJETA 1: COTIZAR -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btnCotizaHome"
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/bg_card"
+                    app:cardCornerRadius="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:src="@android:drawable/ic_menu_send"
+                            app:tint="@color/brand_cyan" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="Cotizar envío"
+                            android:textColor="@color/text_white"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- TARJETA 2: PQRS -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btnPQRHome"
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/bg_card"
+                    app:cardCornerRadius="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:src="@android:drawable/ic_menu_help"
+                            app:tint="@color/brand_cyan" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="PQRS"
+                            android:textColor="@color/text_white"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- TARJETA 3: CONTACTO -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btnContactenosHome"
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/bg_card"
+                    app:cardCornerRadius="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:src="@android:drawable/ic_menu_call"
+                            app:tint="@color/brand_cyan" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="Contacto"
+                            android:textColor="@color/text_white"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <!-- FOOTER DISCRETO Y SUTIL -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:paddingBottom="12dp"
+                android:text="Trabajamos día a día para ser tu mejor solución"
+                android:textColor="@color/text_muted"
+                android:textSize="11sp"
+                app:layout_constraintTop_toBottomOf="@id/llButtonsHome" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <EditText
-            android:id="@+id/etBuscar"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="24dp"
-            android:background="#FFFFFF"
-            android:hint="CONSULTE SU GUÍA"
-            android:inputType="text"
-            android:paddingStart="12dp"
-            android:textColor="#000000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbarHome" />
-
-        <ImageView
-            android:id="@+id/imgBanner"
-            android:layout_width="0dp"
-            android:layout_height="180dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="24dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/home_logo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/etBuscar" />
-
-        <!-- BOTONES RÁPIDOS (DEBAJO DE LA IMAGEN) -->
-        <LinearLayout
-            android:id="@+id/llButtonsHome"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintTop_toBottomOf="@id/imgBanner"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <Button
-                android:id="@+id/btnCotizaHome"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                android:layout_weight="1"
-                android:backgroundTint="#00AEEF"
-                android:text="Cotiza Tu Envío"
-                android:textColor="#FFFFFF"
-                android:textSize="11sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btnPQRHome"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Pqrs"
-                android:layout_margin="4dp"
-                android:backgroundTint="#00AEEF"
-                android:textColor="#FFFFFF"
-                android:textSize="11sp"
-                android:textStyle="bold"/>
-
-            <Button
-                android:id="@+id/btnContactenosHome"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Contacto"
-                android:layout_margin="4dp"
-                android:backgroundTint="#00AEEF"
-                android:textColor="#FFFFFF"
-                android:textSize="11sp"
-                android:textStyle="bold"/>
-        </LinearLayout>
-
-        <!-- PIE DE PÁGINA -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="48dp"
-            android:background="#00AEEF"
-            android:gravity="center"
-            android:text="Trabajamos día a día para ser tu mejor solución."
-            android:textColor="#000000"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:layout_editor_absoluteX="0dp" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- EL MENÚ DESPLEGABLE -->
+    <!-- MENÚ DESPLEGABLE -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#111111"
-        app:itemTextColor="#FFFFFF"
-        app:itemIconTint="#00AEEF"
+        android:background="@color/bg_card"
         app:headerLayout="@layout/nav_header"
+        app:itemIconTint="@color/brand_cyan"
+        app:itemTextColor="@color/text_white"
         app:menu="@menu/drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

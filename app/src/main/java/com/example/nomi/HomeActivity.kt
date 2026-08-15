@@ -4,12 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
@@ -30,9 +30,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val tvWelcome = findViewById<TextView>(R.id.tvUserWelcome)
         val etBuscar = findViewById<EditText>(R.id.etBuscar)
 
-        val btnCotiza = findViewById<Button>(R.id.btnCotizaHome)
-        val btnPQRS = findViewById<Button>(R.id.btnPQRHome)
-        val btnContacto = findViewById<Button>(R.id.btnContactenosHome)
+        val btnCotiza = findViewById<CardView>(R.id.btnCotizaHome)
+        val btnPQRS = findViewById<CardView>(R.id.btnPQRHome)
+        val btnContacto = findViewById<CardView>(R.id.btnContactenosHome)
 
         navView.setNavigationItemSelectedListener(this)
 
@@ -40,7 +40,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        // --- BUSCADOR DE GUÍA ---
         etBuscar.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_NULL) {
                 val textoGuia = etBuscar.text.toString().trim()
@@ -57,19 +56,16 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-        // --- COTIZA (ACCESIBLE PARA TODOS) ---
         btnCotiza.setOnClickListener {
             startActivity(Intent(this, CotizarActivity::class.java))
         }
 
-        // --- PQRS (SOLO CON SESIÓN) ---
         btnPQRS.setOnClickListener { 
             val intent = Intent(this, PQRSMenuActivity::class.java)
             intent.putExtra("correo", correoUsuario)
             startActivity(intent)
         }
 
-        // --- CONTACTO (ACCESIBLE PARA TODOS) ---
         btnContacto.setOnClickListener { 
             startActivity(Intent(this, ContactenosActivity::class.java))
         }
@@ -79,23 +75,28 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         correoUsuario = intent.getStringExtra("correo")
         
         val headerView = navView.getHeaderView(0)
-        val tvNavName = headerView.findViewById<TextView>(R.id.tvNavName)
-        val menu = navView.menu
+        if (headerView != null) {
+            val tvNavName = headerView.findViewById<TextView>(R.id.tvNavName)
+            val tvNavEmail = headerView.findViewById<TextView>(R.id.tvNavEmail)
+            val menu = navView.menu
 
-        if (nombreUsuario != null && nombreUsuario!!.isNotEmpty()) {
-            tvWelcome.text = "Bienvenido, $nombreUsuario"
-            tvNavName.text = nombreUsuario
-            menu.findItem(R.id.nav_perfil).isVisible = true
-            menu.findItem(R.id.nav_pedidos).isVisible = true
-            menu.findItem(R.id.nav_login).isVisible = false
-            menu.findItem(R.id.nav_logout).isVisible = true
-        } else {
-            tvWelcome.text = "Bienvenido a NOMI"
-            tvNavName.text = "Invitado"
-            menu.findItem(R.id.nav_perfil).isVisible = false
-            menu.findItem(R.id.nav_pedidos).isVisible = false
-            menu.findItem(R.id.nav_login).isVisible = true
-            menu.findItem(R.id.nav_logout).isVisible = false
+            if (!nombreUsuario.isNullOrEmpty()) {
+                tvWelcome.text = "Bienvenido, $nombreUsuario"
+                tvNavName.text = nombreUsuario
+                tvNavEmail.text = correoUsuario ?: "Nomi User"
+                menu.findItem(R.id.nav_perfil)?.isVisible = true
+                menu.findItem(R.id.nav_pedidos)?.isVisible = true
+                menu.findItem(R.id.nav_login)?.isVisible = false
+                menu.findItem(R.id.nav_logout)?.isVisible = true
+            } else {
+                tvWelcome.text = "Bienvenido a NOMI"
+                tvNavName.text = "Invitado"
+                tvNavEmail.text = "Inicia sesión para más funciones"
+                menu.findItem(R.id.nav_perfil)?.isVisible = false
+                menu.findItem(R.id.nav_pedidos)?.isVisible = false
+                menu.findItem(R.id.nav_login)?.isVisible = true
+                menu.findItem(R.id.nav_logout)?.isVisible = false
+            }
         }
     }
 
@@ -113,7 +114,16 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent(this, ContactenosActivity::class.java))
             }
             R.id.nav_pqrs -> {
-                startActivity(Intent(this, PQRSMenuActivity::class.java))
+                val intent = Intent(this, PQRSMenuActivity::class.java)
+                intent.putExtra("correo", correoUsuario)
+                startActivity(intent)
+            }
+            R.id.nav_rastrear -> {
+                startActivity(Intent(this, RastrearActivity::class.java))
+            }
+            R.id.nav_pedidos -> {
+                // TODO: Implementar actividad de mis pedidos para usuarios
+                Toast.makeText(this, "Próximamente: Mis Pedidos", Toast.LENGTH_SHORT).show()
             }
             R.id.nav_login -> {
                 startActivity(Intent(this, LoginActivity::class.java))
@@ -123,9 +133,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
                 finish()
-            }
-            else -> {
-                Toast.makeText(this, "Opción: ${item.title}", Toast.LENGTH_SHORT).show()
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)

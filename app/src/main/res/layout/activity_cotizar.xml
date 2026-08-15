@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="@color/bg_main"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,126 +15,315 @@
         <!-- LOGO Y TÍTULO -->
         <ImageView
             android:id="@+id/imgLogoCotizar"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="Logo NOMI"
             android:src="@drawable/logo_nomi"
-            android:contentDescription="Logo"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvTituloCotizar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cotiza tu Envío"
-            android:textColor="#FFFFFF"
-            android:textSize="22sp"
-            android:textStyle="bold"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/imgLogoCotizar"
+            android:text="Cotiza tu envío"
+            android:textColor="@color/text_white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/imgLogoCotizar" />
 
-        <!-- ORIGEN Y DESTINO -->
-        <LinearLayout
-            android:id="@+id/llRuta"
+        <!-- ORIGEN Y DESTINO EN TARJETA -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardRuta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="20dp"
+            app:cardBackgroundColor="@color/bg_card"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="2dp"
             app:layout_constraintTop_toBottomOf="@id/tvTituloCotizar">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Origen" android:textColor="#FFFFFF" android:textStyle="bold" />
-                <AutoCompleteTextView
-                    android:id="@+id/etOrigen"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:drawable/editbox_background_normal"
-                    android:hint="Ciudad"
-                    android:textSize="14sp"
-                    android:paddingStart="8dp"
-                    android:textColor="#000000"
-                    android:textColorHint="#888888"
-                    android:completionThreshold="1" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Origen"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/etOrigen"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_input_rounded"
+                        android:completionThreshold="1"
+                        android:hint="Ciudad origen"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:textColor="@color/text_white"
+                        android:textColorHint="@color/text_muted"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="16dp"
+                    android:contentDescription="Flecha"
+                    android:src="@android:drawable/ic_media_play"
+                    app:tint="@color/brand_cyan" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Destino"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/etDestino"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_input_rounded"
+                        android:completionThreshold="1"
+                        android:hint="Ciudad destino"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:textColor="@color/text_white"
+                        android:textColorHint="@color/text_muted"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-            <ImageView android:layout_width="30dp" android:layout_height="30dp" android:layout_gravity="center" android:src="@android:drawable/ic_media_play" app:tint="#00AEEF" android:layout_marginTop="10dp" android:contentDescription="Flecha" />
+        <!-- DIMENSIONES (ANCHO, LARGO, ALTO) -->
+        <TextView
+            android:id="@+id/tvLabelMedidas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Dimensiones (cm)"
+            android:textColor="@color/text_white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardRuta" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:gravity="center">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Destino" android:textColor="#FFFFFF" android:textStyle="bold" />
-                <AutoCompleteTextView
-                    android:id="@+id/etDestino"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:drawable/editbox_background_normal"
-                    android:hint="Ciudad"
-                    android:textSize="14sp"
-                    android:paddingStart="8dp"
-                    android:textColor="#000000"
-                    android:textColorHint="#888888"
-                    android:completionThreshold="1" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <!-- DIMENSIONES -->
         <GridLayout
             android:id="@+id/gridMedidas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:columnCount="3"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/llRuta">
+            app:layout_constraintTop_toBottomOf="@id/tvLabelMedidas">
 
-            <LinearLayout android:orientation="vertical" android:gravity="center" android:layout_width="0dp" android:layout_columnWeight="1">
-                <TextView android:text="Ancho" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-                <EditText android:id="@+id/etAncho" android:layout_width="match_parent" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:inputType="numberDecimal" android:gravity="center" android:textColor="#000000" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_columnWeight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ancho"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etAncho"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_input_rounded"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/text_white"
+                    android:textSize="14sp" />
             </LinearLayout>
 
-            <LinearLayout android:orientation="vertical" android:gravity="center" android:layout_width="0dp" android:layout_columnWeight="1">
-                <TextView android:text="Largo" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-                <EditText android:id="@+id/etLargo" android:layout_width="match_parent" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:inputType="numberDecimal" android:gravity="center" android:textColor="#000000" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_columnWeight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Largo"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etLargo"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_input_rounded"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/text_white"
+                    android:textSize="14sp" />
             </LinearLayout>
 
-            <LinearLayout android:orientation="vertical" android:gravity="center" android:layout_width="0dp" android:layout_columnWeight="1">
-                <TextView android:text="Alto" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-                <EditText android:id="@+id/etAlto" android:layout_width="match_parent" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:inputType="numberDecimal" android:gravity="center" android:textColor="#000000" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_columnWeight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alto"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etAlto"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_input_rounded"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/text_white"
+                    android:textSize="14sp" />
             </LinearLayout>
         </GridLayout>
 
         <!-- PESO Y VALORES -->
+        <TextView
+            android:id="@+id/tvLabelPesos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Pesos y Valor Declarado"
+            android:textColor="@color/text_white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/gridMedidas" />
+
         <GridLayout
             android:id="@+id/gridPeso"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:columnCount="3"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/gridMedidas">
+            app:layout_constraintTop_toBottomOf="@id/tvLabelPesos">
 
-            <LinearLayout android:orientation="vertical" android:gravity="center" android:layout_width="0dp" android:layout_columnWeight="1">
-                <TextView android:text="Peso Real" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-                <EditText android:id="@+id/etPeso" android:layout_width="match_parent" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:inputType="numberDecimal" android:gravity="center" android:textColor="#000000" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_columnWeight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Peso Real (Kg)"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etPeso"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_input_rounded"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/text_white"
+                    android:textSize="14sp" />
             </LinearLayout>
 
-            <LinearLayout android:orientation="vertical" android:gravity="center" android:layout_width="0dp" android:layout_columnWeight="1">
-                <TextView android:text="P. Volumétrico" android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="10sp" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-                <EditText android:id="@+id/etPesoVol" android:layout_width="match_parent" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:enabled="false" android:gravity="center" android:textColor="#000000" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_columnWeight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="P. Volumétrico"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etPesoVol"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_input_rounded"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:textColor="@color/brand_cyan"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
-            <LinearLayout android:orientation="vertical" android:gravity="center" android:layout_width="0dp" android:layout_columnWeight="1">
-                <TextView android:text="V. Declarado" android:textColor="#FFFFFF" android:textStyle="bold" android:textSize="10sp" android:layout_width="wrap_content" android:layout_height="wrap_content" />
-                <EditText android:id="@+id/etValorDec" android:layout_width="match_parent" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:inputType="text" android:gravity="center" android:textColor="#000000" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_columnWeight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="V. Declarado ($)"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etValorDec"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_input_rounded"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:textColor="@color/text_white"
+                    android:textSize="14sp" />
             </LinearLayout>
         </GridLayout>
 
@@ -143,25 +333,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            app:cardBackgroundColor="#1A1A1A"
-            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@color/bg_card"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="2dp"
             app:layout_constraintTop_toBottomOf="@id/gridPeso">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="12dp">
+                android:padding="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TABLA DE TARIFAS ESTIMADAS"
-                    android:textColor="#00AEEF"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="12dp"
+                    android:text="Tabla de tarifas estimadas"
+                    android:textColor="@color/brand_cyan"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
                 <TableLayout
                     android:layout_width="match_parent"
@@ -169,119 +360,212 @@
                     android:stretchColumns="*">
 
                     <TableRow>
-                        <TextView android:text="Peso" android:textColor="#00AEEF" android:textStyle="bold" android:padding="4dp"/>
-                        <TextView android:text="Valor Base" android:textColor="#00AEEF" android:textStyle="bold" android:padding="4dp" android:gravity="end"/>
+                        <TextView
+                            android:padding="6dp"
+                            android:text="Peso"
+                            android:textColor="@color/text_muted"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:gravity="end"
+                            android:padding="6dp"
+                            android:text="Valor Base"
+                            android:textColor="@color/text_muted"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
                     </TableRow>
 
                     <TableRow>
-                        <TextView android:text="Hasta 1 Kg" android:textColor="#FFFFFF" android:padding="4dp"/>
-                        <TextView android:text="$ 10.000" android:textColor="#FFFFFF" android:padding="4dp" android:gravity="end"/>
+                        <TextView
+                            android:padding="6dp"
+                            android:text="Hasta 1 Kg"
+                            android:textColor="@color/text_white"
+                            android:textSize="12sp" />
+                        <TextView
+                            android:gravity="end"
+                            android:padding="6dp"
+                            android:text="$ 10.000"
+                            android:textColor="@color/text_white"
+                            android:textSize="12sp" />
                     </TableRow>
 
                     <TableRow>
-                        <TextView android:text="Hasta 2 Kg" android:textColor="#FFFFFF" android:padding="4dp"/>
-                        <TextView android:text="$ 13.000" android:textColor="#FFFFFF" android:padding="4dp" android:gravity="end"/>
+                        <TextView
+                            android:padding="6dp"
+                            android:text="Hasta 2 Kg"
+                            android:textColor="@color/text_white"
+                            android:textSize="12sp" />
+                        <TextView
+                            android:gravity="end"
+                            android:padding="6dp"
+                            android:text="$ 13.000"
+                            android:textColor="@color/text_white"
+                            android:textSize="12sp" />
                     </TableRow>
 
                     <TableRow>
-                        <TextView android:text="Hasta 3 Kg" android:textColor="#FFFFFF" android:padding="4dp"/>
-                        <TextView android:text="$ 16.000" android:textColor="#FFFFFF" android:padding="4dp" android:gravity="end"/>
+                        <TextView
+                            android:padding="6dp"
+                            android:text="Hasta 3 Kg"
+                            android:textColor="@color/text_white"
+                            android:textSize="12sp" />
+                        <TextView
+                            android:gravity="end"
+                            android:padding="6dp"
+                            android:text="$ 16.000"
+                            android:textColor="@color/text_white"
+                            android:textSize="12sp" />
                     </TableRow>
 
                     <TableRow>
-                        <TextView android:text="Kg Adicional" android:textColor="#4CAF50" android:textStyle="bold" android:padding="4dp"/>
-                        <TextView android:text="+ $ 3.000" android:textColor="#4CAF50" android:padding="4dp" android:gravity="end"/>
+                        <TextView
+                            android:padding="6dp"
+                            android:text="Kg Adicional"
+                            android:textColor="#4CAF50"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:gravity="end"
+                            android:padding="6dp"
+                            android:text="+ $ 3.000"
+                            android:textColor="#4CAF50"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
                     </TableRow>
                 </TableLayout>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
                     android:text="* El valor final depende del destino y el manejo de mercancía."
-                    android:textColor="#888888"
-                    android:textSize="10sp"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"/>
+                    android:textColor="@color/text_muted"
+                    android:textSize="10sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- RESULTADO -->
-        <LinearLayout
-            android:id="@+id/llResultado"
+        <!-- RESULTADO (TARJETA DESTACADA) -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardResultado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
             android:layout_marginTop="20dp"
+            app:cardBackgroundColor="@color/bg_card"
+            app:cardCornerRadius="14dp"
             app:layout_constraintTop_toBottomOf="@id/cvTablaValores">
 
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/llResultado"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Tu Envío vale"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
-            <TextView
-                android:id="@+id/tvResultado"
-                android:layout_width="140dp"
-                android:layout_height="45dp"
-                android:background="@android:drawable/editbox_background_normal"
-                android:gravity="center"
-                android:text="$ 0"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Valor estimado del envío:"
+                    android:textColor="@color/text_white"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
-        <!-- BOTONES -->
+                <TextView
+                    android:id="@+id/tvResultado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_input_rounded"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="$ 0"
+                    android:textColor="@color/brand_cyan"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- BOTONES PRINCIPALES -->
         <LinearLayout
             android:id="@+id/llBotones"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/llResultado">
+            app:layout_constraintTop_toBottomOf="@id/cardResultado">
 
+            <!-- BOTÓN CONTACTO -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/btnContactoCotizar"
                 android:layout_width="0dp"
-                android:layout_height="80dp"
+                android:layout_height="52dp"
+                android:layout_marginEnd="6dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="#00AEEF"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/bg_card"
                 app:cardCornerRadius="12dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center">
-                    <ImageView android:layout_width="30dp" android:layout_height="30dp" android:src="@android:drawable/ic_menu_call" app:tint="#FFFFFF" />
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Contáctenos" android:textColor="#FFFFFF" android:textSize="12sp" android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:contentDescription="Llamar"
+                        android:src="@android:drawable/ic_menu_call"
+                        app:tint="@color/brand_cyan" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Contacto"
+                        android:textColor="@color/text_white"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <View android:layout_width="15dp" android:layout_height="1dp"/>
-
-            <Button
+            <!-- BOTÓN CALCULAR -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCalcular"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.5"
-                android:text="CALCULAR"
-                android:backgroundTint="#00AEEF"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold" />
+                android:layout_height="52dp"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1.4"
+                android:backgroundTint="@color/brand_cyan"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Calcular"
+                android:textAllCaps="false"
+                android:textColor="@color/text_white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp" />
         </LinearLayout>
 
-        <!-- FOOTER -->
+        <!-- FOOTER DISCRETO -->
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="40dp"
-            android:background="#00AEEF"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:gravity="center"
-            android:text="Trabajamos día a día para ser tu mejor solución."
-            android:textColor="#000000"
-            android:textSize="12sp"
-            app:layout_constraintTop_toBottomOf="@id/llBotones"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:paddingBottom="12dp"
+            android:text="Trabajamos día a día para ser tu mejor solución"
+            android:textColor="@color/text_muted"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llBotones" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    app:cardBackgroundColor="#1A1A1A"
-    app:cardCornerRadius="12dp">
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="#000000"
+    app:cardCornerRadius="12dp"
+    app:strokeColor="#00AEEF"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,32 +19,65 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvItemGuia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="GUÍA: N11-000001"
-            android:textColor="#00AEEF"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+        <!-- CABECERA: NÚMERO DE GUÍA Y OPCIONES -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/tvItemGuia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="GUÍA: N11-000001"
+                android:textColor="#00AEEF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/btnOpcionesPedido"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:padding="4dp"
+                android:contentDescription="Opciones"
+                android:src="@android:drawable/ic_menu_more"
+                app:tint="#888888" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#222222" />
+
+        <!-- DETALLES DEL PEDIDO -->
         <TextView
             android:id="@+id/tvItemDetalle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:lineSpacingExtra="3dp"
             android:text="Fecha: 25/10/2023\nDestinatario: Juan Perez\nTotal: $ 15.000"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp" />
+            android:textColor="#E0E0E0"
+            android:textSize="13sp" />
 
+        <!-- ESTADO DEL PEDIDO -->
         <TextView
             android:id="@+id/tvItemEstado"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
+            android:background="#1A1A00"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
             android:text="Estado: Pendiente"
-            android:textColor="#FFFF00"
+            android:textColor="#FFD700"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

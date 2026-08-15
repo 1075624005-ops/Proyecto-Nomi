@@ -43,8 +43,6 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             val intent = Intent(this, AdminListaPedidosActivity::class.java)
             startActivity(intent)
         }
-
-        findViewById<Button>(R.id.btnCerrarAdmin).setOnClickListener { cerrarSesionAdmin() }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -56,17 +54,9 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 val ruta = db.generarBackupExcel(this)
                 Toast.makeText(this, "✅ Backup creado", Toast.LENGTH_LONG).show()
             }
-            R.id.admin_logout -> cerrarSesionAdmin()
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    private fun cerrarSesionAdmin() {
-        val intent = Intent(this, HomeActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-        finish()
     }
 
     override fun onBackPressed() {

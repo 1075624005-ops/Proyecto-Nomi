@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.RectF
 import android.graphics.pdf.PdfDocument
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
@@ -39,100 +40,126 @@ object RotuloPdfGenerator {
         val pageInfo = PdfDocument.PageInfo.Builder(ANCHO_PT, ALTO_PT, 1).create()
         val page = pdfDocument.startPage(pageInfo)
         val canvas: Canvas = page.canvas
-        val margen = 16f
+        val margen = 14f
 
-        val altoFranja = 90f
+        // 1. FRANJA DE ENCABEZADO
+        val altoFranja = 85f
         canvas.drawRect(0f, 0f, ANCHO_PT.toFloat(), altoFranja, Paint().apply { color = COLOR_MARCA })
 
+        // 2. MARCA NOMI (MAYÚSCULAS Y DESTACADO)
         val paintLogo = Paint().apply {
             color = Color.WHITE
-            textSize = 18f
+            textSize = 22f
             isFakeBoldText = true
         }
-        canvas.drawText("nomi", margen, 26f, paintLogo)
+        canvas.drawText("NOMI", margen, 28f, paintLogo)
 
         val paintSubLogo = Paint().apply {
             color = Color.WHITE
             textSize = 8f
-            alpha = 200
+            alpha = 220
         }
-        canvas.drawText("pedidos a domicilio", margen, 38f, paintSubLogo)
+        canvas.drawText("LOGÍSTICA Y ENVIOS", margen, 38f, paintSubLogo)
 
-        val qrSize = 55
-        val qrBitmap = generarQr(datos.guia, qrSize)
-        canvas.drawBitmap(qrBitmap, ANCHO_PT - margen - qrSize, 12f, null)
+        // 3. NÚMERO DE GUÍA EN CABECERA
+        val paintGuiaLabel = Paint().apply { color = Color.WHITE; textSize = 7f; alpha = 200 }
+        canvas.drawText("NÚMERO DE GUÍA", margen, 56f, paintGuiaLabel)
 
         val paintGuia = Paint().apply {
             color = Color.WHITE
-            textSize = 20f
+            textSize = 17f
             isFakeBoldText = true
         }
-        canvas.drawText(datos.guia, margen, 70f, paintGuia)
+        canvas.drawText(datos.guia, margen, 73f, paintGuia)
 
-        var y = altoFranja + 22f
+        // 4. CÓDIGO QR AMPLIADO Y CON URL DE RASTREO
+        val qrSize = 65
+        // Cambia este enlace por el dominio o deep-link real de tu app
+        val urlRastreo = "https://nomi.com.co/rastreo?guia=${datos.guia}"
+        val qrBitmap = generarQr(urlRastreo, qrSize)
 
-        val paintLabel = Paint().apply { color = Color.DKGRAY; textSize = 8f }
-        val paintTexto = Paint().apply { color = Color.BLACK; textSize = 11f }
+        // Fondo blanco redondeado para el QR
+        val qrMarginX = ANCHO_PT - margen - qrSize - 4f
+        val rectQrFondo = RectF(qrMarginX, 10f, qrMarginX + qrSize + 8f, 10f + qrSize + 8f)
+        canvas.drawRoundRect(rectQrFondo, 6f, 6f, Paint().apply { color = Color.WHITE })
+
+        // Dibujar QR cubriendo la tarjeta
+        canvas.drawBitmap(qrBitmap, qrMarginX + 4f, 14f, null)
+
+        var y = altoFranja + 18f
+
+        // PINCELES DE CONTENIDO
+        val paintLabel = Paint().apply { color = Color.parseColor("#00AEEF"); textSize = 8f; isFakeBoldText = true }
+        val paintTexto = Paint().apply { color = Color.parseColor("#222222"); textSize = 10f }
         val paintTextoBold = Paint(paintTexto).apply { isFakeBoldText = true }
         val paintNombreGrande = Paint().apply {
             color = Color.BLACK
-            textSize = 16f
+            textSize = 14f
             isFakeBoldText = true
         }
-        val paintLinea = Paint().apply { color = Color.LTGRAY; strokeWidth = 1f }
+        val paintLinea = Paint().apply { color = Color.parseColor("#DDDDDD"); strokeWidth = 1f }
 
-        canvas.drawText("DE", margen, y, paintLabel)
-        y += 13f
-        canvas.drawText(datos.remNombre, margen, y, paintTextoBold)
-        y += 13f
+        // 5. BLOQUE DE (REMITENTE)
+        canvas.drawText("DE (REMITENTE)", margen, y, paintLabel)
+        y += 12f
+        canvas.drawText(datos.remNombre.uppercase(), margen, y, paintTextoBold)
+        y += 12f
         y = dibujarTextoMultilinea(canvas, datos.remDir, margen, y, paintTexto, ANCHO_PT - 2 * margen)
-        y += 6f
+        y += 4f
         canvas.drawLine(margen, y, ANCHO_PT - margen, y, paintLinea)
-        y += 16f
-
-        canvas.drawText("PARA", margen, y, paintLabel)
-        y += 18f
-        canvas.drawText(datos.destNombre, margen, y, paintNombreGrande)
-        y += 16f
-        y = dibujarTextoMultilinea(canvas, datos.destDir, margen, y, paintTexto, ANCHO_PT - 2 * margen)
-        canvas.drawText(datos.nomLocalidad, margen, y, paintTexto)
         y += 14f
-        canvas.drawText("Tel: ${datos.destTel}", margen, y, paintTexto)
+
+        // 6. BLOQUE PARA (DESTINATARIO)
+        canvas.drawText("PARA (DESTINATARIO)", margen, y, paintLabel)
         y += 16f
+        canvas.drawText(datos.destNombre.uppercase(), margen, y, paintNombreGrande)
+        y += 14f
+        y = dibujarTextoMultilinea(canvas, "Dirección: ${datos.destDir}", margen, y, paintTexto, ANCHO_PT - 2 * margen)
+        if (datos.nomLocalidad.isNotEmpty()) {
+            canvas.drawText("Localidad/Ciudad: ${datos.nomLocalidad}", margen, y, paintTexto)
+            y += 12f
+        }
+        canvas.drawText("Teléfono: ${datos.destTel}", margen, y, paintTextoBold)
+        y += 14f
         canvas.drawLine(margen, y, ANCHO_PT - margen, y, paintLinea)
-        y += 16f
+        y += 14f
 
-        canvas.drawText("CONTENIDO", margen, y, paintLabel)
-        y += 13f
+        // 7. DETALLES DE CARGA
+        canvas.drawText("CONTENIDO Y DETALLES", margen, y, paintLabel)
+        y += 12f
         y = dibujarTextoMultilinea(canvas, datos.descripcion, margen, y, paintTexto, ANCHO_PT - 2 * margen)
-        canvas.drawText("Servicio: ${datos.tipoEnvio} - Peso: ${datos.peso} kg", margen, y, paintTexto)
-        y += 20f
+        canvas.drawText("Servicio: ${datos.tipoEnvio} | Peso: ${datos.peso} kg", margen, y, paintTexto)
+        y += 18f
 
+        // 8. PIE DE PÁGINA (ESTADO DE COBRO / CONTRAENTREGA)
         val format = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
         val colorFondo = if (datos.esContraentrega) Color.parseColor("#FFF3CD") else Color.parseColor("#D4EDDA")
         val colorTexto = if (datos.esContraentrega) Color.parseColor("#856404") else Color.parseColor("#155724")
         val altoBadge = 55f
 
-        canvas.drawRect(0f, y, ANCHO_PT.toFloat(), y + altoBadge, Paint().apply { color = colorFondo })
+        // Borde y fondo del estado de cobro
+        val rectBadge = RectF(0f, y, ANCHO_PT.toFloat(), y + altoBadge)
+        canvas.drawRect(rectBadge, Paint().apply { color = colorFondo })
 
         val centroX = ANCHO_PT / 2f
         val paintBadgeTexto = Paint().apply {
-            color = colorTexto; textSize = 10f; textAlign = Paint.Align.CENTER
+            color = colorTexto; textSize = 9f; isFakeBoldText = true; textAlign = Paint.Align.CENTER
         }
         val paintBadgeMonto = Paint().apply {
-            color = colorTexto; textSize = 17f; isFakeBoldText = true; textAlign = Paint.Align.CENTER
+            color = colorTexto; textSize = 16f; isFakeBoldText = true; textAlign = Paint.Align.CENTER
         }
 
         if (datos.esContraentrega) {
-            canvas.drawText("PAGO CONTRAENTREGA", centroX, y + 21f, paintBadgeTexto)
-            canvas.drawText("COBRAR ${format.format(datos.costo)}", centroX, y + 41f, paintBadgeMonto)
+            canvas.drawText("PAGO CONTRAENTREGA", centroX, y + 20f, paintBadgeTexto)
+            canvas.drawText("COBRAR ${format.format(datos.costo)}", centroX, y + 40f, paintBadgeMonto)
         } else {
-            canvas.drawText("PAGO INMEDIATO CONFIRMADO", centroX, y + 21f, paintBadgeTexto)
-            canvas.drawText("PAGADO - NO COBRAR", centroX, y + 41f, paintBadgeMonto)
+            canvas.drawText("PAGO INMEDIATO CONFIRMADO", centroX, y + 20f, paintBadgeTexto)
+            canvas.drawText("PAGADO - NO COBRAR", centroX, y + 40f, paintBadgeMonto)
         }
 
         pdfDocument.finishPage(page)
 
+        // Guardar archivo en memoria caché
         val carpeta = File(context.cacheDir, "rotulos")
         if (!carpeta.exists()) carpeta.mkdirs()
         val archivo = File(carpeta, "rotulo_${datos.guia}.pdf")
@@ -170,13 +197,14 @@ object RotuloPdfGenerator {
             if (paint.measureText(pruebaLinea) > anchoMax && linea.isNotEmpty()) {
                 canvas.drawText(linea, x, y, paint)
                 linea = palabra
+                y += 12f
             } else {
                 linea = pruebaLinea
             }
         }
         if (linea.isNotEmpty()) {
             canvas.drawText(linea, x, y, paint)
-            y += 13f
+            y += 12f
         }
         return y
     }

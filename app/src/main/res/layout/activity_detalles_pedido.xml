@@ -10,99 +10,110 @@
     android:fitsSystemWindows="true"
     android:isScrollContainer="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/containerDetalles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:paddingBottom="400dp"> <!-- ESPACIO CLAVE: Permite que todo el contenido suba por encima del teclado -->
+        android:orientation="vertical"
+        android:padding="20dp">
 
+        <!-- LOGO -->
         <ImageView
             android:id="@+id/imgLogoDetalles"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/logo_nomi"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:contentDescription="Logo Nomi" />
+            android:layout_width="70dp"
+            android:layout_height="65dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="Logo Nomi"
+            android:src="@drawable/logo_nomi" />
 
+        <!-- TÍTULO -->
         <TextView
             android:id="@+id/tvTituloDetalles"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
             android:text="Detalles del Envío"
             android:textColor="#FFFFFF"
             android:textSize="22sp"
-            android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/imgLogoDetalles"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:textStyle="bold" />
 
-        <!-- INFORMACIÓN RESUMIDA -->
+        <!-- INFORMACIÓN RESUMIDA (REMITENTE Y DESTINATARIO) -->
         <LinearLayout
             android:id="@+id/llResumenActores"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/tvTituloDetalles">
+            android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
+            <!-- TARJETA REMITENTE -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="#1A1A1A"
-                app:cardCornerRadius="8dp"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="10dp"
+                app:cardBackgroundColor="#000000"
+                app:cardCornerRadius="12dp"
+                app:strokeColor="#00AEEF"
+                app:strokeWidth="1dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="12dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Remitente"
                         android:textColor="#00AEEF"
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/tvInfoRemitente"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="Nombre: -\nDirección: -"
                         android:textColor="#FFFFFF"
                         android:textSize="13sp" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <!-- TARJETA DESTINATARIO -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="#1A1A1A"
-                app:cardCornerRadius="8dp">
+                app:cardBackgroundColor="#000000"
+                app:cardCornerRadius="12dp"
+                app:strokeColor="#00AEEF"
+                app:strokeWidth="1dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="12dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Destinatario"
                         android:textColor="#00AEEF"
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/tvInfoDestinatario"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="Nombre: -\nDirección: -"
                         android:textColor="#FFFFFF"
                         android:textSize="13sp" />
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
         <!-- DESCRIPCIÓN -->
@@ -110,192 +121,384 @@
             android:id="@+id/labelDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="¿Qué envías? (Descripción)"
             android:textColor="#00AEEF"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/llResumenActores"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/etDescripcionPedido"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:hint="Ej: Ropa, documentos, repuestos..."
-            android:textColorHint="#555555"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#00AEEF"
-            android:layout_marginTop="5dp"
-            app:layout_constraintTop_toBottomOf="@id/labelDesc" />
+            android:textColorHint="#888888"
+            app:boxBackgroundColor="#000000"
+            app:boxStrokeColor="#00AEEF"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:cornerRadius="10dp"
+            app:hintTextColor="#00AEEF">
 
-        <!-- MEDIDAS -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDescripcionPedido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- MEDIDAS Y PESO -->
         <TextView
             android:id="@+id/labelMedidas"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="Medidas y Peso"
             android:textColor="#00AEEF"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/etDescripcionPedido"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <GridLayout
             android:id="@+id/gridMedidas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="4"
-            android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/labelMedidas">
-            <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_columnWeight="1" android:padding="2dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Ancho" android:textColor="#FFFFFF" android:textSize="11sp" />
-                <EditText android:id="@+id/etAnchoPedido" android:layout_width="match_parent" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:inputType="numberDecimal" android:textColor="#000000" />
+            android:layout_marginTop="8dp"
+            android:columnCount="4">
+
+            <!-- ANCHO -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:padding="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ancho"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etAnchoPedido"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/ic_launcher_background"
+                    android:backgroundTint="#000000"
+                    android:inputType="numberDecimal"
+                    android:padding="8dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp" />
             </LinearLayout>
-            <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_columnWeight="1" android:padding="2dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Largo" android:textColor="#FFFFFF" android:textSize="11sp" />
-                <EditText android:id="@+id/etLargoPedido" android:layout_width="match_parent" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:inputType="numberDecimal" android:textColor="#000000" />
+
+            <!-- LARGO -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:padding="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Largo"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etLargoPedido"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/ic_launcher_background"
+                    android:backgroundTint="#000000"
+                    android:inputType="numberDecimal"
+                    android:padding="8dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp" />
             </LinearLayout>
-            <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_columnWeight="1" android:padding="2dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Alto" android:textColor="#FFFFFF" android:textSize="11sp" />
-                <EditText android:id="@+id/etAltoPedido" android:layout_width="match_parent" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:inputType="numberDecimal" android:textColor="#000000" />
+
+            <!-- ALTO -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:padding="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alto"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etAltoPedido"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/ic_launcher_background"
+                    android:backgroundTint="#000000"
+                    android:inputType="numberDecimal"
+                    android:padding="8dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp" />
             </LinearLayout>
-            <LinearLayout android:orientation="vertical" android:layout_width="0dp" android:layout_columnWeight="1" android:padding="2dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Peso Kg" android:textColor="#FFFFFF" android:textSize="11sp" />
-                <EditText android:id="@+id/etPesoPedido" android:layout_width="match_parent" android:layout_height="40dp" android:background="@android:drawable/editbox_background_normal" android:inputType="numberDecimal" android:textColor="#000000" />
+
+            <!-- PESO -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:padding="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Peso Kg"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp" />
+
+                <EditText
+                    android:id="@+id/etPesoPedido"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/ic_launcher_background"
+                    android:backgroundTint="#000000"
+                    android:inputType="numberDecimal"
+                    android:padding="8dp"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp" />
             </LinearLayout>
         </GridLayout>
 
         <!-- TABLA DE VALORES -->
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvTablaValoresDetalles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            app:cardBackgroundColor="#1A1A1A"
-            app:cardCornerRadius="8dp"
-            app:layout_constraintTop_toBottomOf="@id/gridMedidas">
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="#000000"
+            app:cardCornerRadius="12dp"
+            app:strokeColor="#00AEEF"
+            app:strokeWidth="1dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="12dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
                     android:text="TABLA DE TARIFAS ESTIMADAS"
                     android:textColor="#00AEEF"
-                    android:textStyle="bold"
                     android:textSize="14sp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"/>
+                    android:textStyle="bold" />
+
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:stretchColumns="*">
+
                     <TableRow>
-                        <TextView android:text="Peso" android:textColor="#00AEEF" android:textStyle="bold" android:padding="4dp"/>
-                        <TextView android:text="Valor Base" android:textColor="#00AEEF" android:textStyle="bold" android:padding="4dp" android:gravity="end"/>
+                        <TextView
+                            android:padding="4dp"
+                            android:text="Peso"
+                            android:textColor="#00AEEF"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:gravity="end"
+                            android:padding="4dp"
+                            android:text="Valor Base"
+                            android:textColor="#00AEEF"
+                            android:textStyle="bold" />
                     </TableRow>
+
                     <TableRow>
-                        <TextView android:text="Hasta 1 Kg" android:textColor="#FFFFFF" android:padding="4dp"/>
-                        <TextView android:text="$ 10.000" android:textColor="#FFFFFF" android:padding="4dp" android:gravity="end"/>
+                        <TextView
+                            android:padding="4dp"
+                            android:text="Hasta 1 Kg"
+                            android:textColor="#FFFFFF" />
+                        <TextView
+                            android:gravity="end"
+                            android:padding="4dp"
+                            android:text="$ 10.000"
+                            android:textColor="#FFFFFF" />
                     </TableRow>
+
                     <TableRow>
-                        <TextView android:text="Hasta 2 Kg" android:textColor="#FFFFFF" android:padding="4dp"/>
-                        <TextView android:text="$ 13.000" android:textColor="#FFFFFF" android:padding="4dp" android:gravity="end"/>
+                        <TextView
+                            android:padding="4dp"
+                            android:text="Hasta 2 Kg"
+                            android:textColor="#FFFFFF" />
+                        <TextView
+                            android:gravity="end"
+                            android:padding="4dp"
+                            android:text="$ 13.000"
+                            android:textColor="#FFFFFF" />
                     </TableRow>
+
                     <TableRow>
-                        <TextView android:text="Hasta 3 Kg" android:textColor="#FFFFFF" android:padding="4dp"/>
-                        <TextView android:text="$ 16.000" android:textColor="#FFFFFF" android:padding="4dp" android:gravity="end"/>
+                        <TextView
+                            android:padding="4dp"
+                            android:text="Hasta 3 Kg"
+                            android:textColor="#FFFFFF" />
+                        <TextView
+                            android:gravity="end"
+                            android:padding="4dp"
+                            android:text="$ 16.000"
+                            android:textColor="#FFFFFF" />
                     </TableRow>
+
                     <TableRow>
-                        <TextView android:text="Kg Adicional" android:textColor="#4CAF50" android:textStyle="bold" android:padding="4dp"/>
-                        <TextView android:text="+ $ 3.000" android:textColor="#4CAF50" android:padding="4dp" android:gravity="end"/>
+                        <TextView
+                            android:padding="4dp"
+                            android:text="Kg Adicional"
+                            android:textColor="#4CAF50"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:gravity="end"
+                            android:padding="4dp"
+                            android:text="+ $ 3.000"
+                            android:textColor="#4CAF50" />
                     </TableRow>
                 </TableLayout>
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <Button
+        <!-- BOTÓN CALCULAR -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCotizarInterno"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="16dp"
             android:backgroundTint="#4CAF50"
             android:text="CALCULAR COSTO"
-            app:layout_constraintTop_toBottomOf="@id/cvTablaValoresDetalles" />
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp" />
 
+        <!-- OPCIONES DE ENVÍO -->
         <RadioGroup
             android:id="@+id/rgOpcionesEnvio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/btnCotizarInterno">
-            <RadioButton android:id="@+id/rbEstandar" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Económico" android:textColor="#FFFFFF" android:buttonTint="#00AEEF"/>
-            <RadioButton android:id="@+id/rbExpress" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Express" android:textColor="#FFFFFF" android:buttonTint="#00AEEF"/>
-            <RadioButton android:id="@+id/rbPremium" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Premium" android:textColor="#FFFFFF" android:buttonTint="#00AEEF"/>
+            android:visibility="gone">
+
+            <RadioButton
+                android:id="@+id/rbEstandar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="#00AEEF"
+                android:text="Económico"
+                android:textColor="#FFFFFF" />
+
+            <RadioButton
+                android:id="@+id/rbExpress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="#00AEEF"
+                android:text="Express"
+                android:textColor="#FFFFFF" />
+
+            <RadioButton
+                android:id="@+id/rbPremium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="#00AEEF"
+                android:text="Premium"
+                android:textColor="#FFFFFF" />
         </RadioGroup>
 
-        <EditText
-            android:id="@+id/etValorDeclarado"
+        <!-- VALOR DECLARADO -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Valor Declarado ($)"
-            android:textColorHint="#555555"
-            android:inputType="number"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#00AEEF"
             android:layout_marginTop="15dp"
-            app:layout_constraintTop_toBottomOf="@id/rgOpcionesEnvio" />
+            android:hint="Valor Declarado ($)"
+            android:textColorHint="#888888"
+            app:boxBackgroundColor="#000000"
+            app:boxStrokeColor="#00AEEF"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:cornerRadius="10dp"
+            app:hintTextColor="#00AEEF">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etValorDeclarado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- FORMA DE PAGO -->
         <TextView
             android:id="@+id/labelMetodoPago"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="Seleccione Forma de Pago"
             android:textColor="#00AEEF"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/etValorDeclarado"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <RadioGroup
             android:id="@+id/rgMetodoPago"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/labelMetodoPago">
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
             <RadioButton
                 android:id="@+id/rbPagoYa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pago Inmediato"
-                android:textColor="#FFFFFF"
                 android:buttonTint="#00AEEF"
-                android:checked="true" />
+                android:checked="true"
+                android:text="Pago Inmediato"
+                android:textColor="#FFFFFF" />
+
             <RadioButton
                 android:id="@+id/rbPagoContraentrega"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Contraentrega"
-                android:textColor="#FFFFFF"
+                android:layout_marginStart="20dp"
                 android:buttonTint="#00AEEF"
-                android:layout_marginStart="20dp" />
+                android:text="Contraentrega"
+                android:textColor="#FFFFFF" />
         </RadioGroup>
 
-        <Button
+        <!-- BOTÓN RESUMEN -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSiguienteDetalles"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:text="VER RESUMEN"
-            android:backgroundTint="#00AEEF"
+            android:layout_height="52dp"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="30dp"
-            app:layout_constraintTop_toBottomOf="@id/rgMetodoPago"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:backgroundTint="#00AEEF"
+            android:text="VER RESUMEN"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </ScrollView>

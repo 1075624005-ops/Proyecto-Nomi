@@ -4,176 +4,188 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
-    android:fillViewport="true"
-    android:paddingBottom="80dp"
-    android:clipToPadding="false">
+    android:background="@color/bg_main"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp">
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/tvTituloGenerar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NUEVA PQRS"
-            android:textColor="#00AEEF"
-            android:textSize="22sp"
+            android:text="Nueva PQRS"
+            android:textColor="@color/brand_cyan"
+            android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- TIPO DE PQRS -->
         <TextView
             android:id="@+id/lbTipoPQRS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Tipo de solicitud:"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@id/tvTituloGenerar"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:textColor="@color/text_muted"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTituloGenerar" />
 
         <Spinner
             android:id="@+id/spTipoPQRS"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:backgroundTint="#00AEEF"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/lbTipoPQRS"/>
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_input_rounded"
+            android:backgroundTint="@color/brand_cyan"
+            app:layout_constraintTop_toBottomOf="@id/lbTipoPQRS" />
 
         <!-- ASUNTO -->
         <EditText
             android:id="@+id/etAsuntoPQRS"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_input_rounded"
             android:hint="Asunto (Ej: Retraso en entrega)"
-            android:textColor="#000000"
-            android:background="@android:drawable/editbox_background_normal"
-            android:padding="12dp"
             android:inputType="text"
-            app:layout_constraintTop_toBottomOf="@id/spTipoPQRS"/>
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:textColor="@color/text_white"
+            android:textColorHint="@color/text_muted"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/spTipoPQRS" />
 
         <!-- DESCRIPCION -->
         <EditText
             android:id="@+id/etDescPQRS"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="16dp"
-            android:hint="Describa su situación detalladamente..."
-            android:textColor="#000000"
-            android:background="@android:drawable/editbox_background_normal"
+            android:layout_height="140dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_input_rounded"
             android:gravity="top"
-            android:padding="12dp"
+            android:hint="Describa su situación detalladamente..."
             android:inputType="textMultiLine"
-            app:layout_constraintTop_toBottomOf="@id/etAsuntoPQRS"/>
+            android:padding="14dp"
+            android:textColor="@color/text_white"
+            android:textColorHint="@color/text_muted"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/etAsuntoPQRS" />
 
         <!-- AVISO TIEMPOS DE RESPUESTA -->
-        <LinearLayout
-            android:id="@+id/llTiemposRespuesta"
-            android:layout_width="0dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardTiempos"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="20dp"
-            android:background="#0D1B2A"
-            android:padding="12dp"
-            app:layout_constraintTop_toBottomOf="@id/etDescPQRS"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:cardBackgroundColor="@color/bg_card"
+            app:cardCornerRadius="12dp"
+            app:layout_constraintTop_toBottomOf="@id/etDescPQRS">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/llTiemposRespuesta"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="⏱ Tiempos de respuesta (Ley 1755/2015)"
-                android:textColor="#00AEEF"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="6dp"/>
+                android:orientation="vertical"
+                android:padding="14dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="• Petición / Queja / Reclamo / Solicitud: 15 días hábiles"
-                android:textColor="#AAAAAA"
-                android:textSize="11sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:text="⏱ Tiempos de respuesta (Ley 1755/2015)"
+                    android:textColor="@color/brand_cyan"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="• Consulta: 30 días hábiles"
-                android:textColor="#AAAAAA"
-                android:textSize="11sp"
-                android:layout_marginTop="2dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• Petición / Queja / Reclamo: 15 días hábiles"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="• Recibirá respuesta al correo registrado."
-                android:textColor="#AAAAAA"
-                android:textSize="11sp"
-                android:layout_marginTop="2dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="• Consulta: 30 días hábiles"
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="• Recibirá respuesta al correo registrado."
+                    android:textColor="@color/text_muted"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <!-- AUTORIZACIÓN USO DE DATOS PARA PQRS -->
         <LinearLayout
             android:id="@+id/llAutorizacionPQRS"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="16dp"
             android:gravity="center_vertical"
-            app:layout_constraintTop_toBottomOf="@id/llTiemposRespuesta"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/cardTiempos">
 
             <CheckBox
                 android:id="@+id/cbAutorizacionPQRS"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="#00AEEF" />
+                app:buttonTint="@color/brand_cyan" />
 
             <TextView
                 android:id="@+id/tvVerAutorizacionPQRS"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingStart="4dp"
                 android:text="Autorizo el uso de mis datos para gestionar esta solicitud"
-                android:textColor="#4FC3F7"
-                android:textSize="13sp"
-                android:paddingStart="6dp"
-                android:textStyle="bold" />
-
+                android:textColor="@color/text_white"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <!-- BOTÓN ENVIAR -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnEnviarPQRS"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:text="ENVIAR SOLICITUD"
-            android:backgroundTint="#00AEEF"
-            android:textColor="#FFFFFF"
+            android:layout_height="52dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/brand_cyan"
+            android:text="Enviar Solicitud"
+            android:textAllCaps="false"
+            android:textColor="@color/text_white"
+            android:textSize="15sp"
             android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/llAutorizacionPQRS"/>
+            app:cornerRadius="12dp"
+            app:layout_constraintTop_toBottomOf="@id/llAutorizacionPQRS" />
 
-        <Button
+        <!-- BOTÓN CANCELAR -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCancelarPQRS"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CANCELAR"
-            android:backgroundTint="#333333"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintTop_toBottomOf="@id/btnEnviarPQRS"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="24dp"
+            android:text="Cancelar"
+            android:textAllCaps="false"
+            android:textColor="@color/text_white"
+            app:strokeColor="@color/text_muted"
+            app:strokeWidth="1dp"
+            app:cornerRadius="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnEnviarPQRS" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -11,62 +11,68 @@
         android:layout_height="wrap_content"
         android:padding="20dp">
 
+        <!-- TÍTULO -->
         <TextView
             android:id="@+id/tvTituloPago"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="PAGO INMEDIATO"
             android:textColor="#FFFFFF"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- NÚMERO DE GUÍA -->
         <TextView
             android:id="@+id/tvGuiaPago"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
             android:text="N11-000001"
             android:textColor="#888888"
             android:textSize="14sp"
-            android:gravity="center"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/tvTituloPago"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tvTituloPago" />
 
+        <!-- MONTO A PAGAR -->
         <TextView
             android:id="@+id/tvMontoAPagar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
             android:text="$ 0"
             android:textColor="#00AEEF"
             android:textSize="34sp"
             android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/tvGuiaPago"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tvGuiaPago" />
 
-        <androidx.cardview.widget.CardView
+        <!-- TARJETA CUENTA -->
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvCuenta"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:cardBackgroundColor="#1A1A1A"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="#000000"
             app:cardCornerRadius="12dp"
-            app:layout_constraintTop_toBottomOf="@id/tvMontoAPagar"
+            app:strokeColor="#00AEEF"
+            app:strokeWidth="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/tvMontoAPagar">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:gravity="center"
+                android:orientation="vertical"
                 android:padding="20dp">
 
                 <TextView
@@ -74,108 +80,129 @@
                     android:layout_height="wrap_content"
                     android:text="TRANSFIERE A ESTA CUENTA"
                     android:textColor="#888888"
-                    android:textSize="11sp" />
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/ivQrPago"
-                    android:layout_width="180dp"
-                    android:layout_height="180dp"
+                    android:layout_width="170dp"
+                    android:layout_height="170dp"
                     android:layout_marginTop="14dp"
                     android:background="#FFFFFF"
+                    android:contentDescription="Código QR de Pago"
                     android:padding="8dp" />
 
                 <TextView
                     android:id="@+id/tvEntidadCuenta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
                     android:text="Nequi"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="14dp" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvTitularCuenta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:text="Nomi App"
                     android:textColor="#CCCCCC"
-                    android:textSize="13sp"
-                    android:layout_marginTop="2dp" />
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tvNumeroCuenta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
                     android:text="313 815 0074"
                     android:textColor="#00AEEF"
                     android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="6dp" />
+                    android:textStyle="bold" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCopiarNumero"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
+                    android:layout_marginTop="12dp"
                     android:text="COPIAR NÚMERO"
+                    android:textColor="#00AEEF"
                     android:textSize="11sp"
-                    android:backgroundTint="#333333"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginTop="10dp" />
+                    android:textStyle="bold"
+                    app:cornerRadius="8dp"
+                    app:strokeColor="#00AEEF"
+                    app:strokeWidth="1dp" />
 
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
+        <!-- AVISO DE PAGO -->
         <TextView
             android:id="@+id/tvAvisoPago"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
             android:text="Después de transferir, toca el botón de abajo. Verificaremos tu pago y prepararemos el envío."
             android:textColor="#888888"
             android:textSize="12sp"
-            android:gravity="center"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/cvCuenta"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/cvCuenta" />
 
-        <Button
+        <!-- BOTÓN CONTINUAR -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnYaTransferi"
             android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:text="YA TRANSFERÍ - CONTINUAR"
-            android:backgroundTint="#00AEEF"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
+            android:layout_height="52dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/tvAvisoPago"
+            android:backgroundTint="#00AEEF"
+            android:text="YA TRANSFERÍ - CONTINUAR"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tvAvisoPago" />
 
-        <Button
+        <!-- BOTÓN WHATSAPP -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnEnviarWhatsapp"
             android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:text="ENVIAR COMPROBANTE POR WHATSAPP"
+            android:layout_height="52dp"
+            android:layout_marginTop="10dp"
             android:backgroundTint="#25D366"
+            android:text="ENVIAR COMPROBANTE POR WHATSAPP"
             android:textColor="#FFFFFF"
+            android:textSize="13sp"
             android:textStyle="bold"
-            android:layout_marginTop="10dp"
-            app:layout_constraintTop_toBottomOf="@id/btnYaTransferi"
+            app:cornerRadius="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/btnYaTransferi" />
 
-        <Button
+        <!-- BOTÓN CANCELAR (RESTRICCIÓN CORREGIDA) -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCancelarPago"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="CANCELAR"
-            android:backgroundTint="#333333"
-            android:textColor="#FFFFFF"
+            android:layout_height="52dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="30dp"
+            android:text="CANCELAR"
+            android:textColor="#FF5252"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:strokeColor="#FF5252"
+            app:strokeWidth="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/btnEnviarWhatsapp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

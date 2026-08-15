@@ -4,102 +4,188 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#000000"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp">
+        android:padding="20dp">
 
-        <!-- FICHA DEL CLIENTE -->
+        <!-- TÍTULO -->
         <TextView
             android:id="@+id/tvAdminDetalleTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="8dp"
             android:text="DETALLES DE LA SOLICITUD"
             android:textColor="#00AEEF"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/llFicha"
+        <!-- FICHA DEL CLIENTE -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardFicha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="20dp"
-            android:background="#111111"
-            android:padding="16dp"
+            app:cardBackgroundColor="#12121A"
+            app:cardCornerRadius="14dp"
+            app:strokeColor="#00AEEF"
+            app:strokeWidth="1dp"
             app:layout_constraintTop_toBottomOf="@id/tvAdminDetalleTitle">
 
-            <TextView android:id="@+id/detNombre" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Nombre: ..." android:textColor="#FFFFFF" android:textSize="16sp"/>
-            <TextView android:id="@+id/detTipoPers" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tipo: ..." android:textColor="#FFFFFF" android:layout_marginTop="4dp"/>
-            <TextView android:id="@+id/detDoc" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Documento: ..." android:textColor="#FFFFFF" android:layout_marginTop="4dp"/>
-            <TextView android:id="@+id/detCorreo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Correo: ..." android:textColor="#FFFFFF" android:layout_marginTop="4dp"/>
-            <TextView android:id="@+id/detDir" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Dirección: ..." android:textColor="#FFFFFF" android:layout_marginTop="4dp"/>
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llFicha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <!-- SITUACIÓN -->
+                <TextView
+                    android:id="@+id/detNombre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre: ..."
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/detTipoPers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Tipo: ..."
+                    android:textColor="#CCCCCC"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/detDoc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Documento: ..."
+                    android:textColor="#CCCCCC"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/detCorreo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Correo: ..."
+                    android:textColor="#CCCCCC"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/detDir"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Dirección: ..."
+                    android:textColor="#CCCCCC"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- SITUACIÓN REPORTADA -->
         <TextView
             android:id="@+id/lbSituacion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="SITUACIÓN REPORTADA:"
             android:textColor="#00AEEF"
+            android:textSize="14sp"
             android:textStyle="bold"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@id/llFicha"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardFicha" />
 
-        <TextView
-            android:id="@+id/detDesc"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardSituacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="..."
-            android:textColor="#FFFFFF"
-            android:background="#222222"
-            android:padding="12dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/lbSituacion"/>
+            app:cardBackgroundColor="#12121A"
+            app:cardCornerRadius="10dp"
+            app:strokeColor="#333333"
+            app:strokeWidth="1dp"
+            app:layout_constraintTop_toBottomOf="@id/lbSituacion">
 
-        <!-- RESPUESTA -->
-        <EditText
-            android:id="@+id/etAdminRespuesta"
+            <TextView
+                android:id="@+id/detDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="14dp"
+                android:text="..."
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- CAMPO DE RESPUESTA -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilRespuesta"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:hint="Escriba aquí su respuesta para el cliente..."
-            android:textColor="#000000"
-            android:background="@android:drawable/editbox_background_normal"
-            android:gravity="top"
-            android:padding="12dp"
-            android:layout_marginTop="32dp"
-            app:layout_constraintTop_toBottomOf="@id/detDesc"/>
+            android:textColorHint="#888888"
+            app:boxBackgroundColor="#12121A"
+            app:boxStrokeColor="#00AEEF"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:cornerRadius="12dp"
+            app:hintTextColor="#00AEEF"
+            app:layout_constraintTop_toBottomOf="@id/cardSituacion">
 
-        <Button
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAdminRespuesta"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- BOTÓN ENVIAR RESPUESTA -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAdminEnviarResp"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:text="ENVIAR RESPUESTA"
-            android:backgroundTint="#00AEEF"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
+            android:layout_height="52dp"
             android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/etAdminRespuesta"/>
-
-        <Button
-            android:id="@+id/btnAdminVolver"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="VOLVER"
+            android:backgroundTint="#00AEEF"
+            android:text="ENVIAR RESPUESTA"
             android:textColor="#FFFFFF"
-            android:backgroundTint="#333333"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="32dp"
-            app:layout_constraintTop_toBottomOf="@id/btnAdminEnviarResp"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:layout_constraintTop_toBottomOf="@id/tilRespuesta" />
+
+        <!-- BOTÓN VOLVER -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAdminVolver"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="20dp"
+            android:text="VOLVER"
+            android:textColor="#00AEEF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:strokeColor="#00AEEF"
+            app:strokeWidth="1.5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/btnAdminEnviarResp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

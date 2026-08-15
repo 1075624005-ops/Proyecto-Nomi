@@ -4,29 +4,63 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#0F0F14">
 
+    <!-- LOGO PRINCIPAL -->
     <ImageView
         android:id="@+id/imgLogoSplash"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/logo_nomi"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:contentDescription="Logo Nomi"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/logo_nomi"
+        app:layout_constraintBottom_toTopOf="@id/tvAppNameSplash"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
+    <!-- NOMBRE DE LA APP -->
+    <TextView
+        android:id="@+id/tvAppNameSplash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="NOMI"
+        android:textColor="#FFFFFF"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tvSubtituloSplash"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgLogoSplash" />
+
+    <!-- SUBTÍTULO -->
+    <TextView
+        android:id="@+id/tvSubtituloSplash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:letterSpacing="0.15"
+        android:text="SOLUCIONES A TU ALCANCE"
+        android:textColor="#00AEEF"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvAppNameSplash" />
+
+    <!-- VERSIÓN (EN EL PIE DE PÁGINA) -->
     <TextView
         android:id="@+id/tvVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:letterSpacing="0.1"
         android:text="v1.0.0"
-        android:textColor="#FFFFFF"
+        android:textColor="#888888"
         android:textSize="12sp"
-        android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

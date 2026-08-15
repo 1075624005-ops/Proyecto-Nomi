@@ -1,105 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    android:padding="16dp">
+    android:padding="20dp">
 
+    <!-- TÍTULO -->
     <TextView
         android:id="@+id/tvTituloPedidos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="HISTORIAL DE PEDIDOS"
         android:textColor="#00AEEF"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- SECCIÓN DE BÚSQUEDA Y FILTROS -->
     <LinearLayout
         android:id="@+id/layoutBusqueda"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#12121A"
         android:orientation="vertical"
-        android:layout_marginTop="16dp"
+        android:padding="16dp"
         app:layout_constraintTop_toBottomOf="@id/tvTituloPedidos">
 
-        <EditText
-            android:id="@+id/etBuscarGuia"
+        <!-- CAMPO BUSCAR GUÍA -->
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:hint="Buscar por número de guía"
             android:textColorHint="#888888"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#FFFFFF"
-            android:padding="10dp"
-            android:inputType="textCapCharacters" />
+            app:boxStrokeColor="#00AEEF"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:hintTextColor="#00AEEF">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etBuscarGuia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapCharacters"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- FECHAS (DESDE / HASTA) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnFechaInicio"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:text="DESDE FECHA"
                 android:textColor="#FFFFFF"
-                android:backgroundTint="#333333"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                app:cornerRadius="10dp"
+                app:strokeColor="#00AEEF"
+                app:strokeWidth="1dp" />
 
-            <View android:layout_width="8dp" android:layout_height="1dp"/>
+            <View
+                android:layout_width="10dp"
+                android:layout_height="1dp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnFechaFin"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:text="HASTA FECHA"
                 android:textColor="#FFFFFF"
-                android:backgroundTint="#333333"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                app:cornerRadius="10dp"
+                app:strokeColor="#00AEEF"
+                app:strokeWidth="1dp" />
         </LinearLayout>
 
+        <!-- BOTONES DE ACCIÓN (FILTRAR Y LIMPIAR) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnFiltrar"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_weight="1"
-                android:text="BUSCAR / FILTRAR"
                 android:backgroundTint="#00AEEF"
-                android:textColor="#FFFFFF" />
+                android:text="BUSCAR / FILTRAR"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp" />
 
-            <View android:layout_width="8dp" android:layout_height="1dp"/>
+            <View
+                android:layout_width="10dp"
+                android:layout_height="1dp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLimpiar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="55dp"
+                android:layout_height="50dp"
+                android:backgroundTint="#D32F2F"
+                android:padding="0dp"
                 android:text="✖"
-                android:backgroundTint="#CC0000"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp" />
         </LinearLayout>
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBarPedidos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/layoutBusqueda"
+        app:layout_constraintBottom_toTopOf="@id/btnVolverPedidos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- LISTADO SCROLLABLE DE PEDIDOS -->
     <ScrollView
+        android:id="@+id/scrollPedidos"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintTop_toBottomOf="@id/layoutBusqueda"
-        app:layout_constraintBottom_toTopOf="@id/btnVolverPedidos">
+        app:layout_constraintBottom_toTopOf="@id/btnVolverPedidos"
+        app:layout_constraintTop_toBottomOf="@id/layoutBusqueda">
 
         <LinearLayout
             android:id="@+id/containerPedidos"
@@ -108,15 +157,21 @@
             android:orientation="vertical" />
     </ScrollView>
 
-    <Button
+    <!-- BOTÓN VOLVER AL PANEL -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnVolverPedidos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
         android:text="VOLVER AL PANEL"
-        android:backgroundTint="#333333"
-        android:textColor="#FFFFFF"
+        android:textColor="#00AEEF"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:strokeColor="#00AEEF"
+        app:strokeWidth="1.5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

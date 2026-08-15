@@ -1,36 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="180dp"
-    android:background="#00AEEF"
+    android:layout_height="190dp"
+    android:background="#12121A"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:padding="20dp">
 
+    <!-- LOGO -->
     <ImageView
         android:id="@+id/imgNavLogo"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:src="@drawable/logo_nomi"
-        android:contentDescription="Logo Nav" />
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:contentDescription="Logo Nav"
+        android:src="@drawable/logo_nomi" />
 
+    <!-- NOMBRE DEL USUARIO / APP -->
     <TextView
         android:id="@+id/tvNavName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8dp"
+        android:layout_marginTop="12dp"
         android:text="NOMI"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
+        android:textColor="#00AEEF"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
+    <!-- CORREO O SUBTÍTULO -->
     <TextView
         android:id="@+id/tvNavEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:text="Bienvenido a Nomi"
-        android:textColor="#FFFFFF" />
+        android:textColor="#A0A0A0"
+        android:textSize="13sp" />
+
+    <!-- LÍNEA DE SEPARACIÓN EN CIAN -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="16dp"
+        android:background="#00AEEF" />
 
 </LinearLayout>

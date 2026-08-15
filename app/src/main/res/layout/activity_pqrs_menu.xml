@@ -4,62 +4,82 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@color/bg_main"
     android:padding="24dp">
 
     <!-- CABECERA -->
     <ImageView
         android:id="@+id/imgLogoPQRS"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:contentDescription="Logo NOMI"
         android:src="@drawable/logo_nomi"
-        android:contentDescription="Logo"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvTituloPQRS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PQRS"
-        android:textColor="#FFFFFF"
+        android:layout_marginTop="10dp"
+        android:text="Módulo de PQRS"
+        android:textColor="@color/text_white"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/imgLogoPQRS"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/imgLogoPQRS" />
 
     <!-- BOTÓN GENERAR -->
     <androidx.cardview.widget.CardView
         android:id="@+id/btnIrGenerar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="40dp"
-        app:cardBackgroundColor="#00AEEF"
-        app:cardCornerRadius="20dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="36dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="@color/bg_card"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="3dp"
         app:layout_constraintTop_toBottomOf="@id/tvTituloPQRS">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="16dp">
+
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@android:drawable/ic_menu_call"
-                app:tint="#FFFFFF"
-                android:contentDescription="Icono Generar"/>
-            <TextView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:contentDescription="Icono Generar"
+                android:src="@android:drawable/ic_menu_edit"
+                app:tint="@color/brand_cyan" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Generar una\nPQRS"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginStart="20dp"/>
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Generar una PQRS"
+                    android:textColor="@color/text_white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Radica una nueva solicitud o reclamo"
+                    android:textColor="@color/text_muted"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -67,44 +87,66 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/btnIrConsultar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        app:cardBackgroundColor="#00AEEF"
-        app:cardCornerRadius="20dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardBackgroundColor="@color/bg_card"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="3dp"
         app:layout_constraintTop_toBottomOf="@id/btnIrGenerar">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="16dp">
+
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:contentDescription="Icono Consultar"
                 android:src="@android:drawable/ic_menu_search"
-                app:tint="#FFFFFF"
-                android:contentDescription="Icono Consultar"/>
-            <TextView
+                app:tint="@color/brand_cyan" />
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Consulta una\nPQRS"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginStart="20dp"/>
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Consultar PQRS"
+                    android:textColor="@color/text_white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Revisa el estado de tus radicados"
+                    android:textColor="@color/text_muted"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <Button
+    <!-- BOTÓN VOLVER -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnVolverPQRS"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:backgroundTint="#333333"
-        android:text="VOLVER"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:text="Volver"
+        android:textColor="@color/text_white"
+        app:strokeColor="@color/text_muted"
+        app:strokeWidth="1dp"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
