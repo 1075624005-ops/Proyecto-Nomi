@@ -7,7 +7,6 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
-
 // IMPORTACIONES DE FIREBASE
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,7 +31,6 @@ class LoginActivity : AppCompatActivity() {
         val prefs = getSharedPreferences("nomi_prefs", MODE_PRIVATE)
         val yaVioAviso = prefs.getBoolean("aviso_datos_visto", false)
 
-
         if (!yaVioAviso) {
             AlertDialog.Builder(this)
                 .setTitle("🔒 Aviso de Privacidad")
@@ -44,12 +42,12 @@ class LoginActivity : AppCompatActivity() {
                             "Al usar la app aceptas nuestra Política de Datos. " +
                             "Puedes ejercer tus derechos escribiéndonos a {nomisas@nomi.com]."
                 )
-                .setCancelable(false) // No puede cerrarlo sin aceptar
+                .setCancelable(false)
                 .setPositiveButton("Entendido y Acepto") { _, _ ->
                     prefs.edit().putBoolean("aviso_datos_visto", true).apply()
                 }
                 .setNegativeButton("Salir") { _, _ ->
-                    finish() // Si no acepta, cierra la app
+                    finish()
                 }
                 .show()
         }
@@ -65,16 +63,6 @@ class LoginActivity : AppCompatActivity() {
 
             // ── SEGURIDAD PARA EL ADMINISTRADOR ──────────────────
             if (correo == "admin@nomi.com" && password == "admin123") {
-
-                // Obtenemos el ID único de este celular/computador
-                /*val currentDeviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
-
-                // Consultamos en Firebase si este ID está autorizado
-                db.collection("configuracion").document("admin_lock").get()
-                    .addOnSuccessListener { doc ->
-                        val idAutorizado = doc.getString("id_permitido") ?: ""*/
-
-
                 Toast.makeText(this, "👨‍💻 Acceso concedido al Jefe", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, AdminActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -112,14 +100,6 @@ class LoginActivity : AppCompatActivity() {
         tvOlvido.setOnClickListener {
             mostrarDialogoRecuperacion()
         }
-    }
-
-    private fun mostrarDialogoAutorizacion(id: String) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Dispositivo no autorizado")
-        builder.setMessage("Este celular no tiene permiso para ser Administrador.\n\nTu ID de dispositivo es:\n$id\n\nEntrégaselo al desarrollador para que te autorice.")
-        builder.setPositiveButton("Entendido", null)
-        builder.show()
     }
 
     private fun mostrarDialogoRecuperacion() {

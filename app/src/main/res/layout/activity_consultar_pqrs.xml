@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F0F14"
+    android:background="@color/bg_dark_variant"
     android:padding="20dp">
 
     <!-- TÍTULO PRINCIPAL -->
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="MIS SOLICITUDES (PQRS)"
-        android:textColor="#00AEEF"
+        android:textColor="@color/brand_cyan"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,9 +48,9 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="#2A2A38"
+        android:backgroundTint="@color/bg_input"
         android:text="VOLVER"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/text_white"
         android:textStyle="bold"
         app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"

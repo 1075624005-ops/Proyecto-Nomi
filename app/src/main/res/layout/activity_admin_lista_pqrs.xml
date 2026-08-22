@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@color/bg_main"
     android:padding="20dp">
 
     <!-- TÍTULO DE LA PANTALLA -->
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="GESTIÓN DE PQRS"
-        android:textColor="#00AEEF"
+        android:textColor="@color/brand_cyan"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,11 +45,11 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:text="VOLVER AL PANEL"
-        android:textColor="#00AEEF"
+        android:textColor="@color/brand_cyan"
         android:textSize="14sp"
         android:textStyle="bold"
         app:cornerRadius="12dp"
-        app:strokeColor="#00AEEF"
+        app:strokeColor="@color/brand_cyan"
         app:strokeWidth="1.5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

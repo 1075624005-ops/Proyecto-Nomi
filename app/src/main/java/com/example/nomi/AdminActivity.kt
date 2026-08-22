@@ -54,6 +54,12 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 val ruta = db.generarBackupExcel(this)
                 Toast.makeText(this, "✅ Backup creado", Toast.LENGTH_LONG).show()
             }
+            R.id.admin_logout -> {
+                val intent = Intent(this, HomeActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
+            }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true

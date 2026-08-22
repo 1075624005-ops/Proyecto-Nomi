@@ -21,6 +21,7 @@
             android:textColor="@color/text_white"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

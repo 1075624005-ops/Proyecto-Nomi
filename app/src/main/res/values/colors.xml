@@ -1,11 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Colores Base -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="bg_main">#121212</color>
-    <color name="bg_card">#1E1E1E</color>
-    <color name="brand_cyan">#00B4D8</color>
+
+    <!-- Colores de Marca (Branding) -->
+    <color name="brand_cyan">#00AEEF</color>
+    <color name="brand_cyan_dark">#0088B8</color>
+
+    <!-- Fondos y Superficies -->
+    <color name="bg_main">#000000</color>
+    <color name="bg_dark_variant">#0F0F14</color>
+    <color name="bg_card">#12121A</color>
+    <color name="bg_card_highlight">#111111</color>
+    <color name="bg_input">#1A1A24</color>
+
+    <!-- Textos -->
     <color name="text_white">#FFFFFF</color>
     <color name="text_muted">#A0A0A0</color>
+    <color name="text_hint">#888888</color>
+    <color name="text_light_gray">#CCCCCC</color>
+
+    <!-- Bordes y Separadores -->
     <color name="border_dark">#2C2C2C</color>
+    <color name="border_gray">#333333</color>
+    <color name="border_input">#333344</color>
+
+    <!-- Colores de Estado / Funcionales -->
+    <color name="whatsapp_green">#25D366</color>
+    <color name="error_red">#D32F2F</color>
+    <color name="warning_yellow_bg">#FFF3CD</color>
+    <color name="warning_yellow_text">#856404</color>
+    <color name="success_green_bg">#D4EDDA</color>
+    <color name="success_green_text">#155724</color>
 </resources>
