@@ -8,9 +8,9 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="#000000"
+    app:cardBackgroundColor="@color/app_background"
     app:cardCornerRadius="12dp"
-    app:strokeColor="#00AEEF"
+    app:strokeColor="@color/brand_primary"
     app:strokeWidth="1dp">
 
     <LinearLayout
@@ -31,7 +31,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:text="GUÍA: N11-000001"
-                android:textColor="#00AEEF"
+                android:textColor="@color/brand_primary"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 

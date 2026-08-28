@@ -10,14 +10,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_main">
+        android:background="@color/app_background">
 
         <!-- TOOLBAR DE ENCABEZADO -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolbarAdmin"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:background="@color/bg_card"
+            android:background="@color/app_surface_card"
             android:paddingBottom="8dp"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -31,7 +31,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/brand_cyan" />
+                app:tint="@color/brand_primary" />
 
             <ImageView
                 android:id="@+id/imgLogoAdmin"
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="PANEL ADMINISTRADOR"
-                android:textColor="@color/text_white"
+                android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -78,7 +78,7 @@
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="24dp"
                     android:text="Bienvenido"
-                    android:textColor="@color/brand_cyan"
+                    android:textColor="@color/brand_primary"
                     android:textSize="22sp"
                     android:textStyle="bold" />
 
@@ -89,15 +89,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginBottom="16dp"
-                    android:backgroundTint="@color/bg_card"
+                    android:backgroundTint="@color/app_surface_card"
                     android:gravity="center_vertical|start"
                     android:paddingStart="20dp"
                     android:text="📦   NUEVO PEDIDO"
-                    android:textColor="@color/text_white"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     app:cornerRadius="12dp"
-                    app:strokeColor="@color/brand_cyan"
+                    app:strokeColor="@color/brand_primary"
                     app:strokeWidth="1dp" />
 
                 <!-- BOTÓN / TARJETA: VER TODOS LOS PEDIDOS -->
@@ -107,15 +107,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginBottom="16dp"
-                    android:backgroundTint="@color/bg_card"
+                    android:backgroundTint="@color/app_surface_card"
                     android:gravity="center_vertical|start"
                     android:paddingStart="20dp"
                     android:text="📋   VER TODOS LOS PEDIDOS"
-                    android:textColor="@color/text_white"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     app:cornerRadius="12dp"
-                    app:strokeColor="@color/brand_cyan"
+                    app:strokeColor="@color/brand_primary"
                     app:strokeWidth="1dp" />
 
                 <!-- BOTÓN / TARJETA: GESTIONAR PQRS -->
@@ -125,15 +125,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:layout_marginBottom="16dp"
-                    android:backgroundTint="@color/bg_card"
+                    android:backgroundTint="@color/app_surface_card"
                     android:gravity="center_vertical|start"
                     android:paddingStart="20dp"
                     android:text="🗂️   GESTIONAR PQRS"
-                    android:textColor="@color/text_white"
+                    android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     app:cornerRadius="12dp"
-                    app:strokeColor="@color/brand_cyan"
+                    app:strokeColor="@color/brand_primary"
                     app:strokeWidth="1dp" />
 
 
@@ -145,10 +145,10 @@
             android:id="@+id/vFooterAdmin"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/brand_cyan"
+            android:background="@color/brand_primary"
             android:gravity="center"
             android:text="Modo Administrador - NOMI"
-            android:textColor="@color/bg_main"
+            android:textColor="@color/app_background"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -160,10 +160,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/bg_card"
+        android:background="@color/app_surface_card"
         app:headerLayout="@layout/nav_header"
-        app:itemIconTint="@color/brand_cyan"
-        app:itemTextColor="@color/text_white"
+        app:itemIconTint="@color/brand_primary"
+        app:itemTextColor="@color/text_primary"
         app:menu="@menu/admin_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

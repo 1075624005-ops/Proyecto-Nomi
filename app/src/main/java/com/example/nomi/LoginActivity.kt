@@ -61,17 +61,7 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // ── SEGURIDAD PARA EL ADMINISTRADOR ──────────────────
-            if (correo == "admin@nomi.com" && password == "admin123") {
-                Toast.makeText(this, "👨‍💻 Acceso concedido al Jefe", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, AdminActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                finish()
-                return@setOnClickListener
-            }
-
-            // ── LOGIN USUARIOS NORMALES (FIREBASE) ────────────────
+            // ── LOGIN USUARIOS (FIREBASE) ────────────────
             auth.signInWithEmailAndPassword(correo, password)
                 .addOnSuccessListener { resultado ->
                     val uid = resultado.user?.uid
@@ -79,11 +69,22 @@ class LoginActivity : AppCompatActivity() {
                         db.collection("usuarios").document(uid).get()
                             .addOnSuccessListener { documento ->
                                 val nombre = documento.getString("nombre") ?: "Usuario"
-                                val intent = Intent(this, HomeActivity::class.java)
-                                intent.putExtra("nombre", nombre)
-                                intent.putExtra("correo", correo)
-                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                startActivity(intent)
+                                val rol = documento.getString("rol") ?: "cliente"
+
+                                // Si el rol es admin, vamos al panel de admin
+                                if (rol == "admin") {
+                                    Toast.makeText(this, "👨‍💻 Acceso concedido al Jefe", Toast.LENGTH_SHORT).show()
+                                    val intent = Intent(this, AdminActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    startActivity(intent)
+                                } else {
+                                    // Si no, al Home normal
+                                    val intent = Intent(this, HomeActivity::class.java)
+                                    intent.putExtra("nombre", nombre)
+                                    intent.putExtra("correo", correo)
+                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                    startActivity(intent)
+                                }
                                 finish()
                             }
                     }

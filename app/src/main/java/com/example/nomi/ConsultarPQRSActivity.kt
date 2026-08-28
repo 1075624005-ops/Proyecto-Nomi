@@ -9,6 +9,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -122,7 +123,7 @@ class ConsultarPQRSActivity : AppCompatActivity() {
             val p = LinearLayout.LayoutParams(-1, -2)
             p.setMargins(0, 30, 0, 0)
             layoutParams = p
-            setCardBackgroundColor(Color.parseColor("#111111"))
+            setCardBackgroundColor(ContextCompat.getColor(this@ConsultarPQRSActivity, R.color.app_surface_card))
             radius = 15f
             setContentPadding(25, 25, 25, 25)
         }
@@ -131,14 +132,14 @@ class ConsultarPQRSActivity : AppCompatActivity() {
 
         val tvR = TextView(this).apply {
             text = "RADICADO #$radicadoTexto — $tipoPqr"
-            setTextColor(Color.parseColor("#00AEEF"))
+            setTextColor(ContextCompat.getColor(this@ConsultarPQRSActivity, R.color.brand_primary))
             setTypeface(null, Typeface.BOLD)
             textSize = 16f
         }
 
         val tvA = TextView(this).apply {
             text = "Asunto: $asunto"
-            setTextColor(Color.WHITE)
+            setTextColor(ContextCompat.getColor(this@ConsultarPQRSActivity, R.color.text_primary))
             setPadding(0, 8, 0, 0)
         }
 
@@ -157,7 +158,7 @@ class ConsultarPQRSActivity : AppCompatActivity() {
 
         val tvRes = TextView(this).apply {
             text = "Respuesta: $respuesta"
-            setTextColor(Color.parseColor("#00AEEF"))
+            setTextColor(ContextCompat.getColor(this@ConsultarPQRSActivity, R.color.brand_primary))
             setPadding(0, 15, 0, 0)
         }
 

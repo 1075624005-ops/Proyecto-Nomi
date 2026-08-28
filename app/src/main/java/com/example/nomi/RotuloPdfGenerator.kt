@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.pdf.PdfDocument
+import androidx.core.content.ContextCompat
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import java.io.File
@@ -33,9 +34,9 @@ object RotuloPdfGenerator {
 
     private const val ANCHO_PT = 283
     private const val ALTO_PT = 425
-    private val COLOR_MARCA = Color.parseColor("#00AEEF")
 
     fun generar(context: Context, datos: DatosRotulo): File {
+        val colorMarca = ContextCompat.getColor(context, R.color.brand_primary)
         val pdfDocument = PdfDocument()
         val pageInfo = PdfDocument.PageInfo.Builder(ANCHO_PT, ALTO_PT, 1).create()
         val page = pdfDocument.startPage(pageInfo)
@@ -44,7 +45,7 @@ object RotuloPdfGenerator {
 
         // 1. FRANJA DE ENCABEZADO
         val altoFranja = 85f
-        canvas.drawRect(0f, 0f, ANCHO_PT.toFloat(), altoFranja, Paint().apply { color = COLOR_MARCA })
+        canvas.drawRect(0f, 0f, ANCHO_PT.toFloat(), altoFranja, Paint().apply { color = colorMarca })
 
         // 2. MARCA NOMI (MAYÚSCULAS Y DESTACADO)
         val paintLogo = Paint().apply {
@@ -89,7 +90,7 @@ object RotuloPdfGenerator {
         var y = altoFranja + 18f
 
         // PINCELES DE CONTENIDO
-        val paintLabel = Paint().apply { color = Color.parseColor("#00AEEF"); textSize = 8f; isFakeBoldText = true }
+        val paintLabel = Paint().apply { color = colorMarca; textSize = 8f; isFakeBoldText = true }
         val paintTexto = Paint().apply { color = Color.parseColor("#222222"); textSize = 10f }
         val paintTextoBold = Paint(paintTexto).apply { isFakeBoldText = true }
         val paintNombreGrande = Paint().apply {
@@ -133,8 +134,8 @@ object RotuloPdfGenerator {
 
         // 8. PIE DE PÁGINA (ESTADO DE COBRO / CONTRAENTREGA)
         val format = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
-        val colorFondo = if (datos.esContraentrega) Color.parseColor("#FFF3CD") else Color.parseColor("#D4EDDA")
-        val colorTexto = if (datos.esContraentrega) Color.parseColor("#856404") else Color.parseColor("#155724")
+        val colorFondo = if (datos.esContraentrega) ContextCompat.getColor(context, R.color.status_pending_bg) else ContextCompat.getColor(context, R.color.status_resolved_bg)
+        val colorTexto = if (datos.esContraentrega) ContextCompat.getColor(context, R.color.status_pending_text) else ContextCompat.getColor(context, R.color.status_resolved_text)
         val altoBadge = 55f
 
         // Borde y fondo del estado de cobro

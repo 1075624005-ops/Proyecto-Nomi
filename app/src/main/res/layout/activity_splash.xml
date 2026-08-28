@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F0F14">
+    android:background="@color/app_background">
 
     <!-- LOGO PRINCIPAL -->
     <ImageView
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="NOMI"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/text_primary"
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/tvSubtituloSplash"
@@ -42,7 +42,7 @@
         android:layout_marginTop="4dp"
         android:letterSpacing="0.15"
         android:text="SOLUCIONES A TU ALCANCE"
-        android:textColor="#00AEEF"
+        android:textColor="@color/brand_primary"
         android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

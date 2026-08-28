@@ -3,16 +3,16 @@
     <!-- Estado cuando el usuario hace clic o escribe -->
     <item android:state_focused="true">
         <shape android:shape="rectangle">
-            <solid android:color="#1A1A24" />
+            <solid android:color="@color/app_input_background" />
             <corners android:radius="12dp" />
-            <stroke android:width="2dp" android:color="#00AEEF" />
+            <stroke android:width="2dp" android:color="@color/brand_primary" />
         </shape>
     </item>
 
     <!-- Estado normal en reposo -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#1A1A24" />
+            <solid android:color="@color/app_input_background" />
             <corners android:radius="12dp" />
             <stroke android:width="1dp" android:color="#333344" />
         </shape>

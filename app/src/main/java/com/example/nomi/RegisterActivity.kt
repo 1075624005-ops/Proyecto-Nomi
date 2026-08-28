@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -52,13 +53,13 @@ class RegisterActivity : AppCompatActivity() {
         val adapter = object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, opcionesDoc) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val v = super.getView(position, convertView, parent)
-                (v as TextView).setTextColor(Color.WHITE)
+                (v as TextView).setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.text_primary))
                 return v
             }
             override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val v = super.getDropDownView(position, convertView, parent)
-                (v as TextView).setTextColor(Color.WHITE)
-                v.setBackgroundColor(Color.parseColor("#333333"))
+                (v as TextView).setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.text_primary))
+                v.setBackgroundColor(ContextCompat.getColor(this@RegisterActivity, R.color.app_surface_card))
                 return v
             }
         }

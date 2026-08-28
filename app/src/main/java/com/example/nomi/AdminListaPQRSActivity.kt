@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 
 // ── IMPORTACIONES DE FIREBASE ────────────────────────────
 import com.google.firebase.firestore.FirebaseFirestore
@@ -58,7 +59,7 @@ class AdminListaPQRSActivity : AppCompatActivity() {
                         val p = LinearLayout.LayoutParams(-1, -2)
                         p.setMargins(0, 0, 0, 32)
                         layoutParams = p
-                        setCardBackgroundColor(Color.parseColor("#111111"))
+                        setCardBackgroundColor(ContextCompat.getColor(this@AdminListaPQRSActivity, R.color.app_surface_card))
                         radius = 15f
                         setContentPadding(25, 25, 25, 25)
                         isClickable = true
@@ -69,13 +70,13 @@ class AdminListaPQRSActivity : AppCompatActivity() {
 
                     val tvRad = TextView(this).apply {
                         text = "RADICADO #${idDoc.take(6).uppercase()} - $nombre"
-                        setTextColor(Color.parseColor("#00AEEF"))
+                        setTextColor(ContextCompat.getColor(this@AdminListaPQRSActivity, R.color.brand_primary))
                         setTypeface(null, Typeface.BOLD)
                     }
 
                     val tvAsu = TextView(this).apply {
                         text = "Asunto: $asunto"
-                        setTextColor(Color.WHITE)
+                        setTextColor(ContextCompat.getColor(this@AdminListaPQRSActivity, R.color.text_primary))
                     }
 
                     val tvEst = TextView(this).apply {

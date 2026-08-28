@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 import java.io.FileOutputStream
+import java.security.MessageDigest
 
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -70,10 +71,12 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     fun obtenerTodasLasPQRS(): Cursor {
+        // NOTA: El llamador DEBE cerrar este cursor usando .use { } o .close()
         return readableDatabase.rawQuery("SELECT * FROM $TABLE_PQRS ORDER BY id DESC", null)
     }
     
     fun obtenerPQRPorId(id: Int): Cursor {
+        // NOTA: El llamador DEBE cerrar este cursor usando .use { } o .close()
         return readableDatabase.rawQuery("SELECT * FROM $TABLE_PQRS WHERE id = ?", arrayOf(id.toString()))
     }
 
@@ -83,35 +86,52 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(COL_PQRS_ESTADO, "Respondido")
             put(COL_PQRS_RESPUESTA, respuesta)
         }
+        // Usamos parámetros para evitar inyección SQL (implícito en update)
         return db.update(TABLE_PQRS, v, "id = ?", arrayOf(id.toString())) > 0
     }
 
     fun obtenerMisPQRS(correo: String): Cursor {
+        // NOTA: El llamador DEBE cerrar este cursor usando .use { } o .close()
         return readableDatabase.rawQuery("SELECT * FROM $TABLE_PQRS WHERE $COL_PQRS_USER_CORREO = ? ORDER BY id DESC", arrayOf(correo))
+    }
+
+    // --- SEGURIDAD: Hashing de contraseñas ---
+    private fun hashPassword(password: String): String {
+        val bytes = password.toByteArray()
+        val md = MessageDigest.getInstance("SHA-256")
+        val digest = md.digest(bytes)
+        return digest.fold("") { str, it -> str + "%02x".format(it) }
     }
 
     fun registrarUsuario(nombre: String, tipoDoc: String, numDoc: String, tel: String, correo: String, dir: String, pass: String): Boolean {
         val db = this.writableDatabase
         val v = ContentValues().apply {
             put("nombre", nombre); put("tipo_doc", tipoDoc); put("num_doc", numDoc)
-            put("telefono", tel); put("correo", correo); put("direccion", dir); put("password", pass)
+            put("telefono", tel); put("correo", correo); put("direccion", dir)
+            put("password", hashPassword(pass)) // Guardamos el HASH, no el texto plano
         }
         return db.insert(TABLE_USERS, null, v) != -1L
     }
 
     fun validarLogin(correo: String, pass: String): String {
-        val cursor = readableDatabase.rawQuery("SELECT * FROM $TABLE_USERS WHERE correo = ?", arrayOf(correo))
-        if (cursor.moveToFirst()) {
-            val passDB = cursor.getString(cursor.getColumnIndexOrThrow("password"))
-            val nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre"))
-            cursor.close()
-            return if (passDB == pass) "ok|$nombre|$correo" else "no_password"
+        return readableDatabase.rawQuery("SELECT nombre, password FROM $TABLE_USERS WHERE correo = ?", arrayOf(correo)).use { cursor ->
+            if (cursor.moveToFirst()) {
+                val passDB = cursor.getString(cursor.getColumnIndexOrThrow("password"))
+                val nombre = cursor.getString(cursor.getColumnIndexOrThrow("nombre"))
+                
+                // Comparamos el hash de la entrada con el hash guardado
+                if (passDB == hashPassword(pass)) "ok|$nombre|$correo" else "no_password"
+            } else {
+                "no_usuario"
+            }
         }
-        cursor.close()
-        return "no_usuario"
     }
 
-    fun existeCorreo(correo: String) = readableDatabase.rawQuery("SELECT * FROM $TABLE_USERS WHERE correo = ?", arrayOf(correo)).count > 0
+    fun existeCorreo(correo: String): Boolean {
+        return readableDatabase.rawQuery("SELECT 1 FROM $TABLE_USERS WHERE correo = ?", arrayOf(correo)).use { cursor ->
+            cursor.count > 0
+        }
+    }
 
     fun actualizarUsuario(correoOri: String, n: String, t: String, d: String, tel: String, c: String): Boolean {
         val db = this.writableDatabase
@@ -123,16 +143,16 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     fun cambiarPassword(correo: String, nuevaPass: String): Boolean {
         val db = this.writableDatabase
-        val v = ContentValues().apply { put("password", nuevaPass) }
+        val v = ContentValues().apply { 
+            put("password", hashPassword(nuevaPass)) // Hasheamos la nueva contraseña
+        }
         return db.update(TABLE_USERS, v, "correo = ?", arrayOf(correo)) > 0
     }
 
     fun obtenerEstadoPedido(guia: String): Int {
-        val cursor = readableDatabase.rawQuery("SELECT estado FROM $TABLE_ORDERS WHERE num_guia = ?", arrayOf(guia))
-        var estado = -1
-        if (cursor.moveToFirst()) estado = cursor.getInt(0)
-        cursor.close()
-        return estado
+        return readableDatabase.rawQuery("SELECT estado FROM $TABLE_ORDERS WHERE num_guia = ?", arrayOf(guia)).use { cursor ->
+            if (cursor.moveToFirst()) cursor.getInt(0) else -1
+        }
     }
 
     fun generarBackupExcel(context: Context): String {
@@ -142,21 +162,23 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val header = sheet.createRow(0)
             val columnas = arrayOf("ID", "Nombre", "Correo", "Teléfono", "Documento")
             columnas.forEachIndexed { i, s -> header.createCell(i).setCellValue(s) }
-            val cursor = readableDatabase.rawQuery("SELECT * FROM $TABLE_USERS", null)
-            var rowIdx = 1
-            while (cursor.moveToNext()) {
-                val row = sheet.createRow(rowIdx++)
-                row.createCell(0).setCellValue(cursor.getInt(0).toDouble())
-                row.createCell(1).setCellValue(cursor.getString(1))
-                row.createCell(2).setCellValue(cursor.getString(2))
-                row.createCell(3).setCellValue(cursor.getString(6))
-                row.createCell(4).setCellValue(cursor.getString(5))
+            
+            readableDatabase.rawQuery("SELECT * FROM $TABLE_USERS", null).use { cursor ->
+                var rowIdx = 1
+                while (cursor.moveToNext()) {
+                    val row = sheet.createRow(rowIdx++)
+                    row.createCell(0).setCellValue(cursor.getInt(0).toDouble())
+                    row.createCell(1).setCellValue(cursor.getString(1))
+                    row.createCell(2).setCellValue(cursor.getString(2))
+                    row.createCell(3).setCellValue(cursor.getString(6))
+                    row.createCell(4).setCellValue(cursor.getString(5))
+                }
             }
-            cursor.close()
+            
             val file = File(context.getExternalFilesDir(null), "Backup_Nomi.xlsx")
-            val fos = FileOutputStream(file)
-            workbook.write(fos)
-            fos.close()
+            FileOutputStream(file).use { fos ->
+                workbook.write(fos)
+            }
             workbook.close()
             return file.absolutePath
         } catch (e: Exception) { return "Error: ${e.message}" }

@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 
 class RastrearActivity : AppCompatActivity() {
 
@@ -30,7 +31,7 @@ class RastrearActivity : AppCompatActivity() {
     }
 
     private fun actualizarEstado(paso: Int) {
-        val colorActivo = Color.parseColor("#00AEEF")
+        val colorActivo = ContextCompat.getColor(this, R.color.brand_primary)
         val colorInactivo = Color.GRAY
 
         // Actualizamos los iconos de los pasos

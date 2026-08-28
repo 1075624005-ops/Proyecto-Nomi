@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@color/app_background"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="CENTRO DE CONTACTO"
-            android:textColor="#00AEEF"
+            android:textColor="@color/brand_primary"
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:text="¿En qué podemos ayudarte hoy?"
-            android:textColor="#A0A0A0"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,10 +59,10 @@
             android:layout_marginTop="32dp"
             android:clickable="true"
             android:focusable="true"
-            app:cardBackgroundColor="#12121A"
+            app:cardBackgroundColor="@color/app_surface_card"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp"
-            app:strokeColor="#25D366"
+            app:strokeColor="@color/fixed_whatsapp"
             app:strokeWidth="1.5dp"
             app:layout_constraintTop_toBottomOf="@id/tvSubtituloContacto">
 
@@ -79,14 +79,14 @@
                     android:layout_height="32dp"
                     android:contentDescription="WhatsApp"
                     android:src="@android:drawable/stat_notify_chat"
-                    app:tint="#25D366" />
+                    app:tint="@color/fixed_whatsapp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="Chatear por WhatsApp"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -100,10 +100,10 @@
             android:layout_marginTop="16dp"
             android:clickable="true"
             android:focusable="true"
-            app:cardBackgroundColor="#12121A"
+            app:cardBackgroundColor="@color/app_surface_card"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp"
-            app:strokeColor="#00AEEF"
+            app:strokeColor="@color/brand_primary"
             app:strokeWidth="1.5dp"
             app:layout_constraintTop_toBottomOf="@id/btnWhatsapp">
 
@@ -120,14 +120,14 @@
                     android:layout_height="32dp"
                     android:contentDescription="Llamar"
                     android:src="@android:drawable/ic_menu_call"
-                    app:tint="#00AEEF" />
+                    app:tint="@color/brand_primary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="Llamada de Servicio"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -141,7 +141,7 @@
             android:layout_marginTop="16dp"
             android:clickable="true"
             android:focusable="true"
-            app:cardBackgroundColor="#12121A"
+            app:cardBackgroundColor="@color/app_surface_card"
             app:cardCornerRadius="16dp"
             app:cardElevation="2dp"
             app:strokeColor="#888888"
@@ -161,14 +161,14 @@
                     android:layout_height="32dp"
                     android:contentDescription="Email"
                     android:src="@android:drawable/ic_dialog_email"
-                    app:tint="#FFFFFF" />
+                    app:tint="@color/text_primary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:text="Enviar Correo"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -183,11 +183,11 @@
             android:layout_marginTop="32dp"
             android:layout_marginBottom="16dp"
             android:text="VOLVER"
-            android:textColor="#00AEEF"
+            android:textColor="@color/brand_primary"
             android:textSize="14sp"
             android:textStyle="bold"
             app:cornerRadius="12dp"
-            app:strokeColor="#00AEEF"
+            app:strokeColor="@color/brand_primary"
             app:strokeWidth="1.5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

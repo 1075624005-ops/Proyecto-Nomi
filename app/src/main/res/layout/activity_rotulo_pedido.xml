@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@color/app_background"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="RÓTULO DE ENVÍO"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/text_primary"
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,9 +45,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            app:cardBackgroundColor="#000000"
+            app:cardBackgroundColor="@color/app_background"
             app:cardCornerRadius="14dp"
-            app:strokeColor="#00AEEF"
+            app:strokeColor="@color/brand_primary"
             app:strokeWidth="1.5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +70,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
                         android:text="NOMI EXPRESS"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/text_primary"
                         android:textSize="12sp"
                         android:textStyle="bold" />
 
@@ -94,7 +94,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="N11-000001"
-                            android:textColor="#00AEEF"
+                            android:textColor="@color/brand_primary"
                             android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -112,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="📍 ENVIAR A (DESTINATARIO)"
-                    android:textColor="#00AEEF"
+                    android:textColor="@color/brand_primary"
                     android:textSize="11sp"
                     android:textStyle="bold" />
 
@@ -122,7 +122,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="-"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp"
                     android:lineSpacingExtra="2dp" />
 
@@ -138,7 +138,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="📦 CONTENIDO Y OBSERVACIONES"
-                    android:textColor="#00AEEF"
+                    android:textColor="@color/brand_primary"
                     android:textSize="11sp"
                     android:textStyle="bold" />
 
@@ -160,7 +160,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:cardBackgroundColor="#000000"
+            app:cardBackgroundColor="@color/app_background"
             app:cardCornerRadius="14dp"
             app:strokeColor="#FAC775"
             app:strokeWidth="1.5dp"
@@ -203,9 +203,9 @@
             android:layout_width="0dp"
             android:layout_height="52dp"
             android:layout_marginTop="24dp"
-            android:backgroundTint="#00AEEF"
+            android:backgroundTint="@color/brand_primary"
             android:text="IMPRIMIR / COMPARTIR RÓTULO"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/text_primary"
             android:textSize="14sp"
             android:textStyle="bold"
             app:cornerRadius="12dp"
@@ -222,11 +222,11 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="30dp"
             android:text="IR AL INICIO"
-            android:textColor="#00AEEF"
+            android:textColor="@color/brand_primary"
             android:textSize="14sp"
             android:textStyle="bold"
             app:cornerRadius="12dp"
-            app:strokeColor="#00AEEF"
+            app:strokeColor="@color/brand_primary"
             app:strokeWidth="1.5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

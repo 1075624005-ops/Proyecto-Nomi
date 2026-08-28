@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 
 class DatosPQRSActivity : AppCompatActivity() {
 
@@ -28,13 +29,13 @@ class DatosPQRSActivity : AppCompatActivity() {
         val adapter = object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, opcionesDoc) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val v = super.getView(position, convertView, parent)
-                (v as TextView).setTextColor(Color.WHITE) // Texto blanco cuando está cerrado
+                (v as TextView).setTextColor(ContextCompat.getColor(this@DatosPQRSActivity, R.color.text_primary)) // Texto blanco cuando está cerrado
                 return v
             }
             override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val v = super.getDropDownView(position, convertView, parent)
-                (v as TextView).setTextColor(Color.WHITE) // Texto blanco en la lista desplegable
-                v.setBackgroundColor(Color.parseColor("#333333")) // Fondo oscuro para que se vea el blanco
+                (v as TextView).setTextColor(ContextCompat.getColor(this@DatosPQRSActivity, R.color.text_primary)) // Texto blanco en la lista desplegable
+                v.setBackgroundColor(ContextCompat.getColor(this@DatosPQRSActivity, R.color.app_surface_card)) // Fondo oscuro para que se vea el blanco
                 return v
             }
         }

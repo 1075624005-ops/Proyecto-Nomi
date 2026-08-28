@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@color/app_background"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +30,7 @@
             android:layout_marginTop="12dp"
             android:gravity="center"
             android:text="RESUMEN DE TU PEDIDO"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/text_primary"
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,9 +57,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            app:cardBackgroundColor="#000000"
+            app:cardBackgroundColor="@color/app_background"
             app:cardCornerRadius="12dp"
-            app:strokeColor="#00AEEF"
+            app:strokeColor="@color/brand_primary"
             app:strokeWidth="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="📍 RUTA DE ENVÍO"
-                    android:textColor="#00AEEF"
+                    android:textColor="@color/brand_primary"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="Cargando..."
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp" />
 
                 <View
@@ -102,7 +102,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:background="#222222" />
+                    android:background="@color/app_surface_card" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:text="Cargando..."
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -129,9 +129,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:cardBackgroundColor="#000000"
+            app:cardBackgroundColor="@color/app_background"
             app:cardCornerRadius="12dp"
-            app:strokeColor="#00AEEF"
+            app:strokeColor="@color/brand_primary"
             app:strokeWidth="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -147,7 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="📦 DETALLES DEL PAQUETE"
-                    android:textColor="#00AEEF"
+                    android:textColor="@color/brand_primary"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -157,7 +157,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Cargando..."
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -168,9 +168,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:cardBackgroundColor="#000000"
+            app:cardBackgroundColor="@color/app_background"
             app:cardCornerRadius="12dp"
-            app:strokeColor="#00AEEF"
+            app:strokeColor="@color/brand_primary"
             app:strokeWidth="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -186,7 +186,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="💰 MÉTODO Y TOTAL"
-                    android:textColor="#00AEEF"
+                    android:textColor="@color/brand_primary"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -196,7 +196,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="Cargando..."
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp" />
 
                 <TextView
@@ -206,7 +206,7 @@
                     android:layout_marginTop="12dp"
                     android:gravity="center"
                     android:text="$ 0"
-                    android:textColor="#00AEEF"
+                    android:textColor="@color/brand_primary"
                     android:textSize="28sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -218,9 +218,9 @@
             android:layout_width="0dp"
             android:layout_height="52dp"
             android:layout_marginTop="24dp"
-            android:backgroundTint="#00AEEF"
+            android:backgroundTint="@color/brand_primary"
             android:text="CONFIRMAR PEDIDO"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/text_primary"
             android:textSize="15sp"
             android:textStyle="bold"
             app:cornerRadius="12dp"
@@ -236,11 +236,11 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="30dp"
             android:text="CORREGIR DATOS"
-            android:textColor="#00AEEF"
+            android:textColor="@color/brand_primary"
             android:textSize="14sp"
             android:textStyle="bold"
             app:cornerRadius="12dp"
-            app:strokeColor="#00AEEF"
+            app:strokeColor="@color/brand_primary"
             app:strokeWidth="1.5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
