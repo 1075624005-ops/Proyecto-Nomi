@@ -8,6 +8,11 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 // ── IMPORTACIONES DE FIREBASE ────────────────────────────
 import com.google.firebase.auth.FirebaseAuth
@@ -25,6 +30,11 @@ class PerfilActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil)
+
+        lifecycleScope.launch {
+            delay(2000)
+            hideSystemUI()
+        }
 
         // Inicializamos Firebase
         auth = Firebase.auth
@@ -134,5 +144,11 @@ class PerfilActivity : AppCompatActivity() {
             else Toast.makeText(this, "Código incorrecto", Toast.LENGTH_SHORT).show()
         }
         builder.show()
+    }
+
+    private fun hideSystemUI() {
+        val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 }

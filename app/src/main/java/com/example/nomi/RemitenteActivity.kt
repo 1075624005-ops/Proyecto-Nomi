@@ -10,11 +10,21 @@ import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class RemitenteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_remitente)
+
+        lifecycleScope.launch {
+            delay(2000)
+            hideSystemUI()
+        }
 
         val scroll = findViewById<ScrollView>(R.id.scrollRemitente)
         val container = findViewById<ViewGroup>(R.id.main_remitente)
@@ -75,5 +85,11 @@ class RemitenteActivity : AppCompatActivity() {
                 activarAutoSubida(child, scrollView)
             }
         }
+    }
+
+    private fun hideSystemUI() {
+        val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 }

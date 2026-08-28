@@ -5,6 +5,11 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class RastrearActivity : AppCompatActivity() {
 
@@ -13,6 +18,11 @@ class RastrearActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rastrear)
+
+        lifecycleScope.launch {
+            delay(2000)
+            hideSystemUI()
+        }
 
         db = DatabaseHelper(this)
 
@@ -41,5 +51,11 @@ class RastrearActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.step4).setColorFilter(if (paso >= 4) colorActivo else colorInactivo)
         
         // También podemos cambiar el color del texto si quisiéramos (opcional)
+    }
+
+    private fun hideSystemUI() {
+        val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 }

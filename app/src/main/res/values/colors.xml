@@ -39,4 +39,17 @@
     <color name="status_pending_text">#856404</color>
     <color name="status_resolved_bg">#D4EDDA</color>
     <color name="status_resolved_text">#155724</color>
+
+    <!-- ALIAS TEMPORALES PARA COMPATIBILIDAD (Para evitar errores de compilación) -->
+    <color name="bg_main">@color/app_background</color>
+    <color name="bg_card">@color/app_surface_card</color>
+    <color name="bg_dark_variant">#0F0F14</color>
+    <color name="bg_input">@color/app_input_background</color>
+    <color name="brand_cyan">@color/brand_primary</color>
+    <color name="text_white">@color/text_primary</color>
+    <color name="text_hint">#888888</color>
+    <color name="text_muted">@color/text_secondary</color>
+    <color name="text_light_gray">#CCCCCC</color>
+    <color name="border_gray">#333333</color>
+    <color name="error_red">@color/palette_error</color>
 </resources>

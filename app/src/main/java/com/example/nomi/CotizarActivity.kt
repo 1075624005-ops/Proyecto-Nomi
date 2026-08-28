@@ -9,11 +9,24 @@ import java.text.NumberFormat
 import java.util.*
 import kotlin.math.ceil
 
+import android.view.View
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 class CotizarActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cotizar)
+
+        // --- LÓGICA PARA OCULTAR BOTONES DE NAVEGACIÓN (INMERSIVO) ---
+        lifecycleScope.launch {
+            delay(2000) // Esperar 2 segundos como pidió el usuario
+            hideSystemUI()
+        }
 
         val etAncho = findViewById<EditText>(R.id.etAncho)
         val etLargo = findViewById<EditText>(R.id.etLargo)
@@ -104,5 +117,13 @@ class CotizarActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error en el cálculo", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun hideSystemUI() {
+        val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
+        // Ocultar barra de estado y botones de navegación
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+        // Permitir que aparezcan deslizando y se vuelvan a ocultar
+        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 }

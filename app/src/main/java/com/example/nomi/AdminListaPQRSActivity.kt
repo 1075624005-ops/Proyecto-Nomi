@@ -14,6 +14,11 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class AdminListaPQRSActivity : AppCompatActivity() {
 
@@ -22,6 +27,11 @@ class AdminListaPQRSActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_lista_pqrs)
+
+        lifecycleScope.launch {
+            delay(2000)
+            hideSystemUI()
+        }
 
         dbFirestore = Firebase.firestore
         val container = findViewById<LinearLayout>(R.id.containerAdminPQRS)
@@ -102,5 +112,11 @@ class AdminListaPQRSActivity : AppCompatActivity() {
             .addOnFailureListener {
                 Toast.makeText(this, "Error al cargar datos de la nube", Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun hideSystemUI() {
+        val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 }

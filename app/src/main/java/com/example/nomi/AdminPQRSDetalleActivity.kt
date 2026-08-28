@@ -3,6 +3,11 @@ package com.example.nomi
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 // ── IMPORTACIONES DE FIREBASE ────────────────────────────
 import com.google.firebase.firestore.FirebaseFirestore
@@ -17,6 +22,11 @@ class AdminPQRSDetalleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_pqrs_detalle)
+
+        lifecycleScope.launch {
+            delay(2000)
+            hideSystemUI()
+        }
 
         dbFirestore = Firebase.firestore
         
@@ -80,5 +90,11 @@ class AdminPQRSDetalleActivity : AppCompatActivity() {
         }
 
         btnVolver.setOnClickListener { finish() }
+    }
+
+    private fun hideSystemUI() {
+        val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 }
