@@ -88,6 +88,15 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name="com.example.nomi.MessengerHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.nomi.AdminMensajerosActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.nomi.AdminRegistrarMensajeroActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.nomi.SplashActivity"
             android:exported="true">
             <intent-filter>

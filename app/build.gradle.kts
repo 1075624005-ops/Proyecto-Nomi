@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
+    // --- AGREGA ESTA LÍNEA ---
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
@@ -77,4 +79,10 @@ dependencies {
 
     // ZXing for QR codes
     implementation("com.google.zxing:core:3.5.3")
+    // --- SUPABASE & KTOR (Motor para PostgreSQL) ---
+    implementation(platform("io.github.jan-tennert.supabase:bom:3.0.1"))
+    implementation("io.github.jan-tennert.supabase:postgrest-kt")
+    implementation("io.github.jan-tennert.supabase:auth-kt")
+    implementation("io.ktor:ktor-client-android:3.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
 }

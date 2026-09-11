@@ -48,9 +48,15 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             startActivity(intent)
         }
         
-        // BOTÓN VER TODOS LOS PEDIDOS (Nueva funcionalidad)
+        // BOTÓN VER TODOS LOS PEDIDOS
         findViewById<Button>(R.id.btnVerPedidos).setOnClickListener {
             val intent = Intent(this, AdminListaPedidosActivity::class.java)
+            startActivity(intent)
+        }
+
+        // BOTÓN GESTIONAR MENSAJEROS
+        findViewById<Button>(R.id.btnGestionarMensajeros).setOnClickListener {
+            val intent = Intent(this, AdminMensajerosActivity::class.java)
             startActivity(intent)
         }
     }

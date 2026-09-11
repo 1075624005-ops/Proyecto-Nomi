@@ -136,6 +136,24 @@
                     app:strokeColor="@color/brand_primary"
                     app:strokeWidth="1dp" />
 
+                <!-- BOTÓN / TARJETA: GESTIONAR MENSAJEROS (NUEVO) -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGestionarMensajeros"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="🛵   GESTIONAR MENSAJEROS"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
 
             </LinearLayout>
         </ScrollView>

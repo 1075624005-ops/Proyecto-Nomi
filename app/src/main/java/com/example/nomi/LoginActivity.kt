@@ -2,7 +2,7 @@ package com.example.nomi
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -12,14 +12,10 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-// IMPORTACIONES DE FIREBASE
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
+    // NUEVO: Instancia del repositorio de PostgreSQL
+    private val repo = SupabaseRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,14 +26,13 @@ class LoginActivity : AppCompatActivity() {
             hideSystemUI()
         }
 
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
-
         val etCorreo        = findViewById<EditText>(R.id.etUsuario)
         val etPassword      = findViewById<EditText>(R.id.etPassword)
         val btnLogin        = findViewById<Button>(R.id.btnLogin)
+        val pbLogin         = findViewById<ProgressBar>(R.id.pbLogin)
         val btnCrearUsuario = findViewById<Button>(R.id.btnCrearUsuario)
         val tvOlvido        = findViewById<TextView>(R.id.tvOlvido)
+        
         val prefs = getSharedPreferences("nomi_prefs", MODE_PRIVATE)
         val yaVioAviso = prefs.getBoolean("aviso_datos_visto", false)
 
@@ -71,37 +66,42 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // ── LOGIN USUARIOS (FIREBASE) ────────────────
-            auth.signInWithEmailAndPassword(correo, password)
-                .addOnSuccessListener { resultado ->
-                    val uid = resultado.user?.uid
-                    if (uid != null) {
-                        db.collection("usuarios").document(uid).get()
-                            .addOnSuccessListener { documento ->
-                                val nombre = documento.getString("nombre") ?: "Usuario"
-                                val rol = documento.getString("rol") ?: "cliente"
+            // MOSTRAR CARGA Y DESACTIVAR BOTÓN
+            pbLogin.visibility = View.VISIBLE
+            btnLogin.isEnabled = false
 
-                                // Si el rol es admin, vamos al panel de admin
-                                if (rol == "admin") {
-                                    Toast.makeText(this, "👨‍💻 Acceso concedido al Jefe", Toast.LENGTH_SHORT).show()
-                                    val intent = Intent(this, AdminActivity::class.java)
-                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    startActivity(intent)
-                                } else {
-                                    // Si no, al Home normal
-                                    val intent = Intent(this, HomeActivity::class.java)
-                                    intent.putExtra("nombre", nombre)
-                                    intent.putExtra("correo", correo)
-                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    startActivity(intent)
-                                }
-                                finish()
-                            }
+            // 🚀 NUEVO: LOGIN CON POSTGRESQL (SUPABASE)
+            lifecycleScope.launch {
+                val resultado = repo.login(correo, password)
+                
+                pbLogin.visibility = View.GONE
+                btnLogin.isEnabled = true
+
+                resultado.onSuccess { usuario ->
+                    val rol = usuario.rol.trim()
+                    
+                    if (rol == "admin") {
+                        Toast.makeText(this@LoginActivity, "👨‍💻 Acceso Administrador", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@LoginActivity, AdminActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    } else if (rol == "mensajero") {
+                        Toast.makeText(this@LoginActivity, "📦 Acceso Mensajero", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@LoginActivity, MessengerHomeActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                        intent.putExtra("nombre", usuario.nombre)
+                        intent.putExtra("correo", usuario.correo)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
                     }
+                    finish()
+                }.onFailure { error ->
+                    Toast.makeText(this@LoginActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
                 }
-                .addOnFailureListener {
-                    Toast.makeText(this, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
-                }
+            }
         }
 
         btnCrearUsuario.setOnClickListener {
@@ -109,27 +109,9 @@ class LoginActivity : AppCompatActivity() {
         }
 
         tvOlvido.setOnClickListener {
-            mostrarDialogoRecuperacion()
+            // TODO: Migrar recuperación de contraseña a Supabase
+            Toast.makeText(this, "Función en migración", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun mostrarDialogoRecuperacion() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Recuperar contraseña")
-        builder.setMessage("Ingresa tu correo para enviarte el enlace:")
-        val input = EditText(this)
-        input.hint = "correo@ejemplo.com"
-        builder.setView(input)
-        builder.setPositiveButton("Enviar") { _, _ ->
-            val mail = input.text.toString().trim()
-            if (mail.isNotEmpty()) {
-                auth.sendPasswordResetEmail(mail).addOnSuccessListener {
-                    Toast.makeText(this, "✅ Revisa tu correo", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-        builder.setNegativeButton("Cancelar", null)
-        builder.show()
     }
 
     private fun hideSystemUI() {

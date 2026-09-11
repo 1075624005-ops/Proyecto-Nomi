@@ -83,11 +83,11 @@
                         android:layout_height="wrap_content"
                         android:hint="Nombre del Remitente"
                         android:textColorHint="#888888"
-                        app:boxStrokeColor="@color/brand_primary"
+                        app:boxStrokeColor="@color/fixed_white"
                         app:boxStrokeWidth="1dp"
                         app:boxStrokeWidthFocused="2dp"
                         app:cornerRadius="10dp"
-                        app:hintTextColor="@color/brand_primary">
+                        app:hintTextColor="@color/fixed_white">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etNombreRemitente"
@@ -106,11 +106,11 @@
                         android:layout_marginTop="12dp"
                         android:hint="Teléfono de contacto"
                         android:textColorHint="#888888"
-                        app:boxStrokeColor="@color/brand_primary"
+                        app:boxStrokeColor="@color/fixed_white"
                         app:boxStrokeWidth="1dp"
                         app:boxStrokeWidthFocused="2dp"
                         app:cornerRadius="10dp"
-                        app:hintTextColor="@color/brand_primary">
+                        app:hintTextColor="@color/fixed_white">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etTelefonoRemitente"
@@ -129,11 +129,11 @@
                         android:layout_marginTop="12dp"
                         android:hint="Correo Electrónico"
                         android:textColorHint="#888888"
-                        app:boxStrokeColor="@color/brand_primary"
+                        app:boxStrokeColor="@color/fixed_white"
                         app:boxStrokeWidth="1dp"
                         app:boxStrokeWidthFocused="2dp"
                         app:cornerRadius="10dp"
-                        app:hintTextColor="@color/brand_primary">
+                        app:hintTextColor="@color/fixed_white">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etCorreoRemitente"
@@ -152,11 +152,11 @@
                         android:layout_marginTop="12dp"
                         android:hint="Dirección de recogida"
                         android:textColorHint="#888888"
-                        app:boxStrokeColor="@color/brand_primary"
+                        app:boxStrokeColor="@color/fixed_white"
                         app:boxStrokeWidth="1dp"
                         app:boxStrokeWidthFocused="2dp"
                         app:cornerRadius="10dp"
-                        app:hintTextColor="@color/brand_primary">
+                        app:hintTextColor="@color/fixed_white">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etDireccionRemitente"
