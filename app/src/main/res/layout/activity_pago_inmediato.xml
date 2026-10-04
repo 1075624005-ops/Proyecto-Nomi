@@ -152,14 +152,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cvCuenta" />
 
-        <!-- BOTÓN CONTINUAR -->
+        <!-- BOTÓN CONTINUAR / VER RÓTULO PDF -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnYaTransferi"
+            android:id="@+id/btnVerRotuloPago"
             android:layout_width="0dp"
             android:layout_height="52dp"
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/brand_primary"
-            android:text="YA TRANSFERÍ - CONTINUAR"
+            android:text="📄 VER / IMPRIMIR RÓTULO DE ENVÍO"
             android:textColor="@color/text_primary"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -182,7 +182,7 @@
             app:cornerRadius="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnYaTransferi" />
+            app:layout_constraintTop_toBottomOf="@id/btnVerRotuloPago" />
 
         <!-- BOTÓN CANCELAR (RESTRICCIÓN CORREGIDA) -->
         <com.google.android.material.button.MaterialButton
