@@ -70,6 +70,11 @@ class RotuloActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvDestinatario).text = "Nombre: $destNombre\nDirección: $destDir\nLocalidad: $nomLocalidad\nTel: $destTel"
         findViewById<TextView>(R.id.tvContenido).text = "Descripción: $desc\nServicio: $tipoEnvio - $peso kg"
 
+        // Generar e inyectar el Código QR del Pedido
+        val qrPayload = "NOMI EXPRESS\nGuia: $guia\nRemitente: $remNombre\nDestinatario: $destNombre\nDir: $destDir, $nomLocalidad\nTel: $destTel\nMonto: ${format.format(costo)}"
+        val ivQr = findViewById<android.widget.ImageView>(R.id.ivQrRotulo)
+        ivQr?.setImageBitmap(generarQrBitmap(qrPayload, 350))
+
         val tvEstadoPago = findViewById<TextView>(R.id.tvEstadoPago)
         val tvMontoPago = findViewById<TextView>(R.id.tvMontoPago)
         val btnPagarNequi = findViewById<Button>(R.id.btnPagarNequiRotulo)
@@ -95,7 +100,10 @@ class RotuloActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnIrInicio).setOnClickListener {
-            // Regresa al panel principal según la sesión o finaliza la pila
+            val intentHome = Intent(this, com.example.nomi.main.HomeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intentHome)
             finish()
         }
     }
@@ -129,6 +137,18 @@ class RotuloActivity : AppCompatActivity() {
                 android.widget.Toast.makeText(this@RotuloActivity, "Error al generar PDF: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun generarQrBitmap(contenido: String, size: Int): android.graphics.Bitmap {
+        val writer = com.google.zxing.qrcode.QRCodeWriter()
+        val bitMatrix = writer.encode(contenido, com.google.zxing.BarcodeFormat.QR_CODE, size, size)
+        val bitmap = android.graphics.Bitmap.createBitmap(size, size, android.graphics.Bitmap.Config.RGB_565)
+        for (x in 0 until size) {
+            for (y in 0 until size) {
+                bitmap.setPixel(x, y, if (bitMatrix[x, y]) android.graphics.Color.BLACK else android.graphics.Color.WHITE)
+            }
+        }
+        return bitmap
     }
 
     private fun hideSystemUI() {

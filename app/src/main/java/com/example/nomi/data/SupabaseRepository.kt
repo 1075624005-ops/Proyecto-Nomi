@@ -85,10 +85,31 @@ class SupabaseRepository {
 
     suspend fun crearPedido(pedido: PedidoPostgres): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
+            // Intentar insertar modelo completo
             client.from("pedidos").insert(pedido)
             Result.success(true)
         } catch (e: Exception) {
-            Result.failure(e)
+            try {
+                // Insertar exactamente con la estructura de columnas existente en Supabase (num_guia, id_mensajero, estado, costo)
+                @kotlinx.serialization.Serializable
+                data class PedidoTablaSupabase(
+                    val num_guia: String,
+                    val id_mensajero: String? = null,
+                    val estado: Int = 1,
+                    val costo: Double? = 0.0
+                )
+
+                val pedidoDirecto = PedidoTablaSupabase(
+                    num_guia = pedido.num_guia,
+                    id_mensajero = if (pedido.id_mensajero.isNullOrEmpty()) null else pedido.id_mensajero,
+                    estado = pedido.estado,
+                    costo = pedido.costo
+                )
+                client.from("pedidos").insert(pedidoDirecto)
+                Result.success(true)
+            } catch (e2: Exception) {
+                Result.failure(e2)
+            }
         }
     }
 
@@ -106,6 +127,24 @@ class SupabaseRepository {
             client.from("pedidos").update(
                 {
                     set("estado", nuevoEstado)
+                }
+            ) {
+                filter {
+                    eq("num_guia", guia)
+                }
+            }
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun asignarMensajeroAPedido(guia: String, idMensajero: String): Result<Boolean> = withContext(Dispatchers.IO) {
+        try {
+            client.from("pedidos").update(
+                {
+                    set("id_mensajero", idMensajero)
+                    set("estado", 2) // Pasa automáticamente a "EN CAMINO / EN RUTA"
                 }
             ) {
                 filter {

@@ -46,8 +46,8 @@ class AdminRegistrarMensajeroActivity : AppCompatActivity() {
             val are = etArea.text.toString().trim()
             val pas = etPass.text.toString().trim()
 
-            if (nom.isEmpty() || ced.isEmpty() || cor.isEmpty() || pas.isEmpty()) {
-                Toast.makeText(this, "⚠️ Por favor ingrese los campos obligatorios", Toast.LENGTH_SHORT).show()
+            if (nom.isEmpty() || ced.isEmpty() || tel.isEmpty() || cor.isEmpty() || pla.isEmpty() || are.isEmpty() || pas.isEmpty()) {
+                Toast.makeText(this, "⚠️ Todos los campos son obligatorios: Nombre, Cédula, Teléfono, Correo, Placa, Zona y Contraseña", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 

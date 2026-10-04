@@ -49,6 +49,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val tvWelcome = findViewById<TextView>(R.id.tvUserWelcome)
         val etBuscar = findViewById<EditText>(R.id.etBuscar)
 
+        val btnMisPedidos = findViewById<CardView>(R.id.btnMisPedidosHome)
         val btnCotiza = findViewById<CardView>(R.id.btnCotizaHome)
         val btnPQRS = findViewById<CardView>(R.id.btnPQRHome)
         val btnContacto = findViewById<CardView>(R.id.btnContactenosHome)
@@ -57,6 +58,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         btnMenu.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        btnMisPedidos?.setOnClickListener {
+            startActivity(Intent(this, RastrearActivity::class.java))
         }
 
         etBuscar.setOnEditorActionListener { _, actionId, _ ->
@@ -136,10 +141,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_rastrear -> {
-                Toast.makeText(this, "🚧 Función en mantenimiento / Próximamente disponible", Toast.LENGTH_LONG).show()
+                startActivity(Intent(this, RastrearActivity::class.java))
             }
             R.id.nav_pedidos -> {
-                Toast.makeText(this, "🚧 Función en mantenimiento / Próximamente disponible", Toast.LENGTH_LONG).show()
+                startActivity(Intent(this, RastrearActivity::class.java))
             }
 
             R.id.nav_logout -> {

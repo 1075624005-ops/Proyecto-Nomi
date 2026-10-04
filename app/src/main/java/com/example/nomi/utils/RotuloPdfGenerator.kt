@@ -2,8 +2,8 @@ package com.example.nomi.utils
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.pdf.PdfDocument
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -39,45 +39,46 @@ object RotuloPdfGenerator {
     suspend fun generar(context: Context, datos: DatosRotulo): File = withContext(Dispatchers.IO) {
         val view = withContext(Dispatchers.Main) {
             val inflater = LayoutInflater.from(context)
-            val v = inflater.inflate(R.layout.activity_rotulo_pedido, null)
+            val v = inflater.inflate(R.layout.pdf_rotulo_impresion, null)
 
             val format = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
 
-            v.findViewById<TextView>(R.id.tvGuia)?.text = datos.guia.ifEmpty { "NOMI-000000" }
-            v.findViewById<TextView>(R.id.tvRemitente)?.text =
+            v.findViewById<TextView>(R.id.tvGuiaPdf)?.text = datos.guia.ifEmpty { "NOMI-000000" }
+            v.findViewById<TextView>(R.id.tvRemitentePdf)?.text =
                 "Nombre: ${datos.remNombre}\nDirección: ${datos.remDir}"
-            v.findViewById<TextView>(R.id.tvDestinatario)?.text =
+            v.findViewById<TextView>(R.id.tvDestinatarioPdf)?.text =
                 "Nombre: ${datos.destNombre}\nDirección: ${datos.destDir}\nLocalidad: ${datos.nomLocalidad}\nTel: ${datos.destTel}"
-            v.findViewById<TextView>(R.id.tvContenido)?.text =
+            v.findViewById<TextView>(R.id.tvContenidoPdf)?.text =
                 "Descripción: ${datos.descripcion}\nServicio: ${datos.tipoEnvio} - ${datos.peso} kg"
 
-            val tvEstadoPago = v.findViewById<TextView>(R.id.tvEstadoPago)
-            val tvMontoPago = v.findViewById<TextView>(R.id.tvMontoPago)
+            val tvEstadoPago = v.findViewById<TextView>(R.id.tvEstadoPagoPdf)
+            val tvMontoPago = v.findViewById<TextView>(R.id.tvMontoPagoPdf)
             if (datos.esContraentrega) {
                 tvEstadoPago?.text = "PAGO CONTRAENTREGA (COBRO EN DESTINO)"
-                tvMontoPago?.text = "COBRAR ${format.format(datos.costo)}"
+                tvMontoPago?.text = "COBRAR: ${format.format(datos.costo)}"
             } else {
                 tvEstadoPago?.text = "PAGO INMEDIATO (TRANSFERENCIA NEQUI)"
-                tvMontoPago?.text = "POR PAGAR ${format.format(datos.costo)}"
+                tvMontoPago?.text = "POR PAGAR: ${format.format(datos.costo)}"
             }
 
-            // Ocultar los botones de acción para que no aparezcan dentro del documento PDF impreso
-            v.findViewById<View>(R.id.btnPagarNequiRotulo)?.visibility = View.GONE
-            v.findViewById<View>(R.id.btnImprimirRotulo)?.visibility = View.GONE
-            v.findViewById<View>(R.id.btnIrInicio)?.visibility = View.GONE
+            val qrPayload = "NOMI EXPRESS\nGuia: ${datos.guia}\nRemitente: ${datos.remNombre}\nDestinatario: ${datos.destNombre}\nDir: ${datos.destDir}, ${datos.nomLocalidad}\nTel: ${datos.destTel}\nMonto: ${format.format(datos.costo)}"
+            val ivQr = v.findViewById<android.widget.ImageView>(R.id.ivQrPdf)
+            ivQr?.setImageBitmap(generarQrBitmap(qrPayload, 320))
 
+            // Cálculo dinámico de altura para que el PDF NUNCA se corte abajo
             val widthPx = (400 * context.resources.displayMetrics.density).toInt()
-            val heightPx = (600 * context.resources.displayMetrics.density).toInt()
             v.measure(
                 View.MeasureSpec.makeMeasureSpec(widthPx, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(heightPx, View.MeasureSpec.EXACTLY)
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
             )
-            v.layout(0, 0, widthPx, heightPx)
+            val measuredWidth = v.measuredWidth
+            val measuredHeight = v.measuredHeight
+            v.layout(0, 0, measuredWidth, measuredHeight)
             v
         }
 
         val document = PdfDocument()
-        val pageInfo = PdfDocument.PageInfo.Builder(view.width, view.height, 1).create()
+        val pageInfo = PdfDocument.PageInfo.Builder(view.measuredWidth, view.measuredHeight, 1).create()
         val page = document.startPage(pageInfo)
         view.draw(page.canvas)
         document.finishPage(page)
@@ -88,5 +89,17 @@ object RotuloPdfGenerator {
         document.writeTo(FileOutputStream(file))
         document.close()
         file
+    }
+
+    private fun generarQrBitmap(contenido: String, size: Int): Bitmap {
+        val writer = com.google.zxing.qrcode.QRCodeWriter()
+        val bitMatrix = writer.encode(contenido, com.google.zxing.BarcodeFormat.QR_CODE, size, size)
+        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565)
+        for (x in 0 until size) {
+            for (y in 0 until size) {
+                bitmap.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
+            }
+        }
+        return bitmap
     }
 }

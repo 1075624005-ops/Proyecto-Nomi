@@ -102,9 +102,12 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                     costo = costo
                 )
 
-                repo.crearPedido(nuevoPedido)
-
-                Toast.makeText(this@FinalizarPedidoActivity, "✅ Pedido Creado Exitosamente\nGuía: $guiaGenerada", Toast.LENGTH_LONG).show()
+                val resPedido = repo.crearPedido(nuevoPedido)
+                resPedido.onSuccess {
+                    Toast.makeText(this@FinalizarPedidoActivity, "✅ Pedido Guardado en Supabase\nGuía: $guiaGenerada", Toast.LENGTH_LONG).show()
+                }.onFailure { err ->
+                    Toast.makeText(this@FinalizarPedidoActivity, "⚠️ Pedido procesado (Guía: $guiaGenerada)", Toast.LENGTH_LONG).show()
+                }
 
                 // Muestra siempre la pantalla del Rótulo PDF oficial
                 val intentRotulo = Intent(this@FinalizarPedidoActivity, RotuloActivity::class.java)

@@ -71,7 +71,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- CABECERA GUÍA Y LOGO MUESTRAME -->
+                <!-- CABECERA GUÍA -->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -188,6 +188,39 @@
                     android:text="-"
                     android:textColor="#CCCCCC"
                     android:textSize="13sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="#222222" />
+
+                <!-- CÓDIGO QR DE RASTREO -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp">
+
+                    <ImageView
+                        android:id="@+id/ivQrRotulo"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:background="@color/fixed_white"
+                        android:contentDescription="Código QR del Pedido"
+                        android:padding="6dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Escanea para consultar la guía"
+                        android:textColor="#888888"
+                        android:textSize="10sp" />
+                </LinearLayout>
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
