@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
-    id("com.google.gms.google-services")
-    // --- AGREGA ESTA LÍNEA ---
+    // Se ha desactivado Firebase para la migración a PostgreSQL
+    // id("com.google.gms.google-services")
     kotlin("plugin.serialization") version "2.0.21"
 }
 
@@ -64,25 +64,16 @@ dependencies {
         exclude(group = "org.apache.xmlbeans", module = "xmlbeans")
     }
 
-    // ── FIREBASE (SOLUCIÓN AL ERROR) ────────────────────────
-    // Usamos el BoM para coordinar las versiones
-    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
-
-    // Importamos las librerías estándar (ya incluyen Kotlin)
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-firestore")
-    implementation("com.google.firebase:firebase-storage")
-    implementation("com.google.firebase:firebase-analytics")
-
-    // Glide
-    implementation("com.github.bumptech.glide:glide:4.16.0")
-
-    // ZXing for QR codes
-    implementation("com.google.zxing:core:3.5.3")
     // --- SUPABASE & KTOR (Motor para PostgreSQL) ---
     implementation(platform("io.github.jan-tennert.supabase:bom:3.0.1"))
     implementation("io.github.jan-tennert.supabase:postgrest-kt")
     implementation("io.github.jan-tennert.supabase:auth-kt")
     implementation("io.ktor:ktor-client-android:3.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
+
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    // ZXing for QR codes
+    implementation("com.google.zxing:core:3.5.3")
 }

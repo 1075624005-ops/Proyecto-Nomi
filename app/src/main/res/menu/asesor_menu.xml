@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/asesor_nuevo_pedido"
+            android:icon="@android:drawable/ic_menu_add"
+            android:title="Crear Nuevo Pedido" />
+        <item
+            android:id="@+id/asesor_cotizar"
+            android:icon="@android:drawable/ic_menu_compass"
+            android:title="Cotizar Envío" />
+        <item
+            android:id="@+id/asesor_pqrs"
+            android:icon="@android:drawable/ic_menu_help"
+            android:title="Gestionar y Responder PQRS" />
+        <item
+            android:id="@+id/asesor_rastrear"
+            android:icon="@android:drawable/ic_menu_search"
+            android:title="Rastrear Pedido" />
+    </group>
+
+    <item android:title="Sesión">
+        <menu>
+            <item
+                android:id="@+id/asesor_logout"
+                android:icon="@android:drawable/ic_lock_power_off"
+                android:title="Cerrar Sesión" />
+        </menu>
+    </item>
+</menu>

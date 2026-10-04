@@ -3,15 +3,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollRegister"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background"
+    android:clipToPadding="false"
+    android:paddingBottom="300dp"
+    android:isScrollContainer="true"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp">
+        android:padding="24dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <!-- LOGO -->
         <ImageView
@@ -47,10 +54,12 @@
             android:layout_marginTop="20dp"
             android:hint="Nombre completo"
             android:textColorHint="@color/text_secondary"
-            app:boxStrokeColor="@color/brand_primary"
+            app:boxBackgroundColor="@color/app_background"
+            app:boxStrokeColor="@color/text_primary"
             app:boxStrokeWidth="1.5dp"
+            app:boxStrokeWidthFocused="2dp"
             app:cornerRadius="12dp"
-            app:hintTextColor="@color/brand_primary"
+            app:hintTextColor="@color/text_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTituloRegister">
@@ -64,33 +73,35 @@
                 android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- TIPO DOCUMENTO -->
-        <TextView
-            android:id="@+id/tvLabelDoc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Tipo de documento:"
-            android:textColor="@color/text_primary"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilNombre" />
-
-        <Spinner
-            android:id="@+id/spTipoDoc"
+        <!-- TIPO DOCUMENTO (MATERIAL OUTLINED BOX CON DIÁLOGO) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilTipoDoc"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/ic_launcher_background"
-            android:backgroundTint="#2A2A38"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:spinnerMode="dropdown"
-            tools:listitem="@android:layout/simple_spinner_dropdown_item"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Tipo de documento"
+            android:textColorHint="@color/text_secondary"
+            app:boxBackgroundColor="@color/app_background"
+            app:boxStrokeColor="@color/text_primary"
+            app:boxStrokeWidth="1.5dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:cornerRadius="12dp"
+            app:hintTextColor="@color/text_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvLabelDoc" />
+            app:layout_constraintTop_toBottomOf="@id/tilNombre">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTipoDoc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
+                android:inputType="none"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- NÚMERO DOCUMENTO -->
         <com.google.android.material.textfield.TextInputLayout
@@ -101,13 +112,15 @@
             android:layout_marginTop="12dp"
             android:hint="Número de documento"
             android:textColorHint="@color/text_secondary"
-            app:boxStrokeColor="@color/brand_primary"
+            app:boxBackgroundColor="@color/app_background"
+            app:boxStrokeColor="@color/text_primary"
             app:boxStrokeWidth="1.5dp"
+            app:boxStrokeWidthFocused="2dp"
             app:cornerRadius="12dp"
-            app:hintTextColor="@color/brand_primary"
+            app:hintTextColor="@color/text_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spTipoDoc">
+            app:layout_constraintTop_toBottomOf="@id/tilTipoDoc">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etCedula"
@@ -127,10 +140,12 @@
             android:layout_marginTop="12dp"
             android:hint="Teléfono"
             android:textColorHint="@color/text_secondary"
-            app:boxStrokeColor="@color/brand_primary"
+            app:boxBackgroundColor="@color/app_background"
+            app:boxStrokeColor="@color/text_primary"
             app:boxStrokeWidth="1.5dp"
+            app:boxStrokeWidthFocused="2dp"
             app:cornerRadius="12dp"
-            app:hintTextColor="@color/brand_primary"
+            app:hintTextColor="@color/text_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilCedula">
@@ -153,10 +168,12 @@
             android:layout_marginTop="12dp"
             android:hint="Correo electrónico"
             android:textColorHint="@color/text_secondary"
-            app:boxStrokeColor="@color/brand_primary"
+            app:boxBackgroundColor="@color/app_background"
+            app:boxStrokeColor="@color/text_primary"
             app:boxStrokeWidth="1.5dp"
+            app:boxStrokeWidthFocused="2dp"
             app:cornerRadius="12dp"
-            app:hintTextColor="@color/brand_primary"
+            app:hintTextColor="@color/text_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilTelefono">
@@ -179,10 +196,12 @@
             android:layout_marginTop="12dp"
             android:hint="Dirección"
             android:textColorHint="@color/text_secondary"
-            app:boxStrokeColor="@color/brand_primary"
+            app:boxBackgroundColor="@color/app_background"
+            app:boxStrokeColor="@color/text_primary"
             app:boxStrokeWidth="1.5dp"
+            app:boxStrokeWidthFocused="2dp"
             app:cornerRadius="12dp"
-            app:hintTextColor="@color/brand_primary"
+            app:hintTextColor="@color/text_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilCorreo">
@@ -205,10 +224,12 @@
             android:layout_marginTop="12dp"
             android:hint="Contraseña"
             android:textColorHint="@color/text_secondary"
-            app:boxStrokeColor="@color/brand_primary"
+            app:boxBackgroundColor="@color/app_background"
+            app:boxStrokeColor="@color/text_primary"
             app:boxStrokeWidth="1.5dp"
+            app:boxStrokeWidthFocused="2dp"
             app:cornerRadius="12dp"
-            app:hintTextColor="@color/brand_primary"
+            app:hintTextColor="@color/text_primary"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/brand_primary"
             app:layout_constraintEnd_toEndOf="parent"
@@ -233,10 +254,12 @@
             android:layout_marginTop="12dp"
             android:hint="Confirmar contraseña"
             android:textColorHint="@color/text_secondary"
-            app:boxStrokeColor="@color/brand_primary"
+            app:boxBackgroundColor="@color/app_background"
+            app:boxStrokeColor="@color/text_primary"
             app:boxStrokeWidth="1.5dp"
+            app:boxStrokeWidthFocused="2dp"
             app:cornerRadius="12dp"
-            app:hintTextColor="@color/brand_primary"
+            app:hintTextColor="@color/text_primary"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/brand_primary"
             app:layout_constraintEnd_toEndOf="parent"

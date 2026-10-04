@@ -12,13 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingBottom="300dp"
         android:isScrollContainer="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main_destinatario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <!-- LOGO -->
             <ImageView
@@ -58,7 +62,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvTitulo" />
 
-            <!-- CONTENEDOR DEL FORMULARIO (FONDO NEGRO PURO) -->
+            <!-- CONTENEDOR DEL FORMULARIO -->
             <LinearLayout
                 android:id="@+id/llFormularioDestinatario"
                 android:layout_width="match_parent"
@@ -75,11 +79,11 @@
                     android:hint="Nombre del Destinatario"
                     android:textColorHint="#888888"
                     app:boxBackgroundColor="@color/app_background"
-                    app:boxStrokeColor="@color/brand_primary"
+                    app:boxStrokeColor="@color/text_primary"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="2dp"
                     app:cornerRadius="10dp"
-                    app:hintTextColor="@color/brand_primary">
+                    app:hintTextColor="@color/text_primary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etNombreDestinatario"
@@ -99,11 +103,11 @@
                     android:hint="Teléfono de contacto"
                     android:textColorHint="#888888"
                     app:boxBackgroundColor="@color/app_background"
-                    app:boxStrokeColor="@color/brand_primary"
+                    app:boxStrokeColor="@color/text_primary"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="2dp"
                     app:cornerRadius="10dp"
-                    app:hintTextColor="@color/brand_primary">
+                    app:hintTextColor="@color/text_primary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etTelefonoDestinatario"
@@ -123,11 +127,11 @@
                     android:hint="Correo Electrónico"
                     android:textColorHint="#888888"
                     app:boxBackgroundColor="@color/app_background"
-                    app:boxStrokeColor="@color/brand_primary"
+                    app:boxStrokeColor="@color/text_primary"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="2dp"
                     app:cornerRadius="10dp"
-                    app:hintTextColor="@color/brand_primary">
+                    app:hintTextColor="@color/text_primary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etcorreoPedido"
@@ -138,31 +142,33 @@
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- SELECCIÓN LOCALIDAD -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Localidad de Entrega (Bogotá)"
-                    android:textColor="@color/brand_primary"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-
-                <FrameLayout
+                <!-- SELECCIÓN LOCALIDAD (MATERIAL BOX LIMPIO CON HINT) -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/ic_launcher_background"
-                    android:backgroundTint="@color/app_background">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="Localidad de Entrega (Bogotá)"
+                    android:textColorHint="#888888"
+                    app:boxBackgroundColor="@color/app_background"
+                    app:boxStrokeColor="@color/text_primary"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:cornerRadius="10dp"
+                    app:hintTextColor="@color/text_primary">
 
-                    <Spinner
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/spLocalidadDestino"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:backgroundTint="@color/brand_primary" />
-                </FrameLayout>
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- DIRECCIÓN -->
+                <!-- DIRECCIÓN DE ENTREGA -->
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
@@ -171,11 +177,11 @@
                     android:hint="Dirección de entrega"
                     android:textColorHint="#888888"
                     app:boxBackgroundColor="@color/app_background"
-                    app:boxStrokeColor="@color/brand_primary"
+                    app:boxStrokeColor="@color/text_primary"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="2dp"
                     app:cornerRadius="10dp"
-                    app:hintTextColor="@color/brand_primary">
+                    app:hintTextColor="@color/text_primary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etDireccionDestinatario"

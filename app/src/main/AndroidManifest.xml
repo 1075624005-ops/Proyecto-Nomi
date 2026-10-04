@@ -21,83 +21,93 @@
 
         <!-- Actividades de Flujo de Pedido -->
         <activity
-            android:name="com.example.nomi.RotuloActivity"
+            android:name="com.example.nomi.pedidos.RotuloActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.nomi.PagoInmediatoActivity"
+            android:name="com.example.nomi.pedidos.PagoInmediatoActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.nomi.FinalizarPedidoActivity"
+            android:name="com.example.nomi.pedidos.FinalizarPedidoActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.nomi.DetallesPedidoActivity"
+            android:name="com.example.nomi.pedidos.DetallesPedidoActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.nomi.DestinatarioActivity"
+            android:name="com.example.nomi.pedidos.DestinatarioActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.nomi.RemitenteActivity"
+            android:name="com.example.nomi.pedidos.RemitenteActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
         <!-- Actividades de Administración y PQRS -->
         <activity
-            android:name="com.example.nomi.AdminListaPQRSActivity"
+            android:name="com.example.nomi.admin.AdminListaPQRSActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.nomi.AdminPQRSDetalleActivity"
+            android:name="com.example.nomi.admin.AdminPQRSDetalleActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.nomi.AdminListaPedidosActivity"
+            android:name="com.example.nomi.admin.AdminListaPedidosActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.nomi.DatosPQRSActivity"
+            android:name="com.example.nomi.pqrs.DatosPQRSActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.nomi.ConsultarPQRSActivity"
+            android:name="com.example.nomi.pqrs.ConsultarPQRSActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.nomi.GenerarPQRSActivity"
+            android:name="com.example.nomi.pqrs.GenerarPQRSActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.nomi.PQRSMenuActivity"
+            android:name="com.example.nomi.pqrs.PQRSMenuActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.nomi.ContactenosActivity"
+            android:name="com.example.nomi.main.ContactenosActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.nomi.AdminActivity"
+            android:name="com.example.nomi.admin.AdminActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.nomi.admin.AsesorActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.nomi.admin.AdminUsuariosActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.example.nomi.admin.AdminIndicadoresActivity"
             android:exported="false" />
 
         <!-- Otras Actividades -->
         <activity
-            android:name="com.example.nomi.CotizarActivity"
+            android:name="com.example.nomi.pedidos.CotizarActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.nomi.RastrearActivity"
+            android:name="com.example.nomi.pedidos.RastrearActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.nomi.PerfilActivity"
+            android:name="com.example.nomi.auth.PerfilActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.nomi.MessengerHomeActivity"
+            android:name="com.example.nomi.main.MessengerHomeActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.nomi.AdminMensajerosActivity"
+            android:name="com.example.nomi.admin.AdminMensajerosActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.nomi.AdminRegistrarMensajeroActivity"
+            android:name="com.example.nomi.admin.AdminRegistrarMensajeroActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.nomi.SplashActivity"
+            android:name="com.example.nomi.main.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -105,15 +115,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.nomi.RegisterActivity"
+            android:name="com.example.nomi.auth.RegisterActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.example.nomi.HomeActivity"
+            android:name="com.example.nomi.main.HomeActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.example.nomi.LoginActivity"
+            android:name="com.example.nomi.auth.LoginActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 

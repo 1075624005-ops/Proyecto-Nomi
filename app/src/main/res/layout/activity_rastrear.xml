@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Estado de su pedido"
+            android:text="RASTREO DE PEDIDO"
             android:textColor="@color/text_primary"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -36,19 +36,70 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imgLogoRastreo" />
 
-        <!-- CONTENEDOR TARJETA LÍNEA DE TIEMPO -->
+        <!-- TARJETA MANTENIMIENTO -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvMantenimientoRastreo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:cardBackgroundColor="@color/app_surface_card"
+            app:cardCornerRadius="16dp"
+            app:strokeColor="@color/brand_primary"
+            app:strokeWidth="1dp"
+            app:layout_constraintTop_toBottomOf="@id/tvTituloRastreo">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🚧 SERVICIO EN MANTENIMIENTO"
+                    android:textColor="@color/brand_primary"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:text="El módulo de rastreo de guías en tiempo real se encuentra actualmente en mantenimiento y actualización para la próxima versión de la plataforma NOMI."
+                    android:textColor="@color/text_primary"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnVolverRastreo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/brand_primary"
+                    android:text="ENTENDIDO / VOLVER"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="10dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- CONTENEDOR TARJETA LÍNEA DE TIEMPO (OCULTA POR MANTENIMIENTO) -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvLineaTiempo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:visibility="gone"
             app:cardBackgroundColor="@color/app_background"
             app:cardCornerRadius="16dp"
             app:strokeColor="@color/brand_primary"
             app:strokeWidth="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTituloRastreo">
+            app:layout_constraintTop_toBottomOf="@id/cvMantenimientoRastreo">
 
             <LinearLayout
                 android:id="@+id/llPasos"
@@ -158,80 +209,6 @@
                         android:textSize="15sp" />
                 </LinearLayout>
 
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- GUIDELINE AL 50% -->
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
-
-        <!-- IMAGEN DE LA GUÍA O ADJUNTO -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cvImagenGuia"
-            android:layout_width="0dp"
-            android:layout_height="130dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            app:cardBackgroundColor="#111111"
-            app:cardCornerRadius="14dp"
-            app:strokeColor="#333333"
-            app:strokeWidth="1dp"
-            app:layout_constraintEnd_toStartOf="@id/guideline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cvLineaTiempo">
-
-            <ImageView
-                android:id="@+id/imgGuiaAdjunta"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="Imagen Guia"
-                android:padding="12dp"
-                android:scaleType="centerInside"
-                android:src="@android:drawable/ic_menu_report_image"
-                app:tint="@color/brand_primary" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- TARJETA DE AYUDA / NOVEDAD -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cvAyuda"
-            android:layout_width="0dp"
-            android:layout_height="130dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            app:cardBackgroundColor="@color/brand_primary"
-            app:cardCornerRadius="14dp"
-            app:strokeWidth="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guideline"
-            app:layout_constraintTop_toBottomOf="@id/cvLineaTiempo">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="12dp">
-
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:contentDescription="Contacto"
-                    android:src="@android:drawable/sym_contact_card"
-                    app:tint="@color/text_primary" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    android:text="¿Tiene alguna novedad sobre su pedido?"
-                    android:textColor="@color/text_primary"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

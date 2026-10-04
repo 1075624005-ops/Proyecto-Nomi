@@ -1,0 +1,182 @@
+package com.example.nomi.admin
+
+import android.content.Intent
+import android.graphics.Color
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
+import com.example.nomi.R
+import com.example.nomi.data.PedidoPostgres
+import com.example.nomi.data.SupabaseClient
+import com.example.nomi.data.SupabaseRepository
+import com.example.nomi.pedidos.RotuloActivity
+import io.github.jan.supabase.postgrest.from
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.Locale
+
+class AdminListaPedidosActivity : AppCompatActivity() {
+
+    private val repo = SupabaseRepository()
+    private var listaPedidosCompleta: List<PedidoPostgres> = emptyList()
+
+    private lateinit var containerPedidos: LinearLayout
+    private lateinit var pbCarga: ProgressBar
+    private lateinit var etBuscarGuia: EditText
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_admin_lista_pedidos)
+
+        lifecycleScope.launch {
+            delay(2000)
+            hideSystemUI()
+        }
+
+        containerPedidos = findViewById(R.id.containerPedidos)
+        pbCarga = findViewById(R.id.progressBarPedidos)
+        etBuscarGuia = findViewById(R.id.etBuscarGuia)
+
+        findViewById<Button>(R.id.btnVolverPedidos).setOnClickListener { finish() }
+
+        findViewById<Button>(R.id.btnFiltrar).setOnClickListener {
+            filtrarLista(etBuscarGuia.text.toString().trim())
+        }
+
+        findViewById<Button>(R.id.btnLimpiar).setOnClickListener {
+            etBuscarGuia.setText("")
+            filtrarLista("")
+        }
+
+        cargarPedidosEnTiempoReal()
+    }
+
+    private fun cargarPedidosEnTiempoReal() {
+        pbCarga.visibility = View.VISIBLE
+        containerPedidos.removeAllViews()
+
+        lifecycleScope.launch {
+            repo.obtenerPedidosAdmin().onSuccess { lista ->
+                pbCarga.visibility = View.GONE
+                listaPedidosCompleta = lista
+                filtrarLista("")
+            }.onFailure { err ->
+                pbCarga.visibility = View.GONE
+                Toast.makeText(this@AdminListaPedidosActivity, "❌ Error al cargar pedidos: ${err.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun filtrarLista(query: String) {
+        containerPedidos.removeAllViews()
+
+        val listaFiltrada = if (query.isEmpty()) {
+            listaPedidosCompleta
+        } else {
+            listaPedidosCompleta.filter { it.num_guia.lowercase().contains(query.lowercase()) }
+        }
+
+        if (listaFiltrada.isEmpty()) {
+            val tvVacio = TextView(this).apply {
+                text = "No se encontraron pedidos registrados"
+                setTextColor(Color.GRAY)
+                textSize = 15f
+                setPadding(20, 40, 20, 20)
+            }
+            containerPedidos.addView(tvVacio)
+            return
+        }
+
+        val format = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
+
+        for (ped in listaFiltrada) {
+            val cardView = LayoutInflater.from(this).inflate(R.layout.item_usuario_card, containerPedidos, false)
+            
+            val tvGuia = cardView.findViewById<TextView>(R.id.tvNombreUsuarioCard)
+            val tvEstado = cardView.findViewById<TextView>(R.id.tvRolUsuarioCard)
+            val tvMonto = cardView.findViewById<TextView>(R.id.tvCorreoUsuarioCard)
+            val tvMensajero = cardView.findViewById<TextView>(R.id.tvDocUsuarioCard)
+            val tvAccion = cardView.findViewById<TextView>(R.id.tvTelUsuarioCard)
+
+            tvGuia.text = "Guía: ${ped.num_guia}"
+            tvMonto.text = "Valor Total: ${format.format(ped.costo ?: 0.0)}"
+            tvMensajero.text = if (ped.id_mensajero.isNullOrEmpty()) "Mensajero: Sin asignar" else "Mensajero Asignado ID"
+
+            val (textoEstado, colorEstado) = when (ped.estado) {
+                1 -> Pair("SOLICITADO", "#00AEEF")
+                2 -> Pair("EN CAMINO", "#FFC107")
+                3 -> Pair("ENTREGADO", "#28A745")
+                else -> Pair("NOVEDAD", "#DC3545")
+            }
+
+            tvEstado.text = textoEstado
+            tvEstado.setTextColor(Color.parseColor(colorEstado))
+            tvAccion.text = "Toca para gestionar"
+
+            cardView.setOnClickListener {
+                mostrarOpcionesPedido(ped)
+            }
+
+            containerPedidos.addView(cardView)
+        }
+    }
+
+    private fun mostrarOpcionesPedido(ped: PedidoPostgres) {
+        val opciones = arrayOf("🔄 Cambiar Estado de Entrega", "📋 Ver Rótulo / QR", "❌ Cancelar")
+
+        AlertDialog.Builder(this)
+            .setTitle("Gestión de Guía: ${ped.num_guia}")
+            .setItems(opciones) { _, which ->
+                when (which) {
+                    0 -> mostrarDialogoCambiarEstado(ped)
+                    1 -> {
+                        val intentRotulo = Intent(this, RotuloActivity::class.java)
+                        intentRotulo.putExtra("guia", ped.num_guia)
+                        intentRotulo.putExtra("ped_costo", ped.costo ?: 0.0)
+                        startActivity(intentRotulo)
+                    }
+                }
+            }
+            .show()
+    }
+
+    private fun mostrarDialogoCambiarEstado(ped: PedidoPostgres) {
+        val estadosTexto = arrayOf("1. Solicitado (Pendiente)", "2. En Camino / En Ruta", "3. Entregado con Éxito", "4. Novedad / No Entregado")
+        val valoresEstado = arrayOf(1, 2, 3, 4)
+
+        AlertDialog.Builder(this)
+            .setTitle("Actualizar Estado en Supabase")
+            .setItems(estadosTexto) { _, which ->
+                val nuevoEstado = valoresEstado[which]
+                actualizarEstadoSupabase(ped.num_guia, nuevoEstado)
+            }
+            .show()
+    }
+
+    private fun actualizarEstadoSupabase(guia: String, nuevoEstado: Int) {
+        pbCarga.visibility = View.VISIBLE
+        lifecycleScope.launch {
+            repo.actualizarEstadoPedido(guia, nuevoEstado).onSuccess {
+                pbCarga.visibility = View.GONE
+                Toast.makeText(this@AdminListaPedidosActivity, "✅ Estado actualizado a $nuevoEstado", Toast.LENGTH_SHORT).show()
+                cargarPedidosEnTiempoReal()
+            }.onFailure { e ->
+                pbCarga.visibility = View.GONE
+                Toast.makeText(this@AdminListaPedidosActivity, "❌ Error al actualizar: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun hideSystemUI() {
+        val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    }
+}

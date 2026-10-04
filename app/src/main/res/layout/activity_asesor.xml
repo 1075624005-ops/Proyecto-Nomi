@@ -3,27 +3,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout_messenger"
+    android:id="@+id/drawer_layout_asesor"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/app_background">
+    android:layout_height="match_parent">
 
-    <!-- CONTENIDO PRINCIPAL -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/app_background">
 
-        <!-- TOOLBAR ENCABEZADO -->
+        <!-- TOOLBAR DE ENCABEZADO -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/toolbarMessenger"
+            android:id="@+id/toolbarAsesor"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:background="@color/app_surface_card"
-            android:paddingTop="10dp"
+            android:paddingBottom="8dp"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/btnMenuMessenger"
+                android:id="@+id/btnMenuAsesor"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginStart="20dp"
@@ -35,7 +34,7 @@
                 app:tint="@color/brand_primary" />
 
             <ImageView
-                android:id="@+id/imgLogoMessenger"
+                android:id="@+id/imgLogoAsesor"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:layout_marginTop="12dp"
@@ -46,27 +45,24 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvMessengerWelcome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="PANEL DE MENSAJERÍA"
+                android:text="PANEL DE ASESOR OPERATIVO"
                 android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imgLogoMessenger" />
-
+                app:layout_constraintTop_toBottomOf="@id/imgLogoAsesor" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- CONTENIDO PRINCIPAL DASHBOARD -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:fillViewport="true"
-            app:layout_constraintBottom_toTopOf="@id/vFooterMessenger"
-            app:layout_constraintTop_toBottomOf="@id/toolbarMessenger">
+            app:layout_constraintBottom_toTopOf="@id/vFooterAsesor"
+            app:layout_constraintTop_toBottomOf="@id/toolbarAsesor">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,20 +71,20 @@
                 android:padding="20dp">
 
                 <TextView
-                    android:id="@+id/tvWelcomeMensajeroText"
+                    android:id="@+id/tvWelcomeAsesor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="24dp"
-                    android:text="Bienvenido Domiciliario"
+                    android:text="Bienvenido Asesor"
                     android:textColor="@color/brand_primary"
                     android:textSize="22sp"
                     android:textStyle="bold" />
 
-                <!-- BOTÓN 1: PEDIDOS ASIGNADOS / TAREAS DE HOY -->
+                <!-- BOTÓN / TARJETA: CREAR NUEVO PEDIDO -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnPedidosAsignados"
+                    android:id="@+id/btnCrearPedidoAsesor"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
@@ -96,7 +92,7 @@
                     android:backgroundTint="@color/app_surface_card"
                     android:gravity="center_vertical|start"
                     android:paddingStart="20dp"
-                    android:text="🛵   PEDIDOS ASIGNADOS (RUTA DE HOY)"
+                    android:text="📦   CREAR NUEVO PEDIDO"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -104,9 +100,9 @@
                     app:strokeColor="@color/brand_primary"
                     app:strokeWidth="1dp" />
 
-                <!-- BOTÓN 2: HISTORIAL DE ENTREGAS FINALIZADAS -->
+                <!-- BOTÓN / TARJETA: COTIZAR ENVÍO -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnHistorialEntregas"
+                    android:id="@+id/btnCotizarAsesor"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
@@ -114,7 +110,7 @@
                     android:backgroundTint="@color/app_surface_card"
                     android:gravity="center_vertical|start"
                     android:paddingStart="20dp"
-                    android:text="📋   HISTORIAL DE ENTREGAS FINALIZADAS"
+                    android:text="📊   COTIZAR ENVÍO"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -122,9 +118,9 @@
                     app:strokeColor="@color/brand_primary"
                     app:strokeWidth="1dp" />
 
-                <!-- BOTÓN 3: MI PERFIL -->
+                <!-- BOTÓN / TARJETA: GESTIONAR Y RESPONDER PQRS -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnPerfilMensajero"
+                    android:id="@+id/btnGestionarPQRSAsesor"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
@@ -132,7 +128,7 @@
                     android:backgroundTint="@color/app_surface_card"
                     android:gravity="center_vertical|start"
                     android:paddingStart="20dp"
-                    android:text="👤   MI PERFIL DE DOMICILIARIO"
+                    android:text="🗂️   GESTIONAR Y RESPONDER PQRS"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -140,9 +136,9 @@
                     app:strokeColor="@color/brand_primary"
                     app:strokeWidth="1dp" />
 
-                <!-- BOTÓN 4: CENTRO DE ATENCIÓN Y SOPORTE -->
+                <!-- BOTÓN / TARJETA: RASTREAR PEDIDO -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSoporteMensajero"
+                    android:id="@+id/btnRastrearAsesor"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
@@ -150,7 +146,25 @@
                     android:backgroundTint="@color/app_surface_card"
                     android:gravity="center_vertical|start"
                     android:paddingStart="20dp"
-                    android:text="📞   CENTRO DE SOPORTE"
+                    android:text="🔍   RASTREAR PEDIDO"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
+                <!-- BOTÓN / TARJETA: CONTACTO Y ATENCIÓN -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnContactoAsesor"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="📞   CENTRO DE ATENCIÓN"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -161,14 +175,14 @@
             </LinearLayout>
         </ScrollView>
 
-        <!-- FOOTER MODO MENSAJERO -->
+        <!-- FOOTER MODO ASESOR -->
         <TextView
-            android:id="@+id/vFooterMessenger"
+            android:id="@+id/vFooterAsesor"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@color/brand_primary"
             android:gravity="center"
-            android:text="Modo Domiciliario - NOMI"
+            android:text="Modo Asesor Operativo - NOMI"
             android:textColor="@color/app_background"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent" />
@@ -177,7 +191,7 @@
 
     <!-- MENÚ LATERAL (DRAWER) -->
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view_messenger"
+        android:id="@+id/nav_view_asesor"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -185,6 +199,6 @@
         app:headerLayout="@layout/nav_header"
         app:itemIconTint="@color/brand_primary"
         app:itemTextColor="@color/text_primary"
-        app:menu="@menu/messenger_drawer_menu" />
+        app:menu="@menu/asesor_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

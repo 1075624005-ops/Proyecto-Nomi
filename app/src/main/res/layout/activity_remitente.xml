@@ -12,13 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingBottom="150dp"
         android:isScrollContainer="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main_remitente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <!-- LOGO -->
             <ImageView
@@ -45,7 +49,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/imgLogoAdmin" />
 
-            <!-- PASO / SUBTÍTULO -->
+            <!-- PASO 1 / SUBTÍTULO -->
             <TextView
                 android:id="@+id/lbDatosDelRemitente"
                 android:layout_width="wrap_content"
@@ -58,119 +62,113 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvTitulo" />
 
-            <!-- FORMULARIO DE REMITENTE -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardFormRemitente"
+            <!-- CONTENEDOR DEL FORMULARIO REMITENTE -->
+            <LinearLayout
+                android:id="@+id/llFormularioRemitente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:cardBackgroundColor="@color/app_surface_card"
-                app:cardCornerRadius="16dp"
-                app:strokeColor="@color/brand_primary"
-                app:strokeWidth="1dp"
+                android:orientation="vertical"
                 app:layout_constraintTop_toBottomOf="@id/lbDatosDelRemitente">
 
-                <LinearLayout
+                <!-- NOMBRE REMITENTE -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:hint="Nombre del Remitente"
+                    android:textColorHint="#888888"
+                    app:boxBackgroundColor="@color/app_background"
+                    app:boxStrokeColor="@color/text_primary"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:cornerRadius="10dp"
+                    app:hintTextColor="@color/text_primary">
 
-                    <!-- NOMBRE -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etNombreRemitente"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Nombre del Remitente"
-                        android:textColorHint="#888888"
-                        app:boxStrokeColor="@color/fixed_white"
-                        app:boxStrokeWidth="1dp"
-                        app:boxStrokeWidthFocused="2dp"
-                        app:cornerRadius="10dp"
-                        app:hintTextColor="@color/fixed_white">
+                        android:inputType="textPersonName"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etNombreRemitente"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textPersonName"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                <!-- TELÉFONO -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="Teléfono de contacto"
+                    android:textColorHint="#888888"
+                    app:boxBackgroundColor="@color/app_background"
+                    app:boxStrokeColor="@color/text_primary"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:cornerRadius="10dp"
+                    app:hintTextColor="@color/text_primary">
 
-                    <!-- TELÉFONO -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etTelefonoRemitente"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:hint="Teléfono de contacto"
-                        android:textColorHint="#888888"
-                        app:boxStrokeColor="@color/fixed_white"
-                        app:boxStrokeWidth="1dp"
-                        app:boxStrokeWidthFocused="2dp"
-                        app:cornerRadius="10dp"
-                        app:hintTextColor="@color/fixed_white">
+                        android:inputType="phone"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etTelefonoRemitente"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="phone"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                <!-- CORREO -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="Correo Electrónico"
+                    android:textColorHint="#888888"
+                    app:boxBackgroundColor="@color/app_background"
+                    app:boxStrokeColor="@color/text_primary"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:cornerRadius="10dp"
+                    app:hintTextColor="@color/text_primary">
 
-                    <!-- CORREO -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etCorreoRemitente"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:hint="Correo Electrónico"
-                        android:textColorHint="#888888"
-                        app:boxStrokeColor="@color/fixed_white"
-                        app:boxStrokeWidth="1dp"
-                        app:boxStrokeWidthFocused="2dp"
-                        app:cornerRadius="10dp"
-                        app:hintTextColor="@color/fixed_white">
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etCorreoRemitente"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textEmailAddress"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                <!-- DIRECCIÓN DE RECOGIDA -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="Dirección de recogida"
+                    android:textColorHint="#888888"
+                    app:boxBackgroundColor="@color/app_background"
+                    app:boxStrokeColor="@color/text_primary"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:cornerRadius="10dp"
+                    app:hintTextColor="@color/text_primary">
 
-                    <!-- DIRECCIÓN -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDireccionRemitente"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:hint="Dirección de recogida"
-                        android:textColorHint="#888888"
-                        app:boxStrokeColor="@color/fixed_white"
-                        app:boxStrokeWidth="1dp"
-                        app:boxStrokeWidthFocused="2dp"
-                        app:cornerRadius="10dp"
-                        app:hintTextColor="@color/fixed_white">
+                        android:inputType="textPostalAddress"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etDireccionRemitente"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textPostalAddress"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- BOTONES ACCIÓN -->
+            <!-- BOTONES DE ACCIÓN -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSiguienteRemitente"
                 android:layout_width="match_parent"
@@ -182,7 +180,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:cornerRadius="12dp"
-                app:layout_constraintTop_toBottomOf="@id/cardFormRemitente" />
+                app:layout_constraintTop_toBottomOf="@id/llFormularioRemitente" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCancelarRemitente"

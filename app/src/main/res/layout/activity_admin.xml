@@ -77,28 +77,10 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="24dp"
-                    android:text="Bienvenido"
+                    android:text="Bienvenido Administrador"
                     android:textColor="@color/brand_primary"
                     android:textSize="22sp"
                     android:textStyle="bold" />
-
-                <!-- BOTÓN / TARJETA: PEDIDOS -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnRealizarPedidos"
-                    style="@style/Widget.MaterialComponents.Button"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_marginBottom="16dp"
-                    android:backgroundTint="@color/app_surface_card"
-                    android:gravity="center_vertical|start"
-                    android:paddingStart="20dp"
-                    android:text="📦   NUEVO PEDIDO"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="12dp"
-                    app:strokeColor="@color/brand_primary"
-                    app:strokeWidth="1dp" />
 
                 <!-- BOTÓN / TARJETA: VER TODOS LOS PEDIDOS -->
                 <com.google.android.material.button.MaterialButton
@@ -110,7 +92,7 @@
                     android:backgroundTint="@color/app_surface_card"
                     android:gravity="center_vertical|start"
                     android:paddingStart="20dp"
-                    android:text="📋   VER TODOS LOS PEDIDOS"
+                    android:text="📋   SUPERVISAR TODOS LOS PEDIDOS"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -118,25 +100,7 @@
                     app:strokeColor="@color/brand_primary"
                     app:strokeWidth="1dp" />
 
-                <!-- BOTÓN / TARJETA: GESTIONAR PQRS -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnGestionarPQRS"
-                    style="@style/Widget.MaterialComponents.Button"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_marginBottom="16dp"
-                    android:backgroundTint="@color/app_surface_card"
-                    android:gravity="center_vertical|start"
-                    android:paddingStart="20dp"
-                    android:text="🗂️   GESTIONAR PQRS"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="12dp"
-                    app:strokeColor="@color/brand_primary"
-                    app:strokeWidth="1dp" />
-
-                <!-- BOTÓN / TARJETA: GESTIONAR MENSAJEROS (NUEVO) -->
+                <!-- BOTÓN / TARJETA: GESTIONAR MENSAJEROS -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnGestionarMensajeros"
                     style="@style/Widget.MaterialComponents.Button"
@@ -154,6 +118,59 @@
                     app:strokeColor="@color/brand_primary"
                     app:strokeWidth="1dp" />
 
+                <!-- BOTÓN / TARJETA: AUDITORÍA DE PQRS -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGestionarPQRS"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="🗂️   AUDITORÍA DE PQRS"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
+                <!-- BOTÓN / TARJETA: GESTIÓN DE USUARIOS -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGestionarUsuarios"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="👥   GESTIÓN DE USUARIOS"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
+                <!-- BOTÓN / TARJETA: PANEL DE INDICADORES -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnIndicadoresAdmin"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="📊   PANEL DE INDICADORES GENERALES"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
 
             </LinearLayout>
         </ScrollView>
