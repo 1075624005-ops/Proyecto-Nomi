@@ -28,7 +28,7 @@ class ContactenosActivity : AppCompatActivity() {
         // 1. BOTÓN WHATSAPP
         findViewById<View>(R.id.btnWhatsapp)?.setOnClickListener {
             val mensaje = "Hola NOMI, necesito atención e información sobre un servicio."
-            val url = "https://wa.me/573000000000?text=${Uri.encode(mensaje)}"
+            val url = "https://wa.me/573138150074?text=${Uri.encode(mensaje)}"
             try {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
             } catch (e: Exception) {
@@ -39,7 +39,7 @@ class ContactenosActivity : AppCompatActivity() {
         // 2. BOTÓN LLAMADA DE SERVICIO
         findViewById<View>(R.id.btnLlamar)?.setOnClickListener {
             try {
-                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:6013000000"))
+                val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:+573138150074"))
                 startActivity(intent)
             } catch (e: Exception) {
                 Toast.makeText(this, "No se pudo iniciar la llamada", Toast.LENGTH_SHORT).show()
@@ -49,7 +49,7 @@ class ContactenosActivity : AppCompatActivity() {
         // 3. BOTÓN CORREO ELECTRÓNICO
         findViewById<View>(R.id.btnEmail)?.setOnClickListener {
             try {
-                val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:nomisas@nomi.com")).apply {
+                val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:nomi.proyecto@gmail.com")).apply {
                     putExtra(Intent.EXTRA_SUBJECT, "Consulta Soporte NOMI")
                 }
                 startActivity(intent)
