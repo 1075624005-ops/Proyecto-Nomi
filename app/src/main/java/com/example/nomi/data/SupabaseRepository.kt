@@ -32,9 +32,7 @@ class SupabaseRepository {
 
     suspend fun registrarUsuario(email: String, pass: String, datos: UsuarioPostgres): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
-            // Enviamos los datos adicionales como METADATOS
-            // Esto permite que el TRIGGER de PostgreSQL los reciba al instante
-            client.auth.signUpWith(Email) {
+            val userResponse = client.auth.signUpWith(Email) {
                 this.email = email
                 this.password = pass
                 data = buildJsonObject {
@@ -43,6 +41,27 @@ class SupabaseRepository {
                     put("num_doc", datos.num_doc ?: "")
                     put("telefono", datos.telefono ?: "")
                     put("direccion", datos.direccion ?: "")
+                    put("rol", datos.rol)
+                    put("placa", datos.placa ?: "")
+                    put("area", datos.area ?: "")
+                }
+            }
+
+            val uid = userResponse?.id ?: java.util.UUID.randomUUID().toString()
+            val usuarioFinal = datos.copy(id = uid)
+
+            try {
+                client.from("usuarios").insert(usuarioFinal)
+            } catch (e: Exception) {
+                // Si ya existe la fila, actualizamos rol, placa y area
+                client.from("usuarios").update({
+                    set("rol", datos.rol)
+                    set("placa", datos.placa ?: "")
+                    set("area", datos.area ?: "")
+                }) {
+                    filter {
+                        eq("correo", email)
+                    }
                 }
             }
             Result.success(true)
@@ -140,6 +159,24 @@ class SupabaseRepository {
                 }
             }.decodeList<PQRSPostgres>()
             Result.success(lista)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun responderPQRS(idRadicado: Int, respuestaTexto: String): Result<Boolean> = withContext(Dispatchers.IO) {
+        try {
+            client.from("pqrs").update(
+                {
+                    set("respuesta", respuestaTexto)
+                    set("estado", "Resuelto")
+                }
+            ) {
+                filter {
+                    eq("id", idRadicado)
+                }
+            }
+            Result.success(true)
         } catch (e: Exception) {
             Result.failure(e)
         }

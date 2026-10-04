@@ -31,7 +31,7 @@
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/tvRegTitle">
 
-            <!-- DATOS PERSONALES -->
+            <!-- NOMBRE COMPLETO -->
             <EditText
                 android:id="@+id/etNombreRegM"
                 android:layout_width="match_parent"
@@ -39,67 +39,90 @@
                 android:background="@drawable/bg_input_rounded"
                 android:hint="Nombre Completo"
                 android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_secondary" />
 
+            <!-- CÉDULA -->
             <EditText
                 android:id="@+id/etCedulaRegM"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bg_input_rounded"
-                android:hint="Cédula / ID"
+                android:hint="Cédula / Número de Documento"
                 android:inputType="number"
                 android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_secondary" />
 
+            <!-- TELÉFONO -->
+            <EditText
+                android:id="@+id/etTelefonoRegM"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_input_rounded"
+                android:hint="Teléfono / Móvil de Contacto"
+                android:inputType="phone"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
+
+            <!-- CORREO ELECTRÓNICO -->
             <EditText
                 android:id="@+id/etCorreoRegM"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bg_input_rounded"
-                android:hint="Correo Electrónico (Gmail)"
+                android:hint="Correo Electrónico (Login)"
                 android:inputType="textEmailAddress"
                 android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_secondary" />
 
-            <!-- DATOS VEHÍCULO -->
+            <!-- PLACA DEL VEHÍCULO -->
             <EditText
                 android:id="@+id/etPlacaRegM"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bg_input_rounded"
-                android:hint="Placa del Vehículo"
+                android:hint="Placa del Vehículo (ej. XYZ-123)"
                 android:inputType="textCapCharacters"
                 android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_secondary" />
 
+            <!-- ÁREA / ZONA -->
             <EditText
                 android:id="@+id/etAreaRegM"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bg_input_rounded"
-                android:hint="Zona / Área Asignada"
+                android:hint="Área / Zona Asignada de Bogotá"
                 android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_secondary" />
 
-            <!-- SEGURIDAD -->
+            <!-- CONTRASEÑA -->
             <EditText
                 android:id="@+id/etPassRegM"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/bg_input_rounded"
-                android:hint="Contraseña Provisional"
+                android:hint="Contraseña Provisional de Acceso"
                 android:inputType="textPassword"
                 android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_secondary" />
 

@@ -13,13 +13,14 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.nomi.R
 import com.example.nomi.data.SupabaseRepository
-import com.example.nomi.*
+import com.example.nomi.data.PQRSPostgres
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AdminListaPQRSActivity : AppCompatActivity() {
 
     private val repo = SupabaseRepository()
+    private lateinit var container: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +31,15 @@ class AdminListaPQRSActivity : AppCompatActivity() {
             hideSystemUI()
         }
 
-        val container = findViewById<LinearLayout>(R.id.containerAdminPQRS)
+        container = findViewById(R.id.containerAdminPQRS)
         val btnVolver = findViewById<Button>(R.id.btnVolverLista)
 
-        cargarListaDesdeSupabase(container)
-
         btnVolver.setOnClickListener { finish() }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        cargarListaDesdeSupabase(container)
     }
 
     private fun cargarListaDesdeSupabase(container: LinearLayout) {
@@ -46,10 +50,12 @@ class AdminListaPQRSActivity : AppCompatActivity() {
             
             resultado.onSuccess { lista ->
                 if (lista.isEmpty()) {
-                    val tv = TextView(this@AdminListaPQRSActivity)
-                    tv.text = "No hay PQRS registradas."
-                    tv.setTextColor(Color.GRAY)
-                    tv.gravity = android.view.Gravity.CENTER
+                    val tv = TextView(this@AdminListaPQRSActivity).apply {
+                        text = "No hay PQRS registradas en el sistema."
+                        setTextColor(Color.GRAY)
+                        gravity = android.view.Gravity.CENTER
+                        setPadding(0, 50, 0, 0)
+                    }
                     container.addView(tv)
                     return@onSuccess
                 }
@@ -58,40 +64,74 @@ class AdminListaPQRSActivity : AppCompatActivity() {
                     val idStr = pqr.id.toString()
                     val asunto = pqr.asunto
                     val estado = pqr.estado
-                    val nombre = pqr.nombre_usuario
+                    val nombre = pqr.nombre_usuario.ifEmpty { "Cliente Nomi" }
+                    val correo = pqr.correo_usuario
 
                     val card = CardView(this@AdminListaPQRSActivity).apply {
                         val p = LinearLayout.LayoutParams(-1, -2)
-                        p.setMargins(0, 0, 0, 32)
+                        p.setMargins(0, 0, 0, 24)
                         layoutParams = p
                         setCardBackgroundColor(ContextCompat.getColor(this@AdminListaPQRSActivity, R.color.app_surface_card))
-                        radius = 15f
-                        setContentPadding(25, 25, 25, 25)
+                        radius = 16f
+                        setContentPadding(30, 30, 30, 30)
                         isClickable = true
                         isFocusable = true
                     }
 
                     val layout = LinearLayout(this@AdminListaPQRSActivity).apply { orientation = LinearLayout.VERTICAL }
 
+                    val rowHeader = LinearLayout(this@AdminListaPQRSActivity).apply {
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = android.view.Gravity.CENTER_VERTICAL
+                    }
+
                     val tvRad = TextView(this@AdminListaPQRSActivity).apply {
-                        text = "RADICADO #$idStr - $nombre"
+                        val p = LinearLayout.LayoutParams(0, -2, 1f)
+                        layoutParams = p
+                        text = "🗂️ RADICADO #$idStr"
                         setTextColor(ContextCompat.getColor(this@AdminListaPQRSActivity, R.color.brand_primary))
                         setTypeface(null, Typeface.BOLD)
+                        textSize = 15f
+                    }
+
+                    val esResuelto = estado.lowercase().contains("resuelt")
+                    val tvEst = TextView(this@AdminListaPQRSActivity).apply {
+                        text = if (esResuelto) "🟢 RESUELTO" else "🟡 PENDIENTE"
+                        setTextColor(if (esResuelto) Color.parseColor("#28A745") else Color.parseColor("#FFC107"))
+                        setTypeface(null, Typeface.BOLD)
+                        textSize = 12f
+                    }
+
+                    rowHeader.addView(tvRad)
+                    rowHeader.addView(tvEst)
+
+                    val tvCliente = TextView(this@AdminListaPQRSActivity).apply {
+                        text = "👤 $nombre ($correo)"
+                        setTextColor(ContextCompat.getColor(this@AdminListaPQRSActivity, R.color.text_primary))
+                        textSize = 13f
+                        setPadding(0, 6, 0, 0)
                     }
 
                     val tvAsu = TextView(this@AdminListaPQRSActivity).apply {
-                        text = "Asunto: $asunto"
-                        setTextColor(ContextCompat.getColor(this@AdminListaPQRSActivity, R.color.text_primary))
+                        text = "📌 Asunto: $asunto"
+                        setTextColor(ContextCompat.getColor(this@AdminListaPQRSActivity, R.color.text_secondary))
+                        textSize = 13f
+                        setPadding(0, 4, 0, 0)
                     }
 
-                    val tvEst = TextView(this@AdminListaPQRSActivity).apply {
-                        text = "Estado: $estado"
-                        setTextColor(if (estado == "Pendiente") Color.YELLOW else Color.GREEN)
+                    val tvAccion = TextView(this@AdminListaPQRSActivity).apply {
+                        text = "Toca para ver detalle y responder ➔"
+                        setTextColor(ContextCompat.getColor(this@AdminListaPQRSActivity, R.color.brand_primary))
+                        textSize = 12f
+                        gravity = android.view.Gravity.END
+                        setPadding(0, 10, 0, 0)
                     }
 
-                    layout.addView(tvRad)
+                    layout.addView(rowHeader)
+                    layout.addView(tvCliente)
                     layout.addView(tvAsu)
-                    layout.addView(tvEst)
+                    layout.addView(tvAccion)
+
                     card.addView(layout)
 
                     card.setOnClickListener {
@@ -103,7 +143,7 @@ class AdminListaPQRSActivity : AppCompatActivity() {
                     container.addView(card)
                 }
             }.onFailure {
-                Toast.makeText(this@AdminListaPQRSActivity, "Error al cargar datos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AdminListaPQRSActivity, "❌ Error al cargar lista PQRS", Toast.LENGTH_SHORT).show()
             }
         }
     }

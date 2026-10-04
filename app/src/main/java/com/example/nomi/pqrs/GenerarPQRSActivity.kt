@@ -1,8 +1,6 @@
 package com.example.nomi.pqrs
 
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -28,8 +26,8 @@ class GenerarPQRSActivity : AppCompatActivity() {
             hideSystemUI()
         }
 
-        val nombre      = intent.getStringExtra("nombre") ?: ""
-        val correo      = intent.getStringExtra("correo") ?: "anonimo@nomi.com"
+        val nombreInput = intent.getStringExtra("nombre") ?: ""
+        val correoInput = intent.getStringExtra("correo") ?: ""
 
         val spTipoPqr   = findViewById<Spinner>(R.id.spTipoPQRS)
         val etAsunto    = findViewById<EditText>(R.id.etAsuntoPQRS)
@@ -39,11 +37,13 @@ class GenerarPQRSActivity : AppCompatActivity() {
         val cbAutorizacion = findViewById<CheckBox>(R.id.cbAutorizacionPQRS)
         val tvVerAutorizacion = findViewById<TextView>(R.id.tvVerAutorizacionPQRS)
 
+        // Marcar casilla al tocar el texto o ver política
         tvVerAutorizacion.setOnClickListener {
+            cbAutorizacion.isChecked = true
             AlertDialog.Builder(this)
-                .setTitle("Autorización uso de datos")
-                .setMessage("Conforme a la Ley 1581 de 2012...")
-                .setPositiveButton("Aceptar") { _, _ -> cbAutorizacion.isChecked = true }
+                .setTitle("📋 Autorización Uso de Datos (Ley 1581)")
+                .setMessage("Conforme a la Ley 1581 de 2012 de Tratamiento de Datos Personales, la información suministrada se usará exclusivamente para la gestión y respuesta de su solicitud PQRS en NOMI.")
+                .setPositiveButton("Entendido", null)
                 .show()
         }
 
@@ -53,30 +53,42 @@ class GenerarPQRSActivity : AppCompatActivity() {
         btnEnviar.setOnClickListener {
             val asunto  = etAsunto.text.toString().trim()
             val desc    = etDesc.text.toString().trim()
-            if (asunto.isEmpty() || desc.isEmpty() || !cbAutorizacion.isChecked) {
-                Toast.makeText(this, "⚠️ Completa todos los campos", Toast.LENGTH_SHORT).show()
+            val tipoPqr = spTipoPqr.selectedItem.toString()
+
+            if (asunto.isEmpty() || desc.isEmpty()) {
+                Toast.makeText(this, "⚠️ Por favor ingrese el asunto y la descripción de su caso", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (!cbAutorizacion.isChecked) {
+                Toast.makeText(this, "⚠️ Por favor autorice el uso de datos marcando la casilla", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
             btnEnviar.isEnabled = false
-            btnEnviar.text = "Enviando..."
+            btnEnviar.text = "Enviando PQRS..."
+
+            val correoFinal = if (correoInput.isNotEmpty()) correoInput else "usuario@nomi.com"
+            val nombreFinal = if (nombreInput.isNotEmpty()) nombreInput else "Usuario Nomi"
 
             lifecycleScope.launch {
                 val pqr = PQRSPostgres(
-                    correo_usuario = correo,
-                    nombre_usuario = nombre,
-                    asunto = asunto,
+                    correo_usuario = correoFinal,
+                    nombre_usuario = nombreFinal,
+                    asunto = "[$tipoPqr] $asunto",
                     descripcion = desc
                 )
                 repo.enviarPQRS(pqr).onSuccess {
-                    Toast.makeText(this@GenerarPQRSActivity, "✅ PQRS Enviada", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@GenerarPQRSActivity, "✅ PQRS Radicada Exitosamente en NOMI", Toast.LENGTH_LONG).show()
                     finish()
-                }.onFailure {
+                }.onFailure { err ->
                     btnEnviar.isEnabled = true
-                    btnEnviar.text = "ENVIAR"
+                    btnEnviar.text = "Enviar Solicitud"
+                    Toast.makeText(this@GenerarPQRSActivity, "❌ Error al enviar PQRS: ${err.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
+
         btnCancelar.setOnClickListener { finish() }
     }
 
