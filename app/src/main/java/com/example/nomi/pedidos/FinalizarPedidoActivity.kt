@@ -97,6 +97,7 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                     peso_kg = "$peso kg",
                     tipo_servicio = tipoEnvio,
                     modalidad_pago = if (esContraentrega) "contraentrega" else "inmediato",
+                    estado_pago = "Pendiente",
                     estado = 1,
                     costo = costo
                 )
@@ -105,27 +106,22 @@ class FinalizarPedidoActivity : AppCompatActivity() {
 
                 Toast.makeText(this@FinalizarPedidoActivity, "✅ Pedido Creado Exitosamente\nGuía: $guiaGenerada", Toast.LENGTH_LONG).show()
 
-                if (esContraentrega) {
-                    val intentRotulo = Intent(this@FinalizarPedidoActivity, RotuloActivity::class.java)
-                    intentRotulo.putExtra("guia", guiaGenerada)
-                    intentRotulo.putExtra("rem_nombre", remNombre)
-                    intentRotulo.putExtra("rem_dir", remDir)
-                    intentRotulo.putExtra("dest_nombre", destNombre)
-                    intentRotulo.putExtra("dest_dir", destDir)
-                    intentRotulo.putExtra("dest_tel", destTel)
-                    intentRotulo.putExtra("dest_localidad_nom", nomLocalidad)
-                    intentRotulo.putExtra("ped_desc", desc)
-                    intentRotulo.putExtra("ped_tipo_envio", tipoEnvio)
-                    intentRotulo.putExtra("ped_peso", peso)
-                    intentRotulo.putExtra("ped_costo", costo)
-                    intentRotulo.putExtra("ped_pago_contraentrega", true)
-                    startActivity(intentRotulo)
-                } else {
-                    val intentPago = Intent(this@FinalizarPedidoActivity, PagoInmediatoActivity::class.java)
-                    intentPago.putExtra("guia", guiaGenerada)
-                    intentPago.putExtra("ped_costo", costo)
-                    startActivity(intentPago)
-                }
+                // Muestra siempre la pantalla del Rótulo PDF oficial
+                val intentRotulo = Intent(this@FinalizarPedidoActivity, RotuloActivity::class.java)
+                intentRotulo.putExtra("guia", guiaGenerada)
+                intentRotulo.putExtra("rem_nombre", remNombre)
+                intentRotulo.putExtra("rem_dir", remDir)
+                intentRotulo.putExtra("dest_nombre", destNombre)
+                intentRotulo.putExtra("dest_dir", destDir)
+                intentRotulo.putExtra("dest_tel", destTel)
+                intentRotulo.putExtra("dest_localidad_nom", nomLocalidad)
+                intentRotulo.putExtra("ped_desc", desc)
+                intentRotulo.putExtra("ped_tipo_envio", tipoEnvio)
+                intentRotulo.putExtra("ped_peso", peso)
+                intentRotulo.putExtra("ped_costo", costo)
+                intentRotulo.putExtra("ped_pago_contraentrega", esContraentrega)
+                startActivity(intentRotulo)
+
                 finish()
             }
         }

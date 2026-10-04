@@ -66,19 +66,28 @@ class RotuloActivity : AppCompatActivity() {
         val format = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
 
         findViewById<TextView>(R.id.tvGuia).text = guia
-        findViewById<TextView>(R.id.tvDestinatario).text =
-                "$destNombre\n$destDir\n$nomLocalidad\nTel: $destTel"
-        findViewById<TextView>(R.id.tvContenido).text =
-                "$desc\n$tipoEnvio - $peso kg"
+        findViewById<TextView>(R.id.tvRemitente)?.text = "Nombre: $remNombre\nDirección: $remDir"
+        findViewById<TextView>(R.id.tvDestinatario).text = "Nombre: $destNombre\nDirección: $destDir\nLocalidad: $nomLocalidad\nTel: $destTel"
+        findViewById<TextView>(R.id.tvContenido).text = "Descripción: $desc\nServicio: $tipoEnvio - $peso kg"
 
         val tvEstadoPago = findViewById<TextView>(R.id.tvEstadoPago)
         val tvMontoPago = findViewById<TextView>(R.id.tvMontoPago)
+        val btnPagarNequi = findViewById<Button>(R.id.btnPagarNequiRotulo)
+
         if (esContraentrega) {
-            tvEstadoPago.text = "PAGO CONTRAENTREGA"
+            tvEstadoPago.text = "PAGO CONTRAENTREGA (COBRO EN DESTINO)"
             tvMontoPago.text = "COBRAR ${format.format(costo)}"
+            btnPagarNequi?.visibility = android.view.View.GONE
         } else {
-            tvEstadoPago.text = "PAGO INMEDIATO CONFIRMADO"
-            tvMontoPago.text = "PAGADO - NO COBRAR"
+            tvEstadoPago.text = "PAGO INMEDIATO (TRANSFERENCIA NEQUI)"
+            tvMontoPago.text = "POR PAGAR ${format.format(costo)}"
+            btnPagarNequi?.visibility = android.view.View.VISIBLE
+            btnPagarNequi?.setOnClickListener {
+                val intentPago = Intent(this, PagoInmediatoActivity::class.java)
+                intentPago.putExtra("guia", guia)
+                intentPago.putExtra("ped_costo", costo)
+                startActivity(intentPago)
+            }
         }
 
         findViewById<Button>(R.id.btnImprimirRotulo).setOnClickListener {

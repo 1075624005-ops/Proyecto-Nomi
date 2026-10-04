@@ -44,22 +44,25 @@ object RotuloPdfGenerator {
             val format = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
 
             v.findViewById<TextView>(R.id.tvGuia)?.text = datos.guia.ifEmpty { "NOMI-000000" }
+            v.findViewById<TextView>(R.id.tvRemitente)?.text =
+                "Nombre: ${datos.remNombre}\nDirección: ${datos.remDir}"
             v.findViewById<TextView>(R.id.tvDestinatario)?.text =
-                "${datos.destNombre}\n${datos.destDir}\n${datos.nomLocalidad}\nTel: ${datos.destTel}"
+                "Nombre: ${datos.destNombre}\nDirección: ${datos.destDir}\nLocalidad: ${datos.nomLocalidad}\nTel: ${datos.destTel}"
             v.findViewById<TextView>(R.id.tvContenido)?.text =
-                "${datos.descripcion}\n${datos.tipoEnvio} - ${datos.peso} kg"
+                "Descripción: ${datos.descripcion}\nServicio: ${datos.tipoEnvio} - ${datos.peso} kg"
 
             val tvEstadoPago = v.findViewById<TextView>(R.id.tvEstadoPago)
             val tvMontoPago = v.findViewById<TextView>(R.id.tvMontoPago)
             if (datos.esContraentrega) {
-                tvEstadoPago?.text = "PAGO CONTRAENTREGA"
+                tvEstadoPago?.text = "PAGO CONTRAENTREGA (COBRO EN DESTINO)"
                 tvMontoPago?.text = "COBRAR ${format.format(datos.costo)}"
             } else {
-                tvEstadoPago?.text = "PAGO INMEDIATO CONFIRMADO"
-                tvMontoPago?.text = "PAGADO - NO COBRAR"
+                tvEstadoPago?.text = "PAGO INMEDIATO (TRANSFERENCIA NEQUI)"
+                tvMontoPago?.text = "POR PAGAR ${format.format(datos.costo)}"
             }
 
             // Ocultar los botones de acción para que no aparezcan dentro del documento PDF impreso
+            v.findViewById<View>(R.id.btnPagarNequiRotulo)?.visibility = View.GONE
             v.findViewById<View>(R.id.btnImprimirRotulo)?.visibility = View.GONE
             v.findViewById<View>(R.id.btnIrInicio)?.visibility = View.GONE
 

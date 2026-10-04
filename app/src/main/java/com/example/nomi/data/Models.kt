@@ -66,6 +66,7 @@ data class PedidoPostgres(
     val peso_kg: String? = null,
     val tipo_servicio: String? = null,
     val modalidad_pago: String? = "contraentrega",
+    val estado_pago: String? = "Pendiente",     // 'Pendiente' o 'Pagado'
     val estado: Int = 1,                        // 1=Solicitado, 2=En Ruta, 3=Entregado
     val costo: Double? = 0.0
 )
