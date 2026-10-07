@@ -47,7 +47,12 @@ class AdminRegistrarMensajeroActivity : AppCompatActivity() {
             val pas = etPass.text.toString().trim()
 
             if (nom.isEmpty() || ced.isEmpty() || tel.isEmpty() || cor.isEmpty() || pla.isEmpty() || are.isEmpty() || pas.isEmpty()) {
-                Toast.makeText(this, "⚠️ Todos los campos son obligatorios: Nombre, Cédula, Teléfono, Correo, Placa, Zona y Contraseña", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "⚠️ Por favor complete todos los campos obligatorios del domiciliario (Nombre, Cédula, Teléfono, Correo, Placa, Área y Contraseña)", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            if (pas.length < 6) {
+                Toast.makeText(this, "⚠️ La contraseña provisional debe contener al menos 6 caracteres", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

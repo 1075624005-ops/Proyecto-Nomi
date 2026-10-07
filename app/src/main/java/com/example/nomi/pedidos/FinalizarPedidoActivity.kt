@@ -79,12 +79,14 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                     totalActuales = lista.size
                 }
 
+                val idClienteExtra = intent.getStringExtra("id_cliente") ?: intent.getStringExtra("correo") ?: remNombre
                 val codLocalidadLimpio = if (codLocalidad.length >= 2) codLocalidad.substring(0, 2) else "01"
                 val numeroConsecutivo = String.format(Locale.US, "%04d", totalActuales + 1)
                 val guiaGenerada = "N" + codLocalidadLimpio + numeroConsecutivo
 
                 val nuevoPedido = com.example.nomi.data.PedidoPostgres(
                     num_guia = guiaGenerada,
+                    id_cliente = idClienteExtra,
                     rem_nombre = remNombre,
                     rem_tel = remTel,
                     rem_dir = remDir,
@@ -97,35 +99,44 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                     peso_kg = "$peso kg",
                     tipo_servicio = tipoEnvio,
                     modalidad_pago = if (esContraentrega) "contraentrega" else "inmediato",
-                    estado_pago = "Pendiente",
+                    estado_pago = if (esContraentrega) "Pendiente" else "Pendiente",
                     estado = 1,
                     costo = costo
                 )
 
-                val resPedido = repo.crearPedido(nuevoPedido)
-                resPedido.onSuccess {
-                    Toast.makeText(this@FinalizarPedidoActivity, "✅ Pedido Guardado en Supabase\nGuía: $guiaGenerada", Toast.LENGTH_LONG).show()
+                // Registro resiliente con reintento ante colisión de clave primaria
+                repo.crearPedidoConReintento(nuevoPedido, codLocalidadLimpio).onSuccess { pedidoGuardado ->
+                    val guiaFinal = pedidoGuardado.num_guia
+                    Toast.makeText(this@FinalizarPedidoActivity, "✅ Pedido Creado Exitosamente\nGuía Oficial: $guiaFinal", Toast.LENGTH_LONG).show()
+
+                    if (esContraentrega) {
+                        val intentRotulo = Intent(this@FinalizarPedidoActivity, RotuloActivity::class.java)
+                        intentRotulo.putExtra("guia", guiaFinal)
+                        intentRotulo.putExtra("id_cliente", idClienteExtra)
+                        intentRotulo.putExtra("rem_nombre", remNombre)
+                        intentRotulo.putExtra("rem_dir", remDir)
+                        intentRotulo.putExtra("dest_nombre", destNombre)
+                        intentRotulo.putExtra("dest_dir", destDir)
+                        intentRotulo.putExtra("dest_tel", destTel)
+                        intentRotulo.putExtra("dest_localidad_nom", nomLocalidad)
+                        intentRotulo.putExtra("ped_desc", desc)
+                        intentRotulo.putExtra("ped_tipo_envio", tipoEnvio)
+                        intentRotulo.putExtra("ped_peso", peso)
+                        intentRotulo.putExtra("ped_costo", costo)
+                        intentRotulo.putExtra("ped_pago_contraentrega", true)
+                        startActivity(intentRotulo)
+                    } else {
+                        val intentPago = Intent(this@FinalizarPedidoActivity, PagoInmediatoActivity::class.java)
+                        intentPago.putExtra("guia", guiaFinal)
+                        intentPago.putExtra("ped_costo", costo)
+                        startActivity(intentPago)
+                    }
+                    finish()
                 }.onFailure { err ->
-                    Toast.makeText(this@FinalizarPedidoActivity, "⚠️ Pedido procesado (Guía: $guiaGenerada)", Toast.LENGTH_LONG).show()
+                    btnFinalizar.isEnabled = true
+                    btnFinalizar.text = "CONFIRMAR Y GUARDAR PEDIDO"
+                    Toast.makeText(this@FinalizarPedidoActivity, "❌ Error al crear el pedido: ${err.message}", Toast.LENGTH_LONG).show()
                 }
-
-                // Muestra siempre la pantalla del Rótulo PDF oficial
-                val intentRotulo = Intent(this@FinalizarPedidoActivity, RotuloActivity::class.java)
-                intentRotulo.putExtra("guia", guiaGenerada)
-                intentRotulo.putExtra("rem_nombre", remNombre)
-                intentRotulo.putExtra("rem_dir", remDir)
-                intentRotulo.putExtra("dest_nombre", destNombre)
-                intentRotulo.putExtra("dest_dir", destDir)
-                intentRotulo.putExtra("dest_tel", destTel)
-                intentRotulo.putExtra("dest_localidad_nom", nomLocalidad)
-                intentRotulo.putExtra("ped_desc", desc)
-                intentRotulo.putExtra("ped_tipo_envio", tipoEnvio)
-                intentRotulo.putExtra("ped_peso", peso)
-                intentRotulo.putExtra("ped_costo", costo)
-                intentRotulo.putExtra("ped_pago_contraentrega", esContraentrega)
-                startActivity(intentRotulo)
-
-                finish()
             }
         }
 

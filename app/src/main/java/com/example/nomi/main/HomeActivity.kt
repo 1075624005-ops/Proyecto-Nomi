@@ -49,7 +49,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val tvWelcome = findViewById<TextView>(R.id.tvUserWelcome)
         val etBuscar = findViewById<EditText>(R.id.etBuscar)
 
-        val btnMisPedidos = findViewById<CardView>(R.id.btnMisPedidosHome)
         val btnCotiza = findViewById<CardView>(R.id.btnCotizaHome)
         val btnPQRS = findViewById<CardView>(R.id.btnPQRHome)
         val btnContacto = findViewById<CardView>(R.id.btnContactenosHome)
@@ -60,16 +59,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        btnMisPedidos?.setOnClickListener {
-            startActivity(Intent(this, RastrearActivity::class.java))
-        }
-
         etBuscar.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_NULL) {
                 val textoGuia = etBuscar.text.toString().trim()
                 if (textoGuia.isNotEmpty()) {
-                    val intent = Intent(this, RastrearActivity::class.java)
-                    intent.putExtra("guia", textoGuia)
+                    val intent = Intent(this, RastrearActivity::class.java).apply {
+                        putExtra("guia", textoGuia)
+                        putExtra("correo", correoUsuario)
+                        putExtra("nombre", nombreUsuario)
+                    }
                     startActivity(intent)
                 } else {
                     Toast.makeText(this, "Ingrese un número de guía", Toast.LENGTH_SHORT).show()
@@ -97,7 +95,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Recibir datos de sesión
         nombreUsuario = intent.getStringExtra("nombre")
         correoUsuario = intent.getStringExtra("correo")
-        
+
         val headerView = navView.getHeaderView(0)
         if (headerView != null) {
             val tvNavName = headerView.findViewById<TextView>(R.id.tvNavName)
@@ -140,11 +138,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 intent.putExtra("correo", correoUsuario)
                 startActivity(intent)
             }
-            R.id.nav_rastrear -> {
-                startActivity(Intent(this, RastrearActivity::class.java))
-            }
-            R.id.nav_pedidos -> {
-                startActivity(Intent(this, RastrearActivity::class.java))
+            R.id.nav_rastrear, R.id.nav_pedidos -> {
+                val intentRastreo = Intent(this, RastrearActivity::class.java).apply {
+                    putExtra("correo", correoUsuario)
+                    putExtra("nombre", nombreUsuario)
+                }
+                startActivity(intentRastreo)
             }
 
             R.id.nav_logout -> {

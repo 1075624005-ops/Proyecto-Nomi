@@ -22,12 +22,34 @@ class DatosPQRSActivity : AppCompatActivity() {
             hideSystemUI()
         }
 
+        val spTipoDoc = findViewById<Spinner>(R.id.spTipoDocPQR)
+        val opcionesDoc = arrayOf("Cédula de Ciudadanía", "Cédula de Extranjería", "NIT / Pasaporte")
+        spTipoDoc.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, opcionesDoc)
+
+        val etNombre = findViewById<EditText>(R.id.etNombrePQR)
+        val etCorreo = findViewById<EditText>(R.id.etCorreoPQR)
         val btnSiguiente = findViewById<Button>(R.id.btnSiguientePQR)
-        // Recolección de datos y navegación a GenerarPQRS
+
+        val correoInput = intent.getStringExtra("correo")
+        if (!correoInput.isNullOrEmpty()) {
+            etCorreo.setText(correoInput)
+        }
+
         btnSiguiente.setOnClickListener {
-            val intent = Intent(this, GenerarPQRSActivity::class.java)
-            // Pasar datos via extras
+            val nom = etNombre.text.toString().trim()
+            val cor = etCorreo.text.toString().trim()
+
+            if (nom.isEmpty() || cor.isEmpty()) {
+                Toast.makeText(this, "⚠️ Por favor ingrese su nombre y correo electrónico", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val intent = Intent(this, GenerarPQRSActivity::class.java).apply {
+                putExtra("nombre", nom)
+                putExtra("correo", cor)
+            }
             startActivity(intent)
+            finish()
         }
     }
 

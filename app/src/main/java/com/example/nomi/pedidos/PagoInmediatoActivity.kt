@@ -65,16 +65,12 @@ class PagoInmediatoActivity : AppCompatActivity() {
             Toast.makeText(this, "Número copiado", Toast.LENGTH_SHORT).show()
         }
 
-        findViewById<Button>(R.id.btnVerRotuloPago)?.setOnClickListener {
-            val intentRotulo = Intent(this, RotuloActivity::class.java)
-            intentRotulo.putExtra("guia", guia)
-            intentRotulo.putExtra("ped_costo", costo)
-            intentRotulo.putExtra("ped_pago_contraentrega", false)
-            startActivity(intentRotulo)
-        }
-
         findViewById<Button>(R.id.btnEnviarWhatsapp).setOnClickListener {
             enviarComprobanteWhatsapp(guia, costo)
+        }
+
+        findViewById<Button>(R.id.btnYaTransferi).setOnClickListener {
+            Toast.makeText(this, "Notificando pago vía Whatsapp...", Toast.LENGTH_SHORT).show()
         }
 
         findViewById<Button>(R.id.btnCancelarPago).setOnClickListener { finish() }

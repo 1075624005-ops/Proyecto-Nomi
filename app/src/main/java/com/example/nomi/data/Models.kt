@@ -2,58 +2,60 @@ package com.example.nomi.data
 
 import kotlinx.serialization.Serializable
 
+// --- TABLA PADRE: USUARIOS ---
 @Serializable
 data class UsuarioPostgres(
-    val id: String, // UUID generado por Supabase
-    val nombre: String,
-    val correo: String,
-    val tipo_doc: String? = null,
+    val id_usuario: String = "", // UUID de Supabase Auth
+    val id: String = "",         // Alias de compatibilidad
+    val correo: String = "",
+    val nombre: String = "",
+    val apellido: String? = null,
+    val telefono: String = "",
+    val tipo_doc: String? = "CC",
     val num_doc: String? = null,
-    val telefono: String? = null,
     val direccion: String? = null,
     val rol: String = "cliente",
     val placa: String? = null,
-    val area: String? = null,
-    val habeas_data_aceptado: Boolean = false,
-    val habeas_data_fecha: String? = null,
-    val habeas_data_version: String? = "v1.0"
+    val area: String? = null
 )
 
-// --- ESTRUCTURA ESPECIALIZADA OPCIÓN B (TABLAS PADRE E HIJAS PARA MODELO ER Y ACADÉMICO) ---
+// --- TABLAS HIJAS ESPECIALIZADAS ---
 
 @Serializable
-data class ClienteDetallePostgres(
-    val id: Int? = null,
-    val usuario_id: String,
-    val habeas_data_aceptado: Boolean = true,
-    val habeas_data_fecha: String? = null,
-    val habeas_data_version: String? = "v1.0"
+data class PerfilClientePostgres(
+    val id_usuario: String,
+    val tipo_doc: String = "CC",
+    val numero_doc: String,
+    val direccion: String? = null
 )
 
 @Serializable
-data class MensajeroDetallePostgres(
-    val id: Int? = null,
-    val usuario_id: String,
-    val placa: String? = null,
-    val vehiculo: String? = "Moto",
-    val area_cobertura: String? = null
+data class PerfilMensajeroPostgres(
+    val id_usuario: String,
+    val placa_vehiculo: String,
+    val tipo_vehiculo: String = "Moto",
+    val licencia_conduccion: String = "",
+    val vencimiento_soat: String = "",
+    val vencimiento_tecnomecanica: String = "",
+    val zona_asignada: String = "Bogotá D.C.",
+    val disponible: Boolean = true
 )
 
 @Serializable
-data class AsesorDetallePostgres(
-    val id: Int? = null,
-    val usuario_id: String,
-    val codigo_asesor: String? = null,
-    val area_atencion: String? = "Servicio al Cliente"
+data class PerfilAsesorPostgres(
+    val id_usuario: String,
+    val codigo_asesor: String = "ASE-001",
+    val area_atencion: String = "Servicio al Cliente"
 )
 
-// --- TABLA PEDIDOS COMPLETA (VINCULADA CON CLIENTE Y MENSAJERO) ---
+// --- TABLA ENVIOS / PEDIDOS COMPLETA ---
 
 @Serializable
 data class PedidoPostgres(
-    val num_guia: String,                       // Primary Key (ej. N050001)
-    val id_cliente: String? = null,             // Foreign Key -> usuarios.id
-    val id_mensajero: String? = null,           // Foreign Key -> usuarios.id
+    val num_guia: String = "",
+    val guia_oficial: String = "",
+    val id_cliente: String? = null,
+    val id_mensajero: String? = null,
     val rem_nombre: String? = null,
     val rem_tel: String? = null,
     val rem_dir: String? = null,
@@ -66,18 +68,19 @@ data class PedidoPostgres(
     val peso_kg: String? = null,
     val tipo_servicio: String? = null,
     val modalidad_pago: String? = "contraentrega",
-    val estado_pago: String? = "Pendiente",     // 'Pendiente' o 'Pagado'
-    val estado: Int = 1,                        // 1=Solicitado, 2=En Ruta, 3=Entregado
+    val estado_pago: String? = "Pendiente",
+    val estado: Int = 1,
     val costo: Double? = 0.0
 )
 
 @Serializable
 data class PQRSPostgres(
     val id: Int? = null,
-    val correo_usuario: String,
-    val nombre_usuario: String,
-    val asunto: String,
-    val descripcion: String,
+    val radicado: String? = null,
+    val correo_usuario: String = "",
+    val nombre_usuario: String = "",
+    val asunto: String = "",
+    val descripcion: String = "",
     val estado: String = "Pendiente",
     val respuesta: String? = null
 )

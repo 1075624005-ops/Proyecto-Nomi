@@ -66,33 +66,43 @@ class RotuloActivity : AppCompatActivity() {
         val format = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
 
         findViewById<TextView>(R.id.tvGuia).text = guia
-        findViewById<TextView>(R.id.tvRemitente)?.text = "Nombre: $remNombre\nDirección: $remDir"
-        findViewById<TextView>(R.id.tvDestinatario).text = "Nombre: $destNombre\nDirección: $destDir\nLocalidad: $nomLocalidad\nTel: $destTel"
-        findViewById<TextView>(R.id.tvContenido).text = "Descripción: $desc\nServicio: $tipoEnvio - $peso kg"
-
-        // Generar e inyectar el Código QR del Pedido
-        val qrPayload = "NOMI EXPRESS\nGuia: $guia\nRemitente: $remNombre\nDestinatario: $destNombre\nDir: $destDir, $nomLocalidad\nTel: $destTel\nMonto: ${format.format(costo)}"
-        val ivQr = findViewById<android.widget.ImageView>(R.id.ivQrRotulo)
-        ivQr?.setImageBitmap(generarQrBitmap(qrPayload, 350))
+        findViewById<TextView>(R.id.tvDestinatario).text =
+                "$destNombre\n$destDir\n$nomLocalidad\nTel: $destTel"
+        findViewById<TextView>(R.id.tvContenido).text =
+                "$desc\n$tipoEnvio - $peso kg"
 
         val tvEstadoPago = findViewById<TextView>(R.id.tvEstadoPago)
         val tvMontoPago = findViewById<TextView>(R.id.tvMontoPago)
-        val btnPagarNequi = findViewById<Button>(R.id.btnPagarNequiRotulo)
-
         if (esContraentrega) {
-            tvEstadoPago.text = "PAGO CONTRAENTREGA (COBRO EN DESTINO)"
+            tvEstadoPago.text = "PAGO CONTRAENTREGA"
             tvMontoPago.text = "COBRAR ${format.format(costo)}"
-            btnPagarNequi?.visibility = android.view.View.GONE
         } else {
-            tvEstadoPago.text = "PAGO INMEDIATO (TRANSFERENCIA NEQUI)"
-            tvMontoPago.text = "POR PAGAR ${format.format(costo)}"
-            btnPagarNequi?.visibility = android.view.View.VISIBLE
-            btnPagarNequi?.setOnClickListener {
-                val intentPago = Intent(this, PagoInmediatoActivity::class.java)
-                intentPago.putExtra("guia", guia)
-                intentPago.putExtra("ped_costo", costo)
-                startActivity(intentPago)
+            tvEstadoPago.text = "PAGO INMEDIATO CONFIRMADO"
+            tvMontoPago.text = "PAGADO - NO COBRAR"
+        }
+
+        // Generar y mostrar Código QR en pantalla
+        try {
+            val qrPayload = "NOMI EXPRESS\nGuia: $guia\nRemitente: $remNombre\nDestinatario: $destNombre\nDir: $destDir, $nomLocalidad\nTel: $destTel\nMonto: ${format.format(costo)}"
+            val writer = com.google.zxing.qrcode.QRCodeWriter()
+            val bitMatrix = writer.encode(qrPayload, com.google.zxing.BarcodeFormat.QR_CODE, 300, 300)
+            val bitmap = android.graphics.Bitmap.createBitmap(300, 300, android.graphics.Bitmap.Config.RGB_565)
+            for (x in 0 until 300) {
+                for (y in 0 until 300) {
+                    bitmap.setPixel(x, y, if (bitMatrix[x, y]) android.graphics.Color.BLACK else android.graphics.Color.WHITE)
+                }
             }
+            findViewById<android.widget.ImageView>(R.id.ivQrRotulo)?.setImageBitmap(bitmap)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        // Botón Opcional Pago Inmediato con Nequi / QR
+        findViewById<Button>(R.id.btnPagarNequiRotulo)?.setOnClickListener {
+            val intentPago = Intent(this@RotuloActivity, PagoInmediatoActivity::class.java)
+            intentPago.putExtra("guia", guia)
+            intentPago.putExtra("ped_costo", costo)
+            startActivity(intentPago)
         }
 
         findViewById<Button>(R.id.btnImprimirRotulo).setOnClickListener {
@@ -100,8 +110,14 @@ class RotuloActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnIrInicio).setOnClickListener {
-            val intentHome = Intent(this, com.example.nomi.main.HomeActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            val userRole = intent.getStringExtra("user_role") ?: "cliente"
+            val intentHome = when (userRole) {
+                "admin" -> Intent(this, com.example.nomi.admin.AdminActivity::class.java)
+                "asesor" -> Intent(this, com.example.nomi.admin.AsesorActivity::class.java)
+                "mensajero" -> Intent(this, com.example.nomi.main.MessengerHomeActivity::class.java)
+                else -> Intent(this, HomeActivity::class.java)
+            }.apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
             startActivity(intentHome)
             finish()
@@ -137,18 +153,6 @@ class RotuloActivity : AppCompatActivity() {
                 android.widget.Toast.makeText(this@RotuloActivity, "Error al generar PDF: ${e.message}", android.widget.Toast.LENGTH_LONG).show()
             }
         }
-    }
-
-    private fun generarQrBitmap(contenido: String, size: Int): android.graphics.Bitmap {
-        val writer = com.google.zxing.qrcode.QRCodeWriter()
-        val bitMatrix = writer.encode(contenido, com.google.zxing.BarcodeFormat.QR_CODE, size, size)
-        val bitmap = android.graphics.Bitmap.createBitmap(size, size, android.graphics.Bitmap.Config.RGB_565)
-        for (x in 0 until size) {
-            for (y in 0 until size) {
-                bitmap.setPixel(x, y, if (bitMatrix[x, y]) android.graphics.Color.BLACK else android.graphics.Color.WHITE)
-            }
-        }
-        return bitmap
     }
 
     private fun hideSystemUI() {

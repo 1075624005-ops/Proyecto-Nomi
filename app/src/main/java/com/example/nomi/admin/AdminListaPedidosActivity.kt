@@ -13,9 +13,10 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.nomi.R
 import com.example.nomi.data.PedidoPostgres
+import com.example.nomi.data.SupabaseClient
 import com.example.nomi.data.SupabaseRepository
-import com.example.nomi.data.UsuarioPostgres
 import com.example.nomi.pedidos.RotuloActivity
+import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
@@ -53,6 +54,8 @@ class AdminListaPedidosActivity : AppCompatActivity() {
             etBuscarGuia.setText("")
             filtrarLista("")
         }
+
+        cargarPedidosEnTiempoReal()
     }
 
     override fun onResume() {
@@ -68,7 +71,7 @@ class AdminListaPedidosActivity : AppCompatActivity() {
             repo.obtenerPedidosAdmin().onSuccess { lista ->
                 pbCarga.visibility = View.GONE
                 listaPedidosCompleta = lista
-                filtrarLista("")
+                filtrarLista(etBuscarGuia.text.toString().trim())
             }.onFailure { err ->
                 pbCarga.visibility = View.GONE
                 Toast.makeText(this@AdminListaPedidosActivity, "❌ Error al cargar pedidos: ${err.message}", Toast.LENGTH_LONG).show()
@@ -79,10 +82,18 @@ class AdminListaPedidosActivity : AppCompatActivity() {
     private fun filtrarLista(query: String) {
         containerPedidos.removeAllViews()
 
-        val listaFiltrada = if (query.isEmpty()) {
+        val correoMensajeroFilter = intent.getStringExtra("correo_mensajero")
+
+        var listaFiltrada = if (query.isEmpty()) {
             listaPedidosCompleta
         } else {
             listaPedidosCompleta.filter { it.num_guia.lowercase().contains(query.lowercase()) }
+        }
+
+        if (!correoMensajeroFilter.isNullOrEmpty()) {
+            listaFiltrada = listaFiltrada.filter {
+                it.id_mensajero?.equals(correoMensajeroFilter, ignoreCase = true) == true
+            }
         }
 
         if (listaFiltrada.isEmpty()) {
@@ -107,9 +118,9 @@ class AdminListaPedidosActivity : AppCompatActivity() {
             val tvMensajero = cardView.findViewById<TextView>(R.id.tvDocUsuarioCard)
             val tvAccion = cardView.findViewById<TextView>(R.id.tvTelUsuarioCard)
 
-            tvGuia.text = "📦 GUÍA: ${ped.num_guia}"
-            tvMonto.text = "Valor: ${format.format(ped.costo ?: 0.0)} | Destino: ${ped.dest_localidad ?: "Bogotá"}"
-            tvMensajero.text = if (ped.id_mensajero.isNullOrEmpty()) "🛵 Mensajero: Sin asignar" else "🛵 Mensajero: Asignado"
+            tvGuia.text = "Guía: ${ped.num_guia}"
+            tvMonto.text = "Valor Total: ${format.format(ped.costo ?: 0.0)}"
+            tvMensajero.text = if (ped.id_mensajero.isNullOrEmpty()) "Mensajero: Sin asignar" else "Mensajero: ${ped.id_mensajero}"
 
             val (textoEstado, colorEstado) = when (ped.estado) {
                 1 -> Pair("SOLICITADO", "#00AEEF")
@@ -120,103 +131,120 @@ class AdminListaPedidosActivity : AppCompatActivity() {
 
             tvEstado.text = textoEstado
             tvEstado.setTextColor(Color.parseColor(colorEstado))
-            tvAccion.text = "Toca para ver resumen y asignar mensajero ➔"
+            tvAccion.text = "Toca para ver resumen y gestionar"
 
             cardView.setOnClickListener {
-                mostrarOpcionesPedido(ped)
+                mostrarResumenYGestion(ped)
             }
 
             containerPedidos.addView(cardView)
         }
     }
 
-    private fun mostrarOpcionesPedido(ped: PedidoPostgres) {
+    private fun mostrarResumenYGestion(ped: PedidoPostgres) {
         val format = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
-        val resumen = "• Remitente: ${ped.rem_nombre ?: "Cliente"}\n" +
-                "• Destinatario: ${ped.dest_nombre ?: "Registrado en Guía"}\n" +
-                "• Dirección: ${ped.dest_dir ?: "-"} (${ped.dest_localidad ?: "Bogotá"})\n" +
-                "• Contenido: ${ped.descripcion ?: "Carga General"}\n" +
-                "• Valor: ${format.format(ped.costo ?: 0.0)}\n" +
-                "• Modalidad: ${ped.modalidad_pago ?: "contraentrega"}"
+        val resumenTexto = StringBuilder().apply {
+            append("📍 REMITENTE:\n")
+            append("${ped.rem_nombre ?: "N/A"}\nTel: ${ped.rem_tel ?: "N/A"}\nDir: ${ped.rem_dir ?: "N/A"}\n\n")
+            append("🎯 DESTINATARIO:\n")
+            append("${ped.dest_nombre ?: "N/A"}\nTel: ${ped.dest_tel ?: "N/A"}\nDir: ${ped.dest_dir ?: "N/A"}, ${ped.dest_localidad ?: ""}\n\n")
+            append("📦 CONTENIDO:\n")
+            append("${ped.descripcion ?: "Sin descripción"}\nServicio: ${ped.tipo_servicio ?: "Estándar"} - ${ped.peso_kg ?: ""}\n\n")
+            append("💰 VALOR Y PAGO:\n")
+            append("Total: ${format.format(ped.costo ?: 0.0)}\nModalidad: ${ped.modalidad_pago?.uppercase() ?: "CONTRAENTREGA"}\nEstado Pago: ${ped.estado_pago ?: "Pendiente"}\n\n")
+            append("🛵 DOMICILIARIO ASIGNADO:\n")
+            append(if (ped.id_mensajero.isNullOrEmpty()) "Sin Domiciliario Asignado" else ped.id_mensajero)
+        }.toString()
 
         val opciones = arrayOf(
             "🛵 Asignar Domiciliario / Mensajero",
-            "🖨️ Ver / Imprimir Rótulo PDF y QR",
             "🔄 Cambiar Estado de Entrega",
-            "❌ Cancelar"
+            "📋 Ver / Reimprimir Rótulo PDF",
+            "❌ Cerrar"
         )
 
         AlertDialog.Builder(this)
-            .setTitle("📦 Resumen Guía: ${ped.num_guia}")
-            .setMessage(resumen)
-            .setItems(opciones) { _, which ->
-                when (which) {
-                    0 -> mostrarDialogoAsignarMensajero(ped)
-                    1 -> {
-                        val intentRotulo = Intent(this, RotuloActivity::class.java)
-                        intentRotulo.putExtra("guia", ped.num_guia)
-                        intentRotulo.putExtra("dest_nombre", ped.dest_nombre ?: "-")
-                        intentRotulo.putExtra("dest_dir", ped.dest_dir ?: "-")
-                        intentRotulo.putExtra("dest_tel", ped.dest_tel ?: "-")
-                        intentRotulo.putExtra("dest_localidad_nom", ped.dest_localidad ?: "-")
-                        intentRotulo.putExtra("rem_nombre", ped.rem_nombre ?: "-")
-                        intentRotulo.putExtra("rem_dir", ped.rem_dir ?: "-")
-                        intentRotulo.putExtra("ped_desc", ped.descripcion ?: "Servicio de transporte")
-                        intentRotulo.putExtra("ped_tipo_envio", ped.tipo_servicio ?: "Estándar")
-                        intentRotulo.putExtra("ped_peso", ped.peso_kg ?: "1")
-                        intentRotulo.putExtra("ped_costo", ped.costo ?: 0.0)
-                        intentRotulo.putExtra("ped_pago_contraentrega", ped.modalidad_pago == "contraentrega")
-                        startActivity(intentRotulo)
+            .setTitle("Guía Oficial NOMI: ${ped.num_guia}")
+            .setMessage(resumenTexto)
+            .setPositiveButton("GESTIONAR") { _, _ ->
+                AlertDialog.Builder(this)
+                    .setTitle("Opciones de Gestión - ${ped.num_guia}")
+                    .setItems(opciones) { _, which ->
+                        when (which) {
+                            0 -> mostrarDialogoAsignarMensajero(ped)
+                            1 -> mostrarDialogoCambiarEstado(ped)
+                            2 -> abrirRotuloPdf(ped)
+                        }
                     }
-                    2 -> mostrarDialogoCambiarEstado(ped)
-                }
+                    .show()
             }
-            .setPositiveButton("Cerrar", null)
+            .setNegativeButton("CERRAR", null)
             .show()
     }
 
     private fun mostrarDialogoAsignarMensajero(ped: PedidoPostgres) {
         pbCarga.visibility = View.VISIBLE
         lifecycleScope.launch {
-            repo.obtenerTodosLosUsuarios().onSuccess { usuarios ->
+            repo.obtenerMensajerosActivos().onSuccess { listaMensajeros ->
                 pbCarga.visibility = View.GONE
-                val mensajeros = usuarios.filter { it.rol.lowercase().trim() == "mensajero" }
-                if (mensajeros.isEmpty()) {
-                    Toast.makeText(this@AdminListaPedidosActivity, "⚠️ No hay mensajeros registrados en el sistema", Toast.LENGTH_LONG).show()
+                if (listaMensajeros.isEmpty()) {
+                    Toast.makeText(this@AdminListaPedidosActivity, "⚠️ No hay domiciliarios registrados con rol 'mensajero' en Supabase", Toast.LENGTH_LONG).show()
                     return@launch
                 }
 
-                val nombresMensajeros = mensajeros.map { m ->
-                    "🛵 ${m.nombre.uppercase()} - Placa: ${m.placa ?: "Sin Placa"} (${m.area ?: "Bogotá"})"
+                val nombresMensajeros = listaMensajeros.map { m ->
+                    "${m.nombre} (${m.placa ?: m.correo})"
                 }.toTypedArray()
 
                 AlertDialog.Builder(this@AdminListaPedidosActivity)
-                    .setTitle("🛵 Asignar Domiciliario a Guía ${ped.num_guia}")
-                    .setItems(nombresMensajeros) { _, which ->
-                        val mensajeroSel = mensajeros[which]
-                        asignarMensajeroEnSupabase(ped.num_guia, mensajeroSel)
+                    .setTitle("Seleccionar Domiciliario / Mensajero")
+                    .setItems(nombresMensajeros) { _, index ->
+                        val mensajeroSeleccionado = listaMensajeros[index]
+                        val idOMailMensajero = mensajeroSeleccionado.correo.ifEmpty { mensajeroSeleccionado.id }
+                        asignarMensajeroASupabase(ped.num_guia, idOMailMensajero)
                     }
                     .setNegativeButton("Cancelar", null)
                     .show()
-            }.onFailure {
+
+            }.onFailure { err ->
                 pbCarga.visibility = View.GONE
-                Toast.makeText(this@AdminListaPedidosActivity, "❌ Error al cargar mensajeros", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AdminListaPedidosActivity, "❌ Error al consultar mensajeros: ${err.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    private fun asignarMensajeroEnSupabase(guia: String, mensajero: UsuarioPostgres) {
+    private fun asignarMensajeroASupabase(guia: String, idMensajero: String) {
         pbCarga.visibility = View.VISIBLE
         lifecycleScope.launch {
-            repo.asignarMensajeroAPedido(guia, mensajero.id).onSuccess {
+            repo.asignarMensajeroYEstado(guia, idMensajero, nuevoEstado = 2).onSuccess {
                 pbCarga.visibility = View.GONE
-                Toast.makeText(this@AdminListaPedidosActivity, "✅ Guía $guia asignada a ${mensajero.nombre} (En Camino)", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@AdminListaPedidosActivity, "✅ Domiciliario asignado exitosamente ($idMensajero) - Estado: EN CAMINO", Toast.LENGTH_LONG).show()
                 cargarPedidosEnTiempoReal()
-            }.onFailure { e ->
+            }.onFailure { err ->
                 pbCarga.visibility = View.GONE
-                Toast.makeText(this@AdminListaPedidosActivity, "❌ Error al asignar: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@AdminListaPedidosActivity, "❌ Error al asignar domiciliario: ${err.message}", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun abrirRotuloPdf(ped: PedidoPostgres) {
+        val intentRotulo = Intent(this, RotuloActivity::class.java).apply {
+            putExtra("guia", ped.num_guia)
+            putExtra("id_cliente", ped.id_cliente ?: "")
+            putExtra("rem_nombre", ped.rem_nombre ?: "")
+            putExtra("rem_dir", ped.rem_dir ?: "")
+            putExtra("dest_nombre", ped.dest_nombre ?: "")
+            putExtra("dest_dir", ped.dest_dir ?: "")
+            putExtra("dest_tel", ped.dest_tel ?: "")
+            putExtra("dest_localidad_nom", ped.dest_localidad ?: "")
+            putExtra("ped_desc", ped.descripcion ?: "")
+            putExtra("ped_tipo_envio", ped.tipo_servicio ?: "")
+            putExtra("ped_peso", ped.peso_kg ?: "0")
+            putExtra("ped_costo", ped.costo ?: 0.0)
+            putExtra("ped_pago_contraentrega", ped.modalidad_pago.equals("contraentrega", ignoreCase = true))
+            putExtra("user_role", "admin")
+        }
+        startActivity(intentRotulo)
     }
 
     private fun mostrarDialogoCambiarEstado(ped: PedidoPostgres) {

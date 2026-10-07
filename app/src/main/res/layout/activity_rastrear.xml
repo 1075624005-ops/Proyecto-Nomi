@@ -1,114 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background"
-    android:fillViewport="true">
+    android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- HEADER / BARRA SUPERIOR -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:background="@color/app_surface_card"
+        android:padding="16dp">
 
-        <!-- LOGO -->
         <ImageView
             android:id="@+id/imgLogoRastreo"
-            android:layout_width="65dp"
-            android:layout_height="60dp"
-            android:contentDescription="Logo Nomi"
-            android:src="@drawable/logo_nomi"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="Logo NOMI"
+            android:src="@drawable/logo_nomi" />
 
-        <!-- TÍTULO DE LA PANTALLA -->
-        <TextView
-            android:id="@+id/tvTituloRastreo"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="HISTORIAL Y RASTREO DE ENVÍOS"
-            android:textColor="@color/brand_primary"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgLogoRastreo" />
+            android:layout_centerVertical="true"
+            android:layout_marginStart="12dp"
+            android:layout_toEndOf="@id/imgLogoRastreo"
+            android:orientation="vertical">
 
-        <!-- BUSCADOR POR GUÍA -->
-        <LinearLayout
-            android:id="@+id/llBuscadorRastreo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/tvTituloRastreo">
-
-            <EditText
-                android:id="@+id/etBuscarGuiaRastreo"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_input_rounded"
-                android:hint="Buscar por # de Guía (ej. N050001)"
-                android:inputType="textCapCharacters"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary"
-                android:textSize="14sp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnBuscarGuiaRastreo"
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:backgroundTint="@color/brand_primary"
-                android:text="BUSCAR"
+                android:layout_height="wrap_content"
+                android:text="MIS ENVÍOS Y RASTREO"
                 android:textColor="@color/text_primary"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:cornerRadius="10dp" />
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSubtituloCliente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Historial exclusivo de tus paquetes"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp" />
         </LinearLayout>
-
-        <ProgressBar
-            android:id="@+id/pbRastreo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:indeterminateTint="@color/brand_primary"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/llBuscadorRastreo" />
-
-        <!-- CONTENEDOR DE PEDIDOS EN TIEMPO REAL -->
-        <LinearLayout
-            android:id="@+id/containerRastreo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/pbRastreo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnVolverRastreo"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            android:text="VOLVER AL PANEL"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="VOLVER"
             android:textColor="@color/brand_primary"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:cornerRadius="12dp"
-            app:strokeColor="@color/brand_primary"
-            app:strokeWidth="1.5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/containerRastreo" />
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+    <!-- BARRA DE BÚSQUEDA DE GUÍA POR CÓDIGO ESPECIÍFICO -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/etBuscarGuiaClient"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_input_rounded"
+            android:hint="Ej. N050001 o Guía específica"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_secondary"
+            android:textSize="14sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBuscarGuiaClient"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/brand_primary"
+            android:text="BUSCAR"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            app:cornerRadius="10dp" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pbCargaRastreo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <!-- CONTENEDOR DINÁMICO DE TARJETAS DE ENVÍO DEL CLIENTE -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="16dp">
+
+        <LinearLayout
+            android:id="@+id/containerMisEnvios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+</LinearLayout>

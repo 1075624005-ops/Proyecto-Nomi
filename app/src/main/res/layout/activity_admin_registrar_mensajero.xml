@@ -5,17 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background"
-    android:clipToPadding="false"
-    android:paddingBottom="200dp"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/containerRegM"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/tvRegTitle"
@@ -32,185 +27,118 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/tvRegTitle">
 
             <!-- NOMBRE COMPLETO -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <EditText
+                android:id="@+id/etNombreRegM"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_input_rounded"
                 android:hint="Nombre Completo"
-                android:textColorHint="@color/text_secondary"
-                app:boxBackgroundColor="@color/app_background"
-                app:boxStrokeColor="@color/text_primary"
-                app:boxStrokeWidth="1.5dp"
-                app:boxStrokeWidthFocused="2dp"
-                app:cornerRadius="12dp"
-                app:hintTextColor="@color/text_primary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etNombreRegM"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
 
             <!-- CÉDULA -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <EditText
+                android:id="@+id/etCedulaRegM"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="12dp"
+                android:background="@drawable/bg_input_rounded"
                 android:hint="Cédula / Número de Documento"
-                android:textColorHint="@color/text_secondary"
-                app:boxBackgroundColor="@color/app_background"
-                app:boxStrokeColor="@color/text_primary"
-                app:boxStrokeWidth="1.5dp"
-                app:boxStrokeWidthFocused="2dp"
-                app:cornerRadius="12dp"
-                app:hintTextColor="@color/text_primary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etCedulaRegM"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:inputType="number"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
 
             <!-- TELÉFONO -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <EditText
+                android:id="@+id/etTelefonoRegM"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="12dp"
+                android:background="@drawable/bg_input_rounded"
                 android:hint="Teléfono / Móvil de Contacto"
-                android:textColorHint="@color/text_secondary"
-                app:boxBackgroundColor="@color/app_background"
-                app:boxStrokeColor="@color/text_primary"
-                app:boxStrokeWidth="1.5dp"
-                app:boxStrokeWidthFocused="2dp"
-                app:cornerRadius="12dp"
-                app:hintTextColor="@color/text_primary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etTelefonoRegM"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="phone"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:inputType="phone"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
 
             <!-- CORREO ELECTRÓNICO -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <EditText
+                android:id="@+id/etCorreoRegM"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="12dp"
+                android:background="@drawable/bg_input_rounded"
                 android:hint="Correo Electrónico (Login)"
-                android:textColorHint="@color/text_secondary"
-                app:boxBackgroundColor="@color/app_background"
-                app:boxStrokeColor="@color/text_primary"
-                app:boxStrokeWidth="1.5dp"
-                app:boxStrokeWidthFocused="2dp"
-                app:cornerRadius="12dp"
-                app:hintTextColor="@color/text_primary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etCorreoRegM"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:inputType="textEmailAddress"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
 
             <!-- PLACA DEL VEHÍCULO -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <EditText
+                android:id="@+id/etPlacaRegM"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="12dp"
+                android:background="@drawable/bg_input_rounded"
                 android:hint="Placa del Vehículo (ej. XYZ-123)"
-                android:textColorHint="@color/text_secondary"
-                app:boxBackgroundColor="@color/app_background"
-                app:boxStrokeColor="@color/text_primary"
-                app:boxStrokeWidth="1.5dp"
-                app:boxStrokeWidthFocused="2dp"
-                app:cornerRadius="12dp"
-                app:hintTextColor="@color/text_primary">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etPlacaRegM"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textCapCharacters"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:inputType="textCapCharacters"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
 
             <!-- ÁREA / ZONA -->
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <EditText
+                android:id="@+id/etAreaRegM"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginTop="12dp"
+                android:background="@drawable/bg_input_rounded"
                 android:hint="Área / Zona Asignada de Bogotá"
-                android:textColorHint="@color/text_secondary"
-                app:boxBackgroundColor="@color/app_background"
-                app:boxStrokeColor="@color/text_primary"
-                app:boxStrokeWidth="1.5dp"
-                app:boxStrokeWidthFocused="2dp"
-                app:cornerRadius="12dp"
-                app:hintTextColor="@color/text_primary">
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etAreaRegM"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:textColor="@color/text_primary"
-                    android:textSize="15sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- CONTRASEÑA PROVISIONAL CON MOSTRAR/OCULTAR (OJO) -->
+            <!-- CONTRASEÑA -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilPassRegM"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="Contraseña Provisional de Acceso"
-                android:textColorHint="@color/text_secondary"
-                app:boxBackgroundColor="@color/app_background"
-                app:boxStrokeColor="@color/text_primary"
-                app:boxStrokeWidth="1.5dp"
-                app:boxStrokeWidthFocused="2dp"
-                app:cornerRadius="12dp"
-                app:hintTextColor="@color/text_primary"
+                android:layout_marginTop="16dp"
+                app:hintEnabled="false"
                 app:passwordToggleEnabled="true"
                 app:passwordToggleTint="@color/brand_primary">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <EditText
                     android:id="@+id/etPassRegM"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="52dp"
+                    android:background="@drawable/bg_input_rounded"
+                    android:hint="Contraseña Provisional de Acceso"
                     android:inputType="textPassword"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     android:textColor="@color/text_primary"
-                    android:textSize="15sp" />
+                    android:textColorHint="@color/text_secondary" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnFinalizarRegM"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="32dp"
                 android:backgroundTint="@color/brand_primary"
                 android:text="REGISTRAR EN PLANILLA"
                 android:textColor="@color/text_primary"

@@ -70,7 +70,7 @@ class SupabaseRepository {
         }
     }
 
-    // --- GESTIÓN DE USUARIOS ---
+    // --- GESTIÓN DE USUARIOS Y MENSAJEROS ---
 
     suspend fun obtenerTodosLosUsuarios(): Result<List<UsuarioPostgres>> = withContext(Dispatchers.IO) {
         try {
@@ -81,42 +81,85 @@ class SupabaseRepository {
         }
     }
 
+    suspend fun obtenerMensajerosActivos(): Result<List<UsuarioPostgres>> = withContext(Dispatchers.IO) {
+        try {
+            val lista = client.from("usuarios").select {
+                filter {
+                    eq("rol", "mensajero")
+                }
+            }.decodeList<UsuarioPostgres>()
+            Result.success(lista)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     // --- GESTIÓN DE PEDIDOS ---
 
     suspend fun crearPedido(pedido: PedidoPostgres): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
-            // Intentar insertar modelo completo
             client.from("pedidos").insert(pedido)
             Result.success(true)
         } catch (e: Exception) {
-            try {
-                // Insertar exactamente con la estructura de columnas existente en Supabase (num_guia, id_mensajero, estado, costo)
-                @kotlinx.serialization.Serializable
-                data class PedidoTablaSupabase(
-                    val num_guia: String,
-                    val id_mensajero: String? = null,
-                    val estado: Int = 1,
-                    val costo: Double? = 0.0
-                )
+            Result.failure(e)
+        }
+    }
 
-                val pedidoDirecto = PedidoTablaSupabase(
-                    num_guia = pedido.num_guia,
-                    id_mensajero = if (pedido.id_mensajero.isNullOrEmpty()) null else pedido.id_mensajero,
-                    estado = pedido.estado,
-                    costo = pedido.costo
-                )
-                client.from("pedidos").insert(pedidoDirecto)
-                Result.success(true)
-            } catch (e2: Exception) {
-                Result.failure(e2)
+    suspend fun crearPedidoConReintento(
+        pedidoBase: PedidoPostgres,
+        codigoLocalidad: String = "01"
+    ): Result<PedidoPostgres> = withContext(Dispatchers.IO) {
+        var intento = 0
+        var ultimoError: Exception? = null
+        var pedidoActual = pedidoBase
+
+        while (intento < 5) {
+            try {
+                client.from("pedidos").insert(pedidoActual)
+                return@withContext Result.success(pedidoActual)
+            } catch (e: Exception) {
+                ultimoError = e
+                intento++
+                // Generar nueva clave primaria para evitar colisión de clave única
+                val nuevoSecuencial = (1000..9999).random()
+                val nuevaGuia = "N${codigoLocalidad.padStart(2, '0')}${nuevoSecuencial}"
+                pedidoActual = pedidoActual.copy(num_guia = nuevaGuia)
             }
         }
+        Result.failure(ultimoError ?: Exception("No se pudo generar la guía de pedido tras $intento reintentos"))
     }
 
     suspend fun obtenerPedidosAdmin(): Result<List<PedidoPostgres>> = withContext(Dispatchers.IO) {
         try {
             val lista = client.from("pedidos").select().decodeList<PedidoPostgres>()
             Result.success(lista)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun obtenerMisPedidos(idOEmailCliente: String): Result<List<PedidoPostgres>> = withContext(Dispatchers.IO) {
+        try {
+            val todos = client.from("pedidos").select().decodeList<PedidoPostgres>()
+            val misPedidos = todos.filter { p ->
+                p.id_cliente?.equals(idOEmailCliente, ignoreCase = true) == true ||
+                p.rem_nombre?.equals(idOEmailCliente, ignoreCase = true) == true ||
+                p.rem_tel?.equals(idOEmailCliente, ignoreCase = true) == true
+            }
+            Result.success(misPedidos)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun buscarPedidoPorGuia(guia: String): Result<PedidoPostgres?> = withContext(Dispatchers.IO) {
+        try {
+            val lista = client.from("pedidos").select {
+                filter {
+                    eq("num_guia", guia.trim())
+                }
+            }.decodeList<PedidoPostgres>()
+            Result.success(lista.firstOrNull())
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -139,12 +182,16 @@ class SupabaseRepository {
         }
     }
 
-    suspend fun asignarMensajeroAPedido(guia: String, idMensajero: String): Result<Boolean> = withContext(Dispatchers.IO) {
+    suspend fun asignarMensajeroYEstado(
+        guia: String,
+        idMensajero: String,
+        nuevoEstado: Int = 2
+    ): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
             client.from("pedidos").update(
                 {
                     set("id_mensajero", idMensajero)
-                    set("estado", 2) // Pasa automáticamente a "EN CAMINO / EN RUTA"
+                    set("estado", nuevoEstado)
                 }
             ) {
                 filter {

@@ -75,7 +75,11 @@ class AsesorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         // 4. BOTÓN RASTREAR PEDIDO
         findViewById<Button>(R.id.btnRastrearAsesor).setOnClickListener {
-            startActivity(Intent(this, RastrearActivity::class.java))
+            val intent = Intent(this, RastrearActivity::class.java).apply {
+                putExtra("correo", correoUsuario)
+                putExtra("nombre", nombreUsuario)
+            }
+            startActivity(intent)
         }
 
         // 5. BOTÓN CENTRO DE ATENCIÓN / CONTACTO
@@ -98,7 +102,11 @@ class AsesorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                 startActivity(intent)
             }
             R.id.asesor_rastrear -> {
-                startActivity(Intent(this, RastrearActivity::class.java))
+                val intent = Intent(this, RastrearActivity::class.java).apply {
+                    putExtra("correo", correoUsuario)
+                    putExtra("nombre", nombreUsuario)
+                }
+                startActivity(intent)
             }
             R.id.asesor_logout -> {
                 lifecycleScope.launch {
