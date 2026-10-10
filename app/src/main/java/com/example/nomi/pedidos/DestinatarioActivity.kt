@@ -5,7 +5,6 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -41,42 +40,23 @@ class DestinatarioActivity : AppCompatActivity() {
         val etTelDest    = findViewById<EditText>(R.id.etTelefonoDestinatario)
         val etCorreoDest = findViewById<EditText>(R.id.etcorreoPedido)
         val etDirDest    = findViewById<EditText>(R.id.etDireccionDestinatario)
-        val etLocalidad  = findViewById<EditText>(R.id.spLocalidadDestino)
+        val etDetalleDest = findViewById<EditText>(R.id.etDetalleDestinatario)
         val btnSiguiente = findViewById<Button>(R.id.btnSiguienteDestinatario)
         val btnVolver    = findViewById<Button>(R.id.btnVolverRemitente)
 
-        // 2. Configurar Diálogo de Selección de Localidad de Bogotá (Sin pre-seleccionar nada)
-        val localidades = arrayOf(
-            "01 - Usaquén", "02 - Chapinero", "03 - Santa Fe", "04 - San Cristóbal", 
-            "05 - Usme", "06 - Tunjuelito", "07 - Bosa", "08 - Kennedy", 
-            "09 - Fontibón", "10 - Engativá", "11 - Suba", "12 - Barrios Unidos", 
-            "13 - Teusaquillo", "14 - Los Mártires", "15 - Antonio Nariño", 
-            "16 - Puente Aranda", "17 - La Candelaria", "18 - Rafael Uribe Uribe", 
-            "19 - Ciudad Bolívar", "20 - Sumapaz"
-        )
-
-        etLocalidad.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("Seleccionar Localidad de Entrega")
-                .setItems(localidades) { _, which ->
-                    etLocalidad.setText(localidades[which])
-                }
-                .show()
-        }
-
         btnSiguiente.setOnClickListener {
-            val nombreD = etNombreDest.text.toString().trim()
-            val telD    = etTelDest.text.toString().trim()
-            val correoD = etCorreoDest.text.toString().trim()
-            val dirD    = etDirDest.text.toString().trim()
-            val localidadSeleccionada = etLocalidad.text.toString().trim()
+            val nombreD  = etNombreDest.text.toString().trim()
+            val telD     = etTelDest.text.toString().trim()
+            val correoD  = etCorreoDest.text.toString().trim()
+            val dirD     = etDirDest.text.toString().trim()
+            val detalleD = etDetalleDest?.text?.toString()?.trim() ?: ""
 
-            if (nombreD.isEmpty() || telD.isEmpty() || dirD.isEmpty() || localidadSeleccionada.isEmpty()) {
-                Toast.makeText(this, "⚠️ Por favor complete todos los datos del destinatario", Toast.LENGTH_SHORT).show()
+            if (nombreD.isEmpty() || telD.isEmpty() || dirD.isEmpty()) {
+                Toast.makeText(this, "⚠️ Por favor complete los datos obligatorios del destinatario (Nombre, Teléfono y Dirección)", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val codLocalidad = if (localidadSeleccionada.length >= 2) localidadSeleccionada.substring(0, 2) else "01"
+            val direccionCompleta = if (detalleD.isNotEmpty()) "$dirD, $detalleD" else dirD
 
             val intent = Intent(this, DetallesPedidoActivity::class.java)
             intent.putExtra("rem_nombre", remNombre)
@@ -86,9 +66,9 @@ class DestinatarioActivity : AppCompatActivity() {
             intent.putExtra("dest_nombre", nombreD)
             intent.putExtra("dest_tel", telD)
             intent.putExtra("dest_correo", correoD)
-            intent.putExtra("dest_dir", dirD)
-            intent.putExtra("dest_localidad_cod", codLocalidad)
-            intent.putExtra("dest_localidad_nom", localidadSeleccionada)
+            intent.putExtra("dest_dir", direccionCompleta)
+            intent.putExtra("dest_localidad_cod", "01")
+            intent.putExtra("dest_localidad_nom", "Bogotá D.C.")
             startActivity(intent)
         }
 

@@ -37,6 +37,7 @@ class SupabaseRepository {
                 this.password = pass
                 data = buildJsonObject {
                     put("nombre", datos.nombre)
+                    put("apellido", datos.apellido ?: "")
                     put("tipo_doc", datos.tipo_doc ?: "CC")
                     put("num_doc", datos.num_doc ?: "")
                     put("telefono", datos.telefono ?: "")
@@ -48,7 +49,7 @@ class SupabaseRepository {
             }
 
             val uid = userResponse?.id ?: java.util.UUID.randomUUID().toString()
-            val usuarioFinal = datos.copy(id = uid)
+            val usuarioFinal = datos.copy(id_usuario = uid, id = uid)
 
             try {
                 client.from("usuarios").insert(usuarioFinal)
@@ -64,6 +65,63 @@ class SupabaseRepository {
                     }
                 }
             }
+
+            // Insertar en la tabla especializada de perfil e insertar el registro legal de Habeas Data
+            try {
+                if (datos.rol.lowercase() == "cliente") {
+                    val perfilCliente = PerfilClientePostgres(
+                        id_usuario = uid,
+                        tipo_doc = datos.tipo_doc ?: "CC",
+                        numero_doc = datos.num_doc ?: "",
+                        direccion = datos.direccion
+                    )
+                    client.from("perfil_cliente").insert(perfilCliente)
+                } else if (datos.rol.lowercase() == "mensajero") {
+                    val perfilMensajero = PerfilMensajeroPostgres(
+                        id_usuario = uid,
+                        placa_vehiculo = datos.placa ?: "SIN-PLACA",
+                        tipo_vehiculo = "Moto",
+                        licencia_conduccion = "Licencia Registrada",
+                        zona_asignada = datos.area ?: "Bogotá D.C."
+                    )
+                    client.from("perfil_mensajero").insert(perfilMensajero)
+                } else if (datos.rol.lowercase() == "admin") {
+                    val perfilAdmin = PerfilAdminPostgres(
+                        id_usuario = uid,
+                        nivel_acceso = "Superusuario"
+                    )
+                    client.from("perfil_admin").insert(perfilAdmin)
+                }
+
+                // Guardar registro de consentimiento de la Ley 1581 / 2012 (Habeas Data)
+                val habeasData = HabeasDataConsentPostgres(
+                    id_usuario = uid,
+                    aceptado = true,
+                    version_politica = "v1.0 - Ley 1581 de 2012"
+                )
+                client.from("habeas_data_consent").insert(habeasData)
+            } catch (eChild: Exception) {
+                eChild.printStackTrace()
+            }
+
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun guardarPerfilCliente(perfil: PerfilClientePostgres): Result<Boolean> = withContext(Dispatchers.IO) {
+        try {
+            client.from("perfil_cliente").insert(perfil)
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun guardarPerfilMensajero(perfil: PerfilMensajeroPostgres): Result<Boolean> = withContext(Dispatchers.IO) {
+        try {
+            client.from("perfil_mensajero").insert(perfil)
             Result.success(true)
         } catch (e: Exception) {
             Result.failure(e)
@@ -170,6 +228,23 @@ class SupabaseRepository {
             client.from("pedidos").update(
                 {
                     set("estado", nuevoEstado)
+                }
+            ) {
+                filter {
+                    eq("num_guia", guia)
+                }
+            }
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun actualizarEstadoPagoPedido(guia: String, nuevoEstadoPago: String): Result<Boolean> = withContext(Dispatchers.IO) {
+        try {
+            client.from("pedidos").update(
+                {
+                    set("estado_pago", nuevoEstadoPago)
                 }
             ) {
                 filter {

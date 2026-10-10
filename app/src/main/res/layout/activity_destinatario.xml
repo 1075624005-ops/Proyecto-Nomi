@@ -124,7 +124,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:hint="Correo Electrónico"
+                    android:hint="Correo Electrónico (Opcional)"
                     android:textColorHint="#888888"
                     app:boxBackgroundColor="@color/app_background"
                     app:boxStrokeColor="@color/text_primary"
@@ -142,39 +142,13 @@
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- SELECCIÓN LOCALIDAD (MATERIAL BOX LIMPIO CON HINT) -->
+                <!-- DIRECCIÓN DE ENTREGA PRINCIPAL -->
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:hint="Localidad de Entrega (Bogotá)"
-                    android:textColorHint="#888888"
-                    app:boxBackgroundColor="@color/app_background"
-                    app:boxStrokeColor="@color/text_primary"
-                    app:boxStrokeWidth="1dp"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:cornerRadius="10dp"
-                    app:hintTextColor="@color/text_primary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/spLocalidadDestino"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:inputType="none"
-                        android:textColor="@color/text_primary"
-                        android:textSize="14sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- DIRECCIÓN DE ENTREGA -->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:hint="Dirección de entrega"
+                    android:hint="Dirección principal (Ej. Calle 45 # 67-89)"
                     android:textColorHint="#888888"
                     app:boxBackgroundColor="@color/app_background"
                     app:boxStrokeColor="@color/text_primary"
@@ -188,6 +162,30 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPostalAddress"
+                        android:textColor="@color/text_primary"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- DATOS ADICIONALES (CASA / TORRE / APTO / INTERIOR) -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:hint="Torre, Apto, Casa, Edificio (Opcional)"
+                    android:textColorHint="#888888"
+                    app:boxBackgroundColor="@color/app_background"
+                    app:boxStrokeColor="@color/text_primary"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:cornerRadius="10dp"
+                    app:hintTextColor="@color/text_primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDetalleDestinatario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
                         android:textColor="@color/text_primary"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>

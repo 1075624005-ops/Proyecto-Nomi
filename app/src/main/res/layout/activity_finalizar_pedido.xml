@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:gravity="center"
-            android:text="RESUMEN DE TU PEDIDO"
+            android:text="RESUMEN DE TU ENVIO"
             android:textColor="@color/text_primary"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -214,12 +214,12 @@
 
         <!-- BOTONES DE ACCIÓN -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnConfirmarPedido"
+            android:id="@+id/btnConfirmarEnvio"
             android:layout_width="0dp"
             android:layout_height="52dp"
             android:layout_marginTop="24dp"
             android:backgroundTint="@color/brand_primary"
-            android:text="CONFIRMAR PEDIDO"
+            android:text="CONFIRMAR ENVIO"
             android:textColor="@color/text_primary"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -245,7 +245,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnConfirmarPedido" />
+            app:layout_constraintTop_toBottomOf="@id/btnConfirmarEnvio" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

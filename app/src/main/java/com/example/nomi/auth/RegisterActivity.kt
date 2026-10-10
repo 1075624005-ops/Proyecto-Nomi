@@ -38,6 +38,7 @@ class RegisterActivity : AppCompatActivity() {
         activarAutoSubida(container, scroll)
 
         val etNombre     = findViewById<EditText>(R.id.etNombre)
+        val etApellido   = findViewById<EditText>(R.id.etApellido)
         val etTipoDoc    = findViewById<EditText>(R.id.etTipoDoc)
         val etCedula     = findViewById<EditText>(R.id.etCedula)
         val etTelefono   = findViewById<EditText>(R.id.etTelefono)
@@ -80,6 +81,7 @@ class RegisterActivity : AppCompatActivity() {
 
         btnRegistrar.setOnClickListener {
             val nombre    = etNombre.text.toString().trim()
+            val apellido  = etApellido.text.toString().trim()
             val tipoDoc   = etTipoDoc.text.toString().trim()
             val numDoc    = etCedula.text.toString().trim()
             val telefono  = etTelefono.text.toString().trim()
@@ -88,7 +90,7 @@ class RegisterActivity : AppCompatActivity() {
             val password  = etPassword.text.toString().trim()
             val confirmar = etConfirmar.text.toString().trim()
 
-            if (nombre.isEmpty() || tipoDoc.isEmpty() || numDoc.isEmpty() || telefono.isEmpty() ||
+            if (nombre.isEmpty() || apellido.isEmpty() ||tipoDoc.isEmpty() || numDoc.isEmpty() || telefono.isEmpty() ||
                 correo.isEmpty() || direccion.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "⚠️ Por favor complete todos los campos, incluyendo el Tipo de Documento", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -99,7 +101,7 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (password.length < 6) {
+            if (password.length < 8) {
                 Toast.makeText(this, "⚠️ La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -116,6 +118,7 @@ class RegisterActivity : AppCompatActivity() {
                 val nuevoUsuario = UsuarioPostgres(
                     id = "", // Se actualizará en el repositorio con el ID de Auth
                     nombre = nombre,
+                    apellido = apellido,
                     correo = correo,
                     tipo_doc = tipoDoc,
                     num_doc = numDoc,

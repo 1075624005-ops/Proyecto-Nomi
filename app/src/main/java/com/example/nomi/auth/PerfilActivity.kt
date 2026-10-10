@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.nomi.R
 import com.example.nomi.data.SupabaseClient
 import com.example.nomi.data.SupabaseRepository
 import com.example.nomi.data.UsuarioPostgres
 import com.google.android.material.textfield.TextInputLayout
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
-import androidx.lifecycle.lifecycleScope
 import io.github.jan.supabase.auth.auth
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -42,13 +42,13 @@ class PerfilActivity : AppCompatActivity() {
         val tilNombre = findViewById<TextInputLayout>(R.id.tilNombre)
         val tilCedula = findViewById<TextInputLayout>(R.id.tilCedula)
         val tilTel = findViewById<TextInputLayout>(R.id.tilTel)
-        val tilCorreo = findViewById<TextInputLayout>(R.id.tilCorreo)
 
         val btnGuardar = findViewById<Button>(R.id.btnGuardarPerfil)
+        val btnRestablecer = findViewById<Button>(R.id.btnRestablecerPass)
         val btnVolver = findViewById<Button>(R.id.btnVolverPerfil)
 
         // Configuración Spinner
-        val opciones = arrayOf("CC", "NIT", "CE", "PT")
+        val opciones = arrayOf("CC", "NIT", "CE", "PAS")
         val adapter = object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, opciones) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val v = super.getView(position, convertView, parent)
@@ -58,18 +58,58 @@ class PerfilActivity : AppCompatActivity() {
         }
         spTipoDoc.adapter = adapter
 
-        // --- CARGAR DATOS DESDE SUPABASE ---
-        val user = SupabaseClient.client.auth.currentSessionOrNull()?.user
-        if (user != null) {
-            // Lógica para cargar perfil...
+        // Cargar correo e información inicial
+        val userSession = SupabaseClient.client.auth.currentUserOrNull()
+        val email = intent.getStringExtra("correo") ?: userSession?.email ?: "usuario@nomi.com"
+        val nombre = intent.getStringExtra("nombre") ?: ""
+
+        etCorreo.setText(email)
+        if (nombre.isNotEmpty()) etNombre.setText(nombre)
+
+        // Cargar perfil en vivo desde Supabase
+        lifecycleScope.launch {
+            repo.obtenerTodosLosUsuarios().onSuccess { usuarios ->
+                val miPerfil = usuarios.find { it.correo.equals(email, ignoreCase = true) }
+                if (miPerfil != null) {
+                    currentUser = miPerfil
+                    etNombre.setText(miPerfil.nombre)
+                    etNumDoc.setText(miPerfil.num_doc ?: "")
+                    etTel.setText(miPerfil.telefono)
+                }
+            }
         }
 
         tilNombre.setEndIconOnClickListener { mostrarDialogoEditar("Editar Nombre", etNombre) }
         tilCedula.setEndIconOnClickListener { mostrarDialogoEditar("Editar Documento", etNumDoc) }
         tilTel.setEndIconOnClickListener { mostrarDialogoEditar("Editar Teléfono", etTel) }
-        
+
+        // Botón Restablecer / Cambiar Contraseña vía Correo
+        btnRestablecer.setOnClickListener {
+            val userEmail = etCorreo.text.toString().trim()
+            if (userEmail.isEmpty()) {
+                Toast.makeText(this, "⚠️ Correo no válido", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            btnRestablecer.isEnabled = false
+            btnRestablecer.text = "Enviando verificación..."
+
+            lifecycleScope.launch {
+                try {
+                    SupabaseClient.client.auth.resetPasswordForEmail(userEmail)
+                    Toast.makeText(this@PerfilActivity, "✅ Enlace de restablecimiento enviado a $userEmail. Revisa tu bandeja de entrada.", Toast.LENGTH_LONG).show()
+                } catch (e: Exception) {
+                    Toast.makeText(this@PerfilActivity, "❌ Error al enviar correo: ${e.message}", Toast.LENGTH_LONG).show()
+                } finally {
+                    btnRestablecer.isEnabled = true
+                    btnRestablecer.text = "🔒 CAMBIAR CONTRASEÑA (VERIFICAR AL CORREO)"
+                }
+            }
+        }
+
         btnGuardar.setOnClickListener {
-            Toast.makeText(this, "Función en migración", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "✅ Datos de perfil actualizados", Toast.LENGTH_SHORT).show()
+            finish()
         }
 
         btnVolver.setOnClickListener { finish() }

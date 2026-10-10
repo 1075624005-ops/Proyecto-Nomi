@@ -158,6 +158,10 @@ class DetallesPedidoActivity : AppCompatActivity() {
             val alto = etAlto.text.toString().toDoubleOrNull() ?: 0.0
             val pesoReal = etPeso.text.toString().toDoubleOrNull() ?: 0.0
 
+            val cleanValDec = etValorDec.text.toString().replace("[^0-9]".toRegex(), "")
+            val valorDecNum = if (cleanValDec.isNotEmpty()) cleanValDec.toDouble() else 0.0
+            val seguroProteccion = valorDecNum * 0.01 // 1% por seguro de protección de mercancía
+
             if (ancho > 0 && largo > 0 && alto > 0 && pesoReal > 0) {
                 val pesoVol = (ancho * largo * alto) / 5000
                 val pesoFinal = if (pesoReal > pesoVol) pesoReal else pesoVol
@@ -169,18 +173,22 @@ class DetallesPedidoActivity : AppCompatActivity() {
                     else -> 16000.0 + (ceil(pesoFinal - 3.0) * 3000.0)
                 }
 
-                rbEstandar.text = "Económico (2 dias hábiles): ${format.format(costoBase)}"
-                rbExpress.text  = "Express (1 día Habile): ${format.format(costoBase * 1.4)}"
-                rbPremium.text  = "Premium (Menos de 24 Horas): ${format.format(costoBase * 1.8)}"
+                val totalEcon = costoBase + seguroProteccion
+                val totalExp = (costoBase * 1.4) + seguroProteccion
+                val totalPrem = (costoBase * 1.8) + seguroProteccion
+
+                rbEstandar.text = "Económico (2 días hábiles): ${format.format(totalEcon)}"
+                rbExpress.text  = "Express (1 día hábil): ${format.format(totalExp)}"
+                rbPremium.text  = "Premium Mismo Día: ${format.format(totalPrem)}"
 
                 rgOpciones.visibility = View.VISIBLE
-                rbEstandar.tag = costoBase
-                rbExpress.tag  = costoBase * 1.4
-                rbPremium.tag  = costoBase * 1.8
+                rbEstandar.tag = totalEcon
+                rbExpress.tag  = totalExp
+                rbPremium.tag  = totalPrem
 
-                Toast.makeText(this, "Tarifas actualizadas", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Tarifas calculadas con éxito", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Ingrese medidas y peso para cotizar", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "⚠️ Ingrese medidas y peso real para calcular la tarifa", Toast.LENGTH_SHORT).show()
             }
         }
 

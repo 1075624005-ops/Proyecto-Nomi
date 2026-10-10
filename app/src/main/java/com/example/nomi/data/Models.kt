@@ -16,7 +16,10 @@ data class UsuarioPostgres(
     val direccion: String? = null,
     val rol: String = "cliente",
     val placa: String? = null,
-    val area: String? = null
+    val area: String? = null,
+    val habeas_data_aceptado: Boolean = false,
+    val habeas_data_fecha: String? = null,
+    val habeas_data_version: String? = "v1.0"
 )
 
 // --- TABLAS HIJAS ESPECIALIZADAS ---
@@ -46,6 +49,20 @@ data class PerfilAsesorPostgres(
     val id_usuario: String,
     val codigo_asesor: String = "ASE-001",
     val area_atencion: String = "Servicio al Cliente"
+)
+
+@Serializable
+data class PerfilAdminPostgres(
+    val id_usuario: String,
+    val nivel_acceso: String = "Superusuario",
+    val fecha_asignacion: String? = null
+)
+
+@Serializable
+data class HabeasDataConsentPostgres(
+    val id_usuario: String,
+    val aceptado: Boolean = true,
+    val version_politica: String = "v1.0 - Ley 1581 de 2012"
 )
 
 // --- TABLA ENVIOS / PEDIDOS COMPLETA ---

@@ -55,7 +55,7 @@ class FinalizarPedidoActivity : AppCompatActivity() {
         val tvResPedido = findViewById<TextView>(R.id.tvResumenPedido)
         val tvResPago   = findViewById<TextView>(R.id.tvResumenPago)
         val tvTotal     = findViewById<TextView>(R.id.tvTotalFinal)
-        val btnFinalizar = findViewById<Button>(R.id.btnConfirmarPedido)
+        val btnFinalizar = findViewById<Button>(R.id.btnConfirmarEnvio)
         val btnModificar = findViewById<Button>(R.id.btnModificarPedido)
 
         // 3. Poblar la información en las tarjetas
@@ -79,14 +79,17 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                     totalActuales = lista.size
                 }
 
-                val idClienteExtra = intent.getStringExtra("id_cliente") ?: intent.getStringExtra("correo") ?: remNombre
+                val rawIdCliente = intent.getStringExtra("id_cliente") ?: ""
+                val esUuidValido = rawIdCliente.length == 36 && rawIdCliente.contains("-")
+                val idClienteFinal = if (esUuidValido) rawIdCliente else null
+
                 val codLocalidadLimpio = if (codLocalidad.length >= 2) codLocalidad.substring(0, 2) else "01"
                 val numeroConsecutivo = String.format(Locale.US, "%04d", totalActuales + 1)
                 val guiaGenerada = "N" + codLocalidadLimpio + numeroConsecutivo
 
                 val nuevoPedido = com.example.nomi.data.PedidoPostgres(
                     num_guia = guiaGenerada,
-                    id_cliente = idClienteExtra,
+                    id_cliente = idClienteFinal,
                     rem_nombre = remNombre,
                     rem_tel = remTel,
                     rem_dir = remDir,
@@ -109,28 +112,23 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                     val guiaFinal = pedidoGuardado.num_guia
                     Toast.makeText(this@FinalizarPedidoActivity, "✅ Pedido Creado Exitosamente\nGuía Oficial: $guiaFinal", Toast.LENGTH_LONG).show()
 
-                    if (esContraentrega) {
-                        val intentRotulo = Intent(this@FinalizarPedidoActivity, RotuloActivity::class.java)
-                        intentRotulo.putExtra("guia", guiaFinal)
-                        intentRotulo.putExtra("id_cliente", idClienteExtra)
-                        intentRotulo.putExtra("rem_nombre", remNombre)
-                        intentRotulo.putExtra("rem_dir", remDir)
-                        intentRotulo.putExtra("dest_nombre", destNombre)
-                        intentRotulo.putExtra("dest_dir", destDir)
-                        intentRotulo.putExtra("dest_tel", destTel)
-                        intentRotulo.putExtra("dest_localidad_nom", nomLocalidad)
-                        intentRotulo.putExtra("ped_desc", desc)
-                        intentRotulo.putExtra("ped_tipo_envio", tipoEnvio)
-                        intentRotulo.putExtra("ped_peso", peso)
-                        intentRotulo.putExtra("ped_costo", costo)
-                        intentRotulo.putExtra("ped_pago_contraentrega", true)
-                        startActivity(intentRotulo)
-                    } else {
-                        val intentPago = Intent(this@FinalizarPedidoActivity, PagoInmediatoActivity::class.java)
-                        intentPago.putExtra("guia", guiaFinal)
-                        intentPago.putExtra("ped_costo", costo)
-                        startActivity(intentPago)
-                    }
+                    // Para ambas modalidades (Contraentrega e Inmediato), abre de inmediato el Rótulo PDF oficial
+                    val intentRotulo = Intent(this@FinalizarPedidoActivity, RotuloActivity::class.java)
+                    intentRotulo.putExtra("guia", guiaFinal)
+                    intentRotulo.putExtra("id_cliente", idClienteFinal ?: remNombre)
+                    intentRotulo.putExtra("rem_nombre", remNombre)
+                    intentRotulo.putExtra("rem_dir", remDir)
+                    intentRotulo.putExtra("dest_nombre", destNombre)
+                    intentRotulo.putExtra("dest_dir", destDir)
+                    intentRotulo.putExtra("dest_tel", destTel)
+                    intentRotulo.putExtra("dest_localidad_nom", nomLocalidad)
+                    intentRotulo.putExtra("ped_desc", desc)
+                    intentRotulo.putExtra("ped_tipo_envio", tipoEnvio)
+                    intentRotulo.putExtra("ped_peso", peso)
+                    intentRotulo.putExtra("ped_costo", costo)
+                    intentRotulo.putExtra("ped_pago_contraentrega", esContraentrega)
+                    startActivity(intentRotulo)
+
                     finish()
                 }.onFailure { err ->
                     btnFinalizar.isEnabled = true

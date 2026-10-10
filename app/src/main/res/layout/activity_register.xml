@@ -72,6 +72,32 @@
                 android:textColor="@color/text_primary"
                 android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilApellido"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="Apellido completo"
+            android:textColorHint="@color/text_secondary"
+            app:boxBackgroundColor="@color/app_background"
+            app:boxStrokeColor="@color/text_primary"
+            app:boxStrokeWidth="1.5dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:cornerRadius="12dp"
+            app:hintTextColor="@color/text_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTituloRegister">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etApellido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- TIPO DOCUMENTO (MATERIAL OUTLINED BOX CON DIÁLOGO) -->
         <com.google.android.material.textfield.TextInputLayout

@@ -186,7 +186,7 @@
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="24dp"
             android:backgroundTint="@color/brand_primary"
             android:text="ACTUALIZAR DATOS"
             android:textColor="@color/text_primary"
@@ -196,6 +196,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tilCorreo" />
+
+        <!-- BOTÓN CAMBIAR CONTRASEÑA VIA CORREO -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRestablecerPass"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="12dp"
+            android:text="🔒 CAMBIAR CONTRASEÑA (VERIFICAR AL CORREO)"
+            android:textColor="@color/brand_cyan"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:strokeColor="@color/brand_cyan"
+            app:strokeWidth="1.5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnGuardarPerfil" />
 
         <!-- BOTÓN VOLVER -->
         <com.google.android.material.button.MaterialButton
@@ -215,7 +233,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnGuardarPerfil" />
+            app:layout_constraintTop_toBottomOf="@id/btnRestablecerPass" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -166,7 +166,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- TARJETA MEDIDAS Y PESO (CON BORDE CYAN BOGOTÁ) -->
+        <!-- TARJETA MEDIDAS Y PESO -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvMedidasPeso"
             android:layout_width="match_parent"
@@ -187,7 +187,7 @@
                     android:id="@+id/labelMedidas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Medidas y Peso"
+                    android:text="Medidas y Peso Real"
                     android:textColor="@color/brand_primary"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -310,164 +310,20 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- TABLA DE VALORES -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cvTablaValoresDetalles"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="@color/app_background"
-            app:cardCornerRadius="12dp"
-            app:strokeColor="@color/brand_primary"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="8dp"
-                    android:text="TABLA DE TARIFAS ESTIMADAS"
-                    android:textColor="@color/brand_primary"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:stretchColumns="*">
-
-                    <TableRow>
-                        <TextView
-                            android:padding="4dp"
-                            android:text="Peso"
-                            android:textColor="@color/brand_primary"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:gravity="end"
-                            android:padding="4dp"
-                            android:text="Valor Base"
-                            android:textColor="@color/brand_primary"
-                            android:textStyle="bold" />
-                    </TableRow>
-
-                    <TableRow>
-                        <TextView
-                            android:padding="4dp"
-                            android:text="Hasta 1 Kg"
-                            android:textColor="@color/text_primary" />
-                        <TextView
-                            android:gravity="end"
-                            android:padding="4dp"
-                            android:text="$ 10.000"
-                            android:textColor="@color/text_primary" />
-                    </TableRow>
-
-                    <TableRow>
-                        <TextView
-                            android:padding="4dp"
-                            android:text="Hasta 2 Kg"
-                            android:textColor="@color/text_primary" />
-                        <TextView
-                            android:gravity="end"
-                            android:padding="4dp"
-                            android:text="$ 13.000"
-                            android:textColor="@color/text_primary" />
-                    </TableRow>
-
-                    <TableRow>
-                        <TextView
-                            android:padding="4dp"
-                            android:text="Hasta 3 Kg"
-                            android:textColor="@color/text_primary" />
-                        <TextView
-                            android:gravity="end"
-                            android:padding="4dp"
-                            android:text="$ 16.000"
-                            android:textColor="@color/text_primary" />
-                    </TableRow>
-
-                    <TableRow>
-                        <TextView
-                            android:padding="4dp"
-                            android:text="Kg Adicional"
-                            android:textColor="#4CAF50"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:gravity="end"
-                            android:padding="4dp"
-                            android:text="+ $ 3.000"
-                            android:textColor="#4CAF50" />
-                    </TableRow>
-                </TableLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- BOTÓN CALCULAR -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCotizarInterno"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#4CAF50"
-            android:text="CALCULAR COSTO"
-            android:textColor="@color/text_primary"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:cornerRadius="12dp" />
-
-        <!-- OPCIONES DE ENVÍO -->
-        <RadioGroup
-            android:id="@+id/rgOpcionesEnvio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:visibility="gone">
-
-            <RadioButton
-                android:id="@+id/rbEstandar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/brand_primary"
-                android:text="Económico"
-                android:textColor="@color/text_primary" />
-
-            <RadioButton
-                android:id="@+id/rbExpress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/brand_primary"
-                android:text="Express"
-                android:textColor="@color/text_primary" />
-
-            <RadioButton
-                android:id="@+id/rbPremium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:buttonTint="@color/brand_primary"
-                android:text="Premium"
-                android:textColor="@color/text_primary" />
-        </RadioGroup>
-
-        <!-- VALOR DECLARADO -->
+        <!-- VALOR DECLARADO DEL PAQUETE -->
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:hint="Valor Declarado ($)"
+            android:layout_marginTop="16dp"
+            android:hint="Valor Declarado del Paquete (COP $)"
             android:textColorHint="#888888"
             app:boxBackgroundColor="@color/app_background"
-            app:boxStrokeColor="@color/text_primary"
+            app:boxStrokeColor="@color/brand_primary"
             app:boxStrokeWidth="1dp"
             app:boxStrokeWidthFocused="2dp"
             app:cornerRadius="10dp"
-            app:hintTextColor="@color/text_primary">
+            app:hintTextColor="@color/brand_primary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etValorDeclarado"
@@ -483,8 +339,8 @@
             android:id="@+id/labelMetodoPago"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Seleccione Forma de Pago"
+            android:layout_marginTop="16dp"
+            android:text="Forma de Pago del Envío"
             android:textColor="@color/brand_primary"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -493,7 +349,7 @@
             android:id="@+id/rgMetodoPago"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:orientation="horizontal">
 
             <RadioButton
@@ -515,12 +371,58 @@
                 android:textColor="@color/text_primary" />
         </RadioGroup>
 
+        <!-- BOTÓN CALCULAR (UBICADO JUSTO DEBAJO DEL VALOR DECLARADO Y FORMA DE PAGO) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCotizarInterno"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="#4CAF50"
+            android:text="🧮 CALCULAR TARIFA DE ENVÍO"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp" />
+
+        <!-- OPCIONES DE TARIFA RESULTANTES -->
+        <RadioGroup
+            android:id="@+id/rgOpcionesEnvio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone">
+
+            <RadioButton
+                android:id="@+id/rbEstandar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/brand_primary"
+                android:text="Económico (2 días hábiles)"
+                android:textColor="@color/text_primary" />
+
+            <RadioButton
+                android:id="@+id/rbExpress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/brand_primary"
+                android:text="Express (1 día hábil)"
+                android:textColor="@color/text_primary" />
+
+            <RadioButton
+                android:id="@+id/rbPremium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/brand_primary"
+                android:text="Premium Mismo Día"
+                android:textColor="@color/text_primary" />
+        </RadioGroup>
+
         <!-- BOTÓN RESUMEN -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSiguienteDetalles"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="24dp"
             android:layout_marginBottom="30dp"
             android:backgroundTint="@color/brand_primary"
             android:text="VER RESUMEN"

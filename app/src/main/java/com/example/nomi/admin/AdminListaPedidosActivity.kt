@@ -158,6 +158,7 @@ class AdminListaPedidosActivity : AppCompatActivity() {
 
         val opciones = arrayOf(
             "🛵 Asignar Domiciliario / Mensajero",
+            "💳 Marcar Estado de Pago (PAGADO / PENDIENTE)",
             "🔄 Cambiar Estado de Entrega",
             "📋 Ver / Reimprimir Rótulo PDF",
             "❌ Cerrar"
@@ -172,13 +173,37 @@ class AdminListaPedidosActivity : AppCompatActivity() {
                     .setItems(opciones) { _, which ->
                         when (which) {
                             0 -> mostrarDialogoAsignarMensajero(ped)
-                            1 -> mostrarDialogoCambiarEstado(ped)
-                            2 -> abrirRotuloPdf(ped)
+                            1 -> mostrarDialogoCambiarEstadoPago(ped)
+                            2 -> mostrarDialogoCambiarEstado(ped)
+                            3 -> abrirRotuloPdf(ped)
                         }
                     }
                     .show()
             }
             .setNegativeButton("CERRAR", null)
+            .show()
+    }
+
+    private fun mostrarDialogoCambiarEstadoPago(ped: PedidoPostgres) {
+        val opcionesPago = arrayOf("🟢 PAGADO / CONFIRMADO", "🟡 PENDIENTE DE PAGO")
+        val valoresPago = arrayOf("Pagado", "Pendiente")
+
+        AlertDialog.Builder(this)
+            .setTitle("Actualizar Estado de Pago - Guía ${ped.num_guia}")
+            .setItems(opcionesPago) { _, which ->
+                val nuevoEstadoPago = valoresPago[which]
+                pbCarga.visibility = View.VISIBLE
+                lifecycleScope.launch {
+                    repo.actualizarEstadoPagoPedido(ped.num_guia, nuevoEstadoPago).onSuccess {
+                        pbCarga.visibility = View.GONE
+                        Toast.makeText(this@AdminListaPedidosActivity, "✅ Estado de Pago actualizado a '$nuevoEstadoPago'", Toast.LENGTH_SHORT).show()
+                        cargarPedidosEnTiempoReal()
+                    }.onFailure { e ->
+                        pbCarga.visibility = View.GONE
+                        Toast.makeText(this@AdminListaPedidosActivity, "❌ Error al actualizar pago: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
             .show()
     }
 
