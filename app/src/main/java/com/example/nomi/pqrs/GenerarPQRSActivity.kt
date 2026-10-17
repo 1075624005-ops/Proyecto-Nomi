@@ -70,16 +70,18 @@ class GenerarPQRSActivity : AppCompatActivity() {
 
             val correoFinal = if (correoInput.isNotEmpty()) correoInput else "usuario@nomi.com"
             val nombreFinal = if (nombreInput.isNotEmpty()) nombreInput else "Usuario Nomi"
+            val radicadoGenerado = "PQR-${(10000..99999).random()}"
 
             lifecycleScope.launch {
                 val pqr = PQRSPostgres(
+                    radicado = radicadoGenerado,
                     correo_usuario = correoFinal,
                     nombre_usuario = nombreFinal,
                     asunto = "[$tipoPqr] $asunto",
                     descripcion = desc
                 )
                 repo.enviarPQRS(pqr).onSuccess {
-                    Toast.makeText(this@GenerarPQRSActivity, "✅ PQRS Radicada Exitosamente en NOMI", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@GenerarPQRSActivity, "✅ PQRS Radicada Exitosamente en NOMI\nNúmero de Radicado: $radicadoGenerado", Toast.LENGTH_LONG).show()
                     finish()
                 }.onFailure { err ->
                     btnEnviar.isEnabled = true

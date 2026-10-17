@@ -158,6 +158,7 @@ class AdminListaPedidosActivity : AppCompatActivity() {
 
         val opciones = arrayOf(
             "🛵 Asignar Domiciliario / Mensajero",
+            "🗺️ Rastrear Pedido en Mapa GPS",
             "💳 Marcar Estado de Pago (PAGADO / PENDIENTE)",
             "🔄 Cambiar Estado de Entrega",
             "📋 Ver / Reimprimir Rótulo PDF",
@@ -173,9 +174,10 @@ class AdminListaPedidosActivity : AppCompatActivity() {
                     .setItems(opciones) { _, which ->
                         when (which) {
                             0 -> mostrarDialogoAsignarMensajero(ped)
-                            1 -> mostrarDialogoCambiarEstadoPago(ped)
-                            2 -> mostrarDialogoCambiarEstado(ped)
-                            3 -> abrirRotuloPdf(ped)
+                            1 -> Toast.makeText(this, "🚧 Módulo de Rastreo GPS en Mapa en Tiempo Real se encuentra en mantenimiento y actualización para la próxima versión de NOMI", Toast.LENGTH_LONG).show()
+                            2 -> mostrarDialogoCambiarEstadoPago(ped)
+                            3 -> mostrarDialogoCambiarEstado(ped)
+                            4 -> abrirRotuloPdf(ped)
                         }
                     }
                     .show()
@@ -218,14 +220,15 @@ class AdminListaPedidosActivity : AppCompatActivity() {
                 }
 
                 val nombresMensajeros = listaMensajeros.map { m ->
-                    "${m.nombre} (${m.placa ?: m.correo})"
+                    val nom = "${m.Nombre ?: "Mensajero"} ${m.Apellido ?: ""}".trim()
+                    "🛵 $nom - Placa: ${m.placa_vehiculo} (${m.zona_asignada})"
                 }.toTypedArray()
 
                 AlertDialog.Builder(this@AdminListaPedidosActivity)
                     .setTitle("Seleccionar Domiciliario / Mensajero")
                     .setItems(nombresMensajeros) { _, index ->
                         val mensajeroSeleccionado = listaMensajeros[index]
-                        val idOMailMensajero = mensajeroSeleccionado.correo.ifEmpty { mensajeroSeleccionado.id }
+                        val idOMailMensajero = (mensajeroSeleccionado.Correo_electronico ?: mensajeroSeleccionado.id_usuario).ifEmpty { mensajeroSeleccionado.id_usuario }
                         asignarMensajeroASupabase(ped.num_guia, idOMailMensajero)
                     }
                     .setNegativeButton("Cancelar", null)

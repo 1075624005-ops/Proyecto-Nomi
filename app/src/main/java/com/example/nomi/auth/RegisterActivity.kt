@@ -114,24 +114,19 @@ class RegisterActivity : AppCompatActivity() {
             // 🚀 REGISTRO CON POSTGRESQL (SUPABASE)
             lifecycleScope.launch {
                 val fechaAceptacion = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-                
-                val nuevoUsuario = UsuarioPostgres(
-                    id = "", // Se actualizará en el repositorio con el ID de Auth
+
+                val resultado = repo.registrarUsuario(
+                    email = correo,
+                    pass = password,
                     nombre = nombre,
                     apellido = apellido,
-                    correo = correo,
-                    tipo_doc = tipoDoc,
-                    num_doc = numDoc,
+                    tipoDoc = tipoDoc,
+                    numDoc = numDoc,
                     telefono = telefono,
                     direccion = direccion,
-                    rol = "cliente",
-                    habeas_data_aceptado = true,
-                    habeas_data_fecha = fechaAceptacion,
-                    habeas_data_version = "v1.0"
+                    rol = "cliente"
                 )
 
-                val resultado = repo.registrarUsuario(correo, password, nuevoUsuario)
-                
                 resultado.onSuccess {
                     Toast.makeText(this@RegisterActivity, "✅ Registro exitoso", Toast.LENGTH_LONG).show()
                     finish()
@@ -170,44 +165,47 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun mostrarPoliticaDatos() {
         val politica = """
-            POLÍTICA DE TRATAMIENTO DE DATOS PERSONALES
-            Versión 1.0 — App Nomi
+            TÉRMINOS Y CONDICIONES Y POLÍTICA DE TRATAMIENTO DE DATOS PERSONALES
+            (Conforme a la Ley 1581 de 2012 y Decreto 1377 de 2013)
+            Versión 1.0 — NOMI Express S.A.S.
 
-            1. RESPONSABLE DEL TRATAMIENTO
+            1. RESPONSABLE DEL TRATAMIENTO DE DATOS
             NOMI - Soluciones a tu alcance - S.A.S.
-            Correo de contacto: [nomisas@nomi.com]
+            NIT: 901.234.567-8 | Correo de atención: nomisas@nomi.com
 
-            2. DATOS QUE RECOLECTAMOS
-            - Nombre completo
-            - Tipo y número de documento de identidad
-            - Correo electrónico
-            - Número de teléfono
-            - Dirección
+            2. DATOS PERSONALES RECOLECTADOS
+            Para la prestación de servicios de mensajería y transporte, recolectamos:
+            • Nombres y apellidos completos
+            • Tipo y número de documento de identidad (CC, NIT, CE, PAS, PPT)
+            • Correo electrónico de acceso
+            • Número telefónico y móvil de contacto
+            • Dirección de residencia, recogida o entrega de envíos
 
-            3. FINALIDAD DEL TRATAMIENTO
-            Sus datos se usan para:
-            - Gestionar su cuenta en la aplicación Nomi
-            - Procesar pedidos y PQRS
-            - Enviar notificaciones del servicio
-            - Cumplir obligaciones legales
+            3. FINALIDAD EXCLUSIVA DEL TRATAMIENTO
+            Sus datos personales serán utilizados única y exclusivamente para:
+            • Gestionar el registro y autenticación en la aplicación NOMI
+            • Generar las guías de transporte, Rótulos PDF y Códigos QR
+            • Asignar domiciliarios en ruta para la entrega de pedidos
+            • Tramitar y dar respuesta a solicitudes PQRS (Ley 1755 de 2015)
+            • Cumplir las exigencias legales del Sector Transporte (Decreto 1079 de 2015)
 
-            4. DERECHOS DEL TITULAR (Ley 1581 de 2012)
-            Usted puede en cualquier momento:
-            - Conocer, actualizar y rectificar sus datos
-            - Solicitar la supresión de sus datos
-            - Revocar la autorización otorgada
-            - Presentar quejas ante la SIC
+            4. DERECHOS DEL TITULAR (ARTÍCULO 8 DE LA LEY 1581 DE 2012)
+            Como titular de los datos personales, usted tiene derecho a:
+            • Conocer, actualizar, rectificar y suprimir sus datos personales
+            • Solicitar prueba de la autorización otorgada
+            • Revocar la autorización en cualquier momento mediante solicitud formal
+            • Presentar quejas ante la Superintendencia de Industria y Comercio (SIC)
 
-            5. CÓMO EJERCER SUS DERECHOS
-            Escriba a: [nomisas@nomi.com]
-            Le responderemos en máximo 15 días hábiles.
+            5. CANALES PARA EL EJERCICIO DE DERECHOS
+            Puede enviar su solicitud a: nomisas@nomi.com
+            Respuesta garantizada en un plazo máximo de 15 días hábiles.
 
-            6. VIGENCIA
-            Esta política rige a partir de su aceptación.
+            6. VIGENCIA DE LA POLÍTICA
+            La presente política rige a partir de la fecha de su aceptación digital.
         """.trimIndent()
 
         AlertDialog.Builder(this)
-            .setTitle("📋 Política de Datos Personales")
+            .setTitle("📋 Política de Protección de Datos (Ley 1581)")
             .setMessage(politica)
             .setPositiveButton("Entendido y Acepto") { dialog, _ ->
                 findViewById<CheckBox>(R.id.cbHabeasData).isChecked = true

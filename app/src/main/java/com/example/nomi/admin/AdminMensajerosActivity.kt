@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.nomi.R
+import com.example.nomi.data.PerfilMensajeroPostgres
 import com.example.nomi.data.SupabaseRepository
 import com.example.nomi.data.UsuarioPostgres
 import kotlinx.coroutines.delay
@@ -110,7 +111,7 @@ class AdminMensajerosActivity : AppCompatActivity() {
 
                         // Fila 2: Correo
                         val tvCorreo = TextView(this@AdminMensajerosActivity).apply {
-                            text = "📧 ${m.correo}"
+                            text = "📧 ${m.Correo_electronico ?: "Sin correo"}"
                             setTextColor(ContextCompat.getColor(context, R.color.text_secondary))
                             textSize = 13f
                             setPadding(0, 6, 0, 0)
@@ -118,7 +119,7 @@ class AdminMensajerosActivity : AppCompatActivity() {
 
                         // Fila 3: Documento
                         val tvDoc = TextView(this@AdminMensajerosActivity).apply {
-                            text = "🪪 ${m.tipo_doc ?: "CC"}: ${m.num_doc ?: "Sin cédula"}"
+                            text = "🪪 ${m.tipo_doc ?: "CC"}: ${m.numero_doc ?: "Sin cédula"}"
                             setTextColor(ContextCompat.getColor(context, R.color.text_secondary))
                             textSize = 13f
                             setPadding(0, 4, 0, 0)
@@ -126,8 +127,8 @@ class AdminMensajerosActivity : AppCompatActivity() {
 
                         // Fila 4: Vehículo, Placa y Zona
                         val tvInfo = TextView(this@AdminMensajerosActivity).apply {
-                            val area = m.area ?: "Todas las Zonas"
-                            val placa = m.placa ?: "Sin Placa"
+                            val area = m.zona_asignada.ifEmpty { "Todas las Zonas" }
+                            val placa = m.placa_vehiculo.ifEmpty { "Sin Placa" }
                             text = "🚘 Placa/Vehículo: $placa\n📍 Área/Zona: $area"
                             setTextColor(ContextCompat.getColor(context, R.color.text_primary))
                             setTypeface(null, Typeface.BOLD)
@@ -167,7 +168,7 @@ class AdminMensajerosActivity : AppCompatActivity() {
         }
     }
 
-    private fun mostrarGestionMensajero(m: UsuarioPostgres) {
+    private fun mostrarGestionMensajero(m: PerfilMensajeroPostgres) {
         val opciones = arrayOf(
             "🟢 Estado: Activo / Disponible",
             "🟡 Estado: En Ruta de Entrega",
@@ -175,16 +176,19 @@ class AdminMensajerosActivity : AppCompatActivity() {
             "📋 Ver Historial de Entregas del Domiciliario"
         )
 
+        val nom = "${m.Nombre ?: "Mensajero"} ${m.Apellido ?: ""}".trim()
+
         AlertDialog.Builder(this)
-            .setTitle("🛵 Gestión de Domiciliario: ${m.nombre}")
-            .setMessage("• Correo: ${m.correo}\n• Cédula: ${m.num_doc ?: "-"}\n• Placa: ${m.placa ?: "-"}\n• Zona: ${m.area ?: "-"}")
+            .setTitle("🛵 Gestión de Domiciliario: $nom")
+            .setMessage("• Correo: ${m.Correo_electronico ?: "-"}\n• Cédula: ${m.numero_doc ?: "-"}\n• Placa: ${m.placa_vehiculo.ifEmpty { "-" }}\n• Zona: ${m.zona_asignada.ifEmpty { "-" }}")
             .setItems(opciones) { _, which ->
                 when (which) {
-                    0 -> Toast.makeText(this, "✅ Mensajero ${m.nombre} marcado como ACTIVO", Toast.LENGTH_SHORT).show()
-                    1 -> Toast.makeText(this, "🟡 Mensajero ${m.nombre} en RUTA", Toast.LENGTH_SHORT).show()
-                    2 -> Toast.makeText(this, "🔴 Mensajero ${m.nombre} en VACACIONES", Toast.LENGTH_SHORT).show()
+                    0 -> Toast.makeText(this, "✅ Mensajero $nom marcado como ACTIVO", Toast.LENGTH_SHORT).show()
+                    1 -> Toast.makeText(this, "🟡 Mensajero $nom en RUTA", Toast.LENGTH_SHORT).show()
+                    2 -> Toast.makeText(this, "🔴 Mensajero $nom en VACACIONES", Toast.LENGTH_SHORT).show()
                     3 -> {
                         val intent = Intent(this, AdminListaPedidosActivity::class.java)
+                        intent.putExtra("correo_mensajero", m.Correo_electronico)
                         startActivity(intent)
                     }
                 }

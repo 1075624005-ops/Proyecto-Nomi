@@ -13,95 +13,151 @@ class SupabaseRepository {
 
     // --- AUTENTICACIÓN Y PERFIL ---
 
-    suspend fun login(email: String, pass: String): Result<UsuarioPostgres> = withContext(Dispatchers.IO) {
+    suspend fun login(email: String, pass: String): Result<DatosUsuarioLogin> = withContext(Dispatchers.IO) {
         try {
+            // 1. Autenticar credenciales en Supabase Auth
             client.auth.signInWith(Email) {
                 this.email = email
                 this.password = pass
             }
-            val usuario = client.from("usuarios").select {
-                filter {
-                    eq("correo", email)
+
+            // 2. Buscar primero en la tabla de ADMINISTRADORES
+            try {
+                val adminList = client.from("perfil_admin").select {
+                    filter { eq("Correo_electronico", email) }
+                }.decodeList<PerfilAdminPostgres>()
+
+                if (adminList.isNotEmpty()) {
+                    val a = adminList[0]
+                    val nombreAdmin = "${a.Nombre ?: "Administrador"} ${a.Apellido ?: ""}".trim().ifEmpty { "Administrador NOMI" }
+                    return@withContext Result.success(DatosUsuarioLogin(nombre = nombreAdmin, correo = email, rol = "admin"))
                 }
-            }.decodeSingle<UsuarioPostgres>()
-            Result.success(usuario)
+            } catch (e: Exception) {}
+
+            // 3. Buscar en la tabla de ASESORES
+            try {
+                val asesorList = client.from("perfil_asesor").select {
+                    filter { eq("Correo_electronico", email) }
+                }.decodeList<PerfilAsesorPostgres>()
+
+                if (asesorList.isNotEmpty()) {
+                    val a = asesorList[0]
+                    val nombreAsesor = "${a.Nombre ?: "Asesor"} ${a.Apellido ?: ""}".trim().ifEmpty { "Asesor NOMI" }
+                    return@withContext Result.success(DatosUsuarioLogin(nombre = nombreAsesor, correo = email, rol = "asesor"))
+                }
+            } catch (e: Exception) {}
+
+            // 4. Buscar en la tabla de MENSAJEROS / DOMICILIARIOS
+            try {
+                val mensajeroList = client.from("perfil_mensajero").select {
+                    filter { eq("Correo_electronico", email) }
+                }.decodeList<PerfilMensajeroPostgres>()
+
+                if (mensajeroList.isNotEmpty()) {
+                    val m = mensajeroList[0]
+                    val nombreMensajero = "${m.Nombre ?: "Mensajero"} ${m.Apellido ?: ""}".trim().ifEmpty { "Mensajero NOMI" }
+                    return@withContext Result.success(DatosUsuarioLogin(nombre = nombreMensajero, correo = email, rol = "mensajero"))
+                }
+            } catch (e: Exception) {}
+
+            // 5. Buscar en la tabla de CLIENTES
+            try {
+                val clienteList = client.from("perfil_cliente").select {
+                    filter { eq("Correo_electronico", email) }
+                }.decodeList<PerfilClientePostgres>()
+
+                if (clienteList.isNotEmpty()) {
+                    val c = clienteList[0]
+                    val nombreCliente = "${c.Nombre ?: ""} ${c.Apellido ?: ""}".trim().ifEmpty { "Cliente Nomi" }
+                    return@withContext Result.success(DatosUsuarioLogin(nombre = nombreCliente, correo = email, rol = "cliente"))
+                }
+            } catch (e: Exception) {}
+
+            // Fallback si autenticó pero no está en tablas
+            Result.success(DatosUsuarioLogin(nombre = "Usuario Nomi", correo = email, rol = "cliente"))
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    suspend fun registrarUsuario(email: String, pass: String, datos: UsuarioPostgres): Result<Boolean> = withContext(Dispatchers.IO) {
+    suspend fun registrarUsuario(
+        email: String,
+        pass: String,
+        nombre: String,
+        apellido: String = "",
+        tipoDoc: String = "CC",
+        numDoc: String = "",
+        telefono: String = "",
+        direccion: String = "",
+        rol: String = "cliente",
+        placa: String = "",
+        area: String = ""
+    ): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
+            // 1. Crear el usuario en Supabase Auth
             val userResponse = client.auth.signUpWith(Email) {
                 this.email = email
                 this.password = pass
-                data = buildJsonObject {
-                    put("nombre", datos.nombre)
-                    put("apellido", datos.apellido ?: "")
-                    put("tipo_doc", datos.tipo_doc ?: "CC")
-                    put("num_doc", datos.num_doc ?: "")
-                    put("telefono", datos.telefono ?: "")
-                    put("direccion", datos.direccion ?: "")
-                    put("rol", datos.rol)
-                    put("placa", datos.placa ?: "")
-                    put("area", datos.area ?: "")
-                }
             }
 
             val uid = userResponse?.id ?: java.util.UUID.randomUUID().toString()
-            val usuarioFinal = datos.copy(id_usuario = uid, id = uid)
 
-            try {
-                client.from("usuarios").insert(usuarioFinal)
-            } catch (e: Exception) {
-                // Si ya existe la fila, actualizamos rol, placa y area
-                client.from("usuarios").update({
-                    set("rol", datos.rol)
-                    set("placa", datos.placa ?: "")
-                    set("area", datos.area ?: "")
-                }) {
-                    filter {
-                        eq("correo", email)
-                    }
-                }
-            }
-
-            // Insertar en la tabla especializada de perfil e insertar el registro legal de Habeas Data
-            try {
-                if (datos.rol.lowercase() == "cliente") {
+            // 2. Guardar directamente en la tabla del Rol correspondiente en Supabase
+            when (rol.lowercase().trim()) {
+                "cliente" -> {
                     val perfilCliente = PerfilClientePostgres(
                         id_usuario = uid,
-                        tipo_doc = datos.tipo_doc ?: "CC",
-                        numero_doc = datos.num_doc ?: "",
-                        direccion = datos.direccion
+                        Nombre = nombre,
+                        Apellido = apellido,
+                        tipo_doc = tipoDoc,
+                        numero_doc = numDoc,
+                        Codigo_pais = "+57",
+                        Telefono = telefono.toLongOrNull() ?: 0L,
+                        Correo_electronico = email,
+                        direccion = direccion
                     )
                     client.from("perfil_cliente").insert(perfilCliente)
-                } else if (datos.rol.lowercase() == "mensajero") {
+                }
+                "mensajero" -> {
                     val perfilMensajero = PerfilMensajeroPostgres(
                         id_usuario = uid,
-                        placa_vehiculo = datos.placa ?: "SIN-PLACA",
+                        Nombre = nombre,
+                        Apellido = apellido,
+                        Correo_electronico = email,
+                        Telefono = telefono.toLongOrNull() ?: 0L,
+                        Codigo_pais = "+57",
+                        numero_doc = numDoc,
+                        placa_vehiculo = if (placa.isNotEmpty()) placa else "SIN-PLACA",
                         tipo_vehiculo = "Moto",
                         licencia_conduccion = "Licencia Registrada",
-                        zona_asignada = datos.area ?: "Bogotá D.C."
+                        vencimiento_soat = "2027-12-31",
+                        vencimiento_tecnomecanica = "2027-12-31",
+                        zona_asignada = if (area.isNotEmpty()) area else "Bogotá D.C."
                     )
                     client.from("perfil_mensajero").insert(perfilMensajero)
-                } else if (datos.rol.lowercase() == "admin") {
+                }
+                "asesor" -> {
+                    val perfilAsesor = PerfilAsesorPostgres(
+                        id_usuario = uid,
+                        Nombre = nombre,
+                        Apellido = apellido,
+                        Correo_electronico = email,
+                        Telefono = telefono.toLongOrNull() ?: 0L,
+                        codigo_asesor = "ASE-${(100..999).random()}",
+                        area_atencion = "Servicio al Cliente"
+                    )
+                    client.from("perfil_asesor").insert(perfilAsesor)
+                }
+                "admin" -> {
                     val perfilAdmin = PerfilAdminPostgres(
                         id_usuario = uid,
+                        Nombre = nombre,
+                        Apellido = apellido,
+                        Correo_electronico = email,
                         nivel_acceso = "Superusuario"
                     )
                     client.from("perfil_admin").insert(perfilAdmin)
                 }
-
-                // Guardar registro de consentimiento de la Ley 1581 / 2012 (Habeas Data)
-                val habeasData = HabeasDataConsentPostgres(
-                    id_usuario = uid,
-                    aceptado = true,
-                    version_politica = "v1.0 - Ley 1581 de 2012"
-                )
-                client.from("habeas_data_consent").insert(habeasData)
-            } catch (eChild: Exception) {
-                eChild.printStackTrace()
             }
 
             Result.success(true)
@@ -109,7 +165,6 @@ class SupabaseRepository {
             Result.failure(e)
         }
     }
-
     suspend fun guardarPerfilCliente(perfil: PerfilClientePostgres): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
             client.from("perfil_cliente").insert(perfil)
@@ -130,23 +185,104 @@ class SupabaseRepository {
 
     // --- GESTIÓN DE USUARIOS Y MENSAJEROS ---
 
-    suspend fun obtenerTodosLosUsuarios(): Result<List<UsuarioPostgres>> = withContext(Dispatchers.IO) {
+    // --- GESTIÓN DE USUARIOS Y MENSAJEROS ---
+
+    suspend fun obtenerTodosLosUsuarios(): Result<List<DatosUsuarioLogin>> = withContext(Dispatchers.IO) {
         try {
-            val lista = client.from("usuarios").select().decodeList<UsuarioPostgres>()
+            val listaCompleta = mutableListOf<DatosUsuarioLogin>()
+
+            // 1. Cargar Clientes
+            try {
+                val clientes = client.from("perfil_cliente").select().decodeList<PerfilClientePostgres>()
+                for (c in clientes) {
+                    val nom = "${c.Nombre ?: ""} ${c.Apellido ?: ""}".trim().ifEmpty { "Cliente Nomi" }
+                    listaCompleta.add(DatosUsuarioLogin(nombre = nom, correo = c.Correo_electronico ?: "", rol = "cliente"))
+                }
+            } catch (e: Exception) {}
+
+            // 2. Cargar Mensajeros
+            try {
+                val mensajeros = client.from("perfil_mensajero").select().decodeList<PerfilMensajeroPostgres>()
+                for (m in mensajeros) {
+                    val nom = "${m.Nombre ?: ""} ${m.Apellido ?: ""}".trim().ifEmpty { "Mensajero NOMI" }
+                    listaCompleta.add(DatosUsuarioLogin(nombre = nom, correo = m.Correo_electronico ?: "", rol = "mensajero"))
+                }
+            } catch (e: Exception) {}
+
+            // 3. Cargar Asesores
+            try {
+                val asesores = client.from("perfil_asesor").select().decodeList<PerfilAsesorPostgres>()
+                for (a in asesores) {
+                    val nom = "${a.Nombre ?: ""} ${a.Apellido ?: ""}".trim().ifEmpty { "Asesor NOMI" }
+                    listaCompleta.add(DatosUsuarioLogin(nombre = nom, correo = a.Correo_electronico ?: "", rol = "asesor"))
+                }
+            } catch (e: Exception) {}
+
+            // 4. Cargar Administradores
+            try {
+                val admins = client.from("perfil_admin").select().decodeList<PerfilAdminPostgres>()
+                for (adm in admins) {
+                    val nom = "${adm.Nombre ?: ""} ${adm.Apellido ?: ""}".trim().ifEmpty { "Admin NOMI" }
+                    listaCompleta.add(DatosUsuarioLogin(nombre = nom, correo = adm.Correo_electronico ?: "", rol = "admin"))
+                }
+            } catch (e: Exception) {}
+
+            Result.success(listaCompleta)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun obtenerMensajerosActivos(): Result<List<PerfilMensajeroPostgres>> = withContext(Dispatchers.IO) {
+        try {
+            val lista = client.from("perfil_mensajero").select().decodeList<PerfilMensajeroPostgres>()
             Result.success(lista)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    suspend fun obtenerMensajerosActivos(): Result<List<UsuarioPostgres>> = withContext(Dispatchers.IO) {
+    suspend fun cambiarRolUsuario(idUsuario: String, email: String, nuevoRol: String): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
-            val lista = client.from("usuarios").select {
+            // 1. Actualizar rol en la tabla padre 'usuarios'
+            client.from("usuarios").update({
+                set("rol", nuevoRol)
+            }) {
                 filter {
-                    eq("rol", "mensajero")
+                    eq("correo", email)
                 }
-            }.decodeList<UsuarioPostgres>()
-            Result.success(lista)
+            }
+
+            // 2. Limpiar perfiles antiguos e insertar en la tabla especializada del nuevo rol
+            try {
+                if (nuevoRol.lowercase() == "mensajero") {
+                    val perfilM = PerfilMensajeroPostgres(
+                        id_usuario = idUsuario,
+                        placa_vehiculo = "POR-ASIGNAR",
+                        tipo_vehiculo = "Moto",
+                        licencia_conduccion = "Licencia Registrada",
+                        zona_asignada = "Bogotá D.C."
+                    )
+                    client.from("perfil_mensajero").insert(perfilM)
+                } else if (nuevoRol.lowercase() == "asesor") {
+                    val perfilA = PerfilAsesorPostgres(
+                        id_usuario = idUsuario,
+                        codigo_asesor = "ASE-${(100..999).random()}",
+                        area_atencion = "Servicio al Cliente"
+                    )
+                    client.from("asesores").insert(perfilA)
+                } else if (nuevoRol.lowercase() == "admin") {
+                    val perfilAdmin = PerfilAdminPostgres(
+                        id_usuario = idUsuario,
+                        nivel_acceso = "Superusuario"
+                    )
+                    client.from("perfil_admin").insert(perfilAdmin)
+                }
+            } catch (eChild: Exception) {
+                eChild.printStackTrace()
+            }
+
+            Result.success(true)
         } catch (e: Exception) {
             Result.failure(e)
         }

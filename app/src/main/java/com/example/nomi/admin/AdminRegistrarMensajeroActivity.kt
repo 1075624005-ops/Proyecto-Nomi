@@ -72,7 +72,7 @@ class AdminRegistrarMensajeroActivity : AppCompatActivity() {
                     area = are,
                     rol = "mensajero"
                 )
-                
+
                 repo.registrarUsuario(cor, pas, nuevoM).onSuccess {
                     Toast.makeText(this@AdminRegistrarMensajeroActivity, "✅ Mensajero registrado con éxito", Toast.LENGTH_LONG).show()
                     finish()

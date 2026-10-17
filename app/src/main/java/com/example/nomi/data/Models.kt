@@ -2,11 +2,11 @@ package com.example.nomi.data
 
 import kotlinx.serialization.Serializable
 
-// --- TABLA PADRE: USUARIOS ---
+// --- CLASE DE CONTENEDOR Y SESIÓN COMPATIBLE ---
 @Serializable
 data class UsuarioPostgres(
-    val id_usuario: String = "", // UUID de Supabase Auth
-    val id: String = "",         // Alias de compatibilidad
+    val id_usuario: String = "",
+    val id: String = "",
     val correo: String = "",
     val nombre: String = "",
     val apellido: String? = null,
@@ -22,20 +22,38 @@ data class UsuarioPostgres(
     val habeas_data_version: String? = "v1.0"
 )
 
-// --- TABLAS HIJAS ESPECIALIZADAS ---
+@Serializable
+data class DatosUsuarioLogin(
+    val nombre: String = "",
+    val correo: String = "",
+    val rol: String = "cliente"
+)
+
+// --- TABLAS HIJAS ESPECIALIZADAS EN SUPABASE ---
 
 @Serializable
 data class PerfilClientePostgres(
-    val id_usuario: String,
-    val tipo_doc: String = "CC",
-    val numero_doc: String,
+    val id_usuario: String = "",
+    val Nombre: String? = null,
+    val Apellido: String? = null,
+    val tipo_doc: String? = "CC",
+    val numero_doc: String? = null,
+    val Codigo_pais: String? = "+57",
+    val Telefono: Long? = null,
+    val Correo_electronico: String? = null,
     val direccion: String? = null
 )
 
 @Serializable
 data class PerfilMensajeroPostgres(
-    val id_usuario: String,
-    val placa_vehiculo: String,
+    val id_usuario: String = "",
+    val Nombre: String? = null,
+    val Apellido: String? = null,
+    val Correo_electronico: String? = null,
+    val Telefono: Long? = null,
+    val Codigo_pais: String? = "+57",
+    val numero_doc: String? = null,
+    val placa_vehiculo: String = "",
     val tipo_vehiculo: String = "Moto",
     val licencia_conduccion: String = "",
     val vencimiento_soat: String = "",
@@ -46,26 +64,32 @@ data class PerfilMensajeroPostgres(
 
 @Serializable
 data class PerfilAsesorPostgres(
-    val id_usuario: String,
+    val id_usuario: String = "",
+    val Nombre: String? = null,
+    val Apellido: String? = null,
+    val Correo_electronico: String? = null,
+    val Telefono: Long? = null,
     val codigo_asesor: String = "ASE-001",
     val area_atencion: String = "Servicio al Cliente"
 )
 
 @Serializable
 data class PerfilAdminPostgres(
-    val id_usuario: String,
-    val nivel_acceso: String = "Superusuario",
-    val fecha_asignacion: String? = null
+    val id_usuario: String = "",
+    val Nombre: String? = null,
+    val Apellido: String? = null,
+    val Correo_electronico: String? = null,
+    val nivel_acceso: String = "Superusuario"
 )
 
 @Serializable
 data class HabeasDataConsentPostgres(
-    val id_usuario: String,
+    val id_usuario: String = "",
     val aceptado: Boolean = true,
     val version_politica: String = "v1.0 - Ley 1581 de 2012"
 )
 
-// --- TABLA ENVIOS / PEDIDOS COMPLETA ---
+// --- TABLAS DE PEDIDOS Y PQRS ---
 
 @Serializable
 data class PedidoPostgres(

@@ -182,9 +182,41 @@ class AdminUsuariosActivity : AppCompatActivity() {
         mensajeDetalle.append("• Contraseña: [Cifrada de forma segura en servidor Supabase Auth]")
 
         AlertDialog.Builder(this)
-            .setTitle("📋 Detalle Completo de Usuario")
+            .setTitle("📋 Ficha de Usuario: ${u.nombre}")
             .setMessage(mensajeDetalle.toString())
             .setPositiveButton("Cerrar", null)
+            .setNeutralButton("🔄 Cambiar Rol") { _, _ ->
+                mostrarDialogoPromocionRol(u)
+            }
+            .show()
+    }
+
+    private fun mostrarDialogoPromocionRol(u: UsuarioPostgres) {
+        val rolesOpciones = arrayOf(
+            "👤 Cliente",
+            "🎧 Asesor Operativo",
+            "🛵 Mensajero / Domiciliario",
+            "👑 Administrador"
+        )
+        val codigosRol = arrayOf("cliente", "asesor", "mensajero", "admin")
+
+        AlertDialog.Builder(this)
+            .setTitle("Asignar Nuevo Rol a: ${u.nombre}")
+            .setItems(rolesOpciones) { _, which ->
+                val nuevoRol = codigosRol[which]
+                pbCarga.visibility = View.VISIBLE
+                lifecycleScope.launch {
+                    repo.cambiarRolUsuario(u.id_usuario, u.correo, nuevoRol).onSuccess {
+                        pbCarga.visibility = View.GONE
+                        Toast.makeText(this@AdminUsuariosActivity, "✅ Rol actualizado a '${nuevoRol.uppercase()}' para ${u.nombre}", Toast.LENGTH_LONG).show()
+                        cargarUsuariosDesdeSupabase()
+                    }.onFailure { err ->
+                        pbCarga.visibility = View.GONE
+                        Toast.makeText(this@AdminUsuariosActivity, "❌ Error al cambiar rol: ${err.message}", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+            .setNegativeButton("Cancelar", null)
             .show()
     }
 

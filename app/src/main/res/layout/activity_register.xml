@@ -52,7 +52,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Nombre completo"
+            android:hint="Nombres"
             android:textColorHint="@color/text_secondary"
             app:boxBackgroundColor="@color/app_background"
             app:boxStrokeColor="@color/text_primary"
@@ -72,13 +72,15 @@
                 android:textColor="@color/text_primary"
                 android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- APELLIDO -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilApellido"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:hint="Apellido completo"
+            android:layout_marginTop="12dp"
+            android:hint="Apellidos"
             android:textColorHint="@color/text_secondary"
             app:boxBackgroundColor="@color/app_background"
             app:boxStrokeColor="@color/text_primary"
@@ -88,7 +90,7 @@
             app:hintTextColor="@color/text_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTituloRegister">
+            app:layout_constraintTop_toBottomOf="@id/tilNombre">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etApellido"
@@ -116,7 +118,7 @@
             app:hintTextColor="@color/text_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilNombre">
+            app:layout_constraintTop_toBottomOf="@id/tilApellido">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTipoDoc"

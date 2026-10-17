@@ -138,7 +138,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 intent.putExtra("correo", correoUsuario)
                 startActivity(intent)
             }
-            R.id.nav_rastrear, R.id.nav_pedidos -> {
+            R.id.nav_rastrear -> {
+                Toast.makeText(this, "🚧 Módulo de Rastreo GPS en Mantenimiento / Próximamente disponible en la siguiente actualización de NOMI", Toast.LENGTH_LONG).show()
+            }
+            R.id.nav_pedidos -> {
                 val intentRastreo = Intent(this, RastrearActivity::class.java).apply {
                     putExtra("correo", correoUsuario)
                     putExtra("nombre", nombreUsuario)
