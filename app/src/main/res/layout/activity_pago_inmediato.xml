@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <!-- TÍTULO -->
+        <TextView
+            android:id="@+id/tvTituloPago"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="PAGO INMEDIATO"
+            android:textColor="@color/text_primary"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- NÚMERO DE GUÍA -->
+        <TextView
+            android:id="@+id/tvGuiaPago"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center"
+            android:text="N11-000001"
+            android:textColor="#888888"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTituloPago" />
+
+        <!-- MONTO A PAGAR -->
+        <TextView
+            android:id="@+id/tvMontoAPagar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="$ 0"
+            android:textColor="@color/brand_primary"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvGuiaPago" />
+
+        <!-- TARJETA CUENTA -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvCuenta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="@color/app_background"
+            app:cardCornerRadius="12dp"
+            app:strokeColor="@color/brand_primary"
+            app:strokeWidth="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvMontoAPagar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TRANSFIERE A ESTA CUENTA"
+                    android:textColor="#888888"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/ivQrPago"
+                    android:layout_width="170dp"
+                    android:layout_height="170dp"
+                    android:layout_marginTop="14dp"
+                    android:background="@color/fixed_white"
+                    android:contentDescription="Código QR de Pago"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:id="@+id/tvEntidadCuenta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Nequi"
+                    android:textColor="@color/text_primary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvTitularCuenta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Nomi App"
+                    android:textColor="#CCCCCC"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tvNumeroCuenta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="313 815 0074"
+                    android:textColor="@color/brand_primary"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCopiarNumero"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="12dp"
+                    android:text="COPIAR NÚMERO"
+                    android:textColor="@color/brand_primary"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="8dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- AVISO DE PAGO -->
+        <TextView
+            android:id="@+id/tvAvisoPago"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="Después de transferir, toca el botón de abajo. Verificaremos tu pago y prepararemos el envío."
+            android:textColor="#888888"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cvCuenta" />
+
+        <!-- BOTÓN CONTINUAR -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnYaTransferi"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/brand_primary"
+            android:text="YA TRANSFERÍ - CONTINUAR"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAvisoPago" />
+
+        <!-- BOTÓN WHATSAPP -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEnviarWhatsapp"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/fixed_whatsapp"
+            android:text="ENVIAR COMPROBANTE POR WHATSAPP"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnYaTransferi" />
+
+        <!-- BOTÓN CANCELAR (RESTRICCIÓN CORREGIDA) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancelarPago"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+            android:text="CANCELAR"
+            android:textColor="#FF5252"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:strokeColor="#FF5252"
+            app:strokeWidth="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnEnviarWhatsapp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

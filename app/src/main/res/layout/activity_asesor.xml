@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout_asesor"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/app_background">
+
+        <!-- TOOLBAR DE ENCABEZADO -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbarAsesor"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/app_surface_card"
+            android:paddingBottom="8dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/btnMenuAsesor"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:contentDescription="Menu"
+                android:src="@android:drawable/ic_menu_sort_by_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/brand_primary" />
+
+            <ImageView
+                android:id="@+id/imgLogoAsesor"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="12dp"
+                android:contentDescription="Logo"
+                android:src="@drawable/logo_nomi"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="PANEL DE ASESOR OPERATIVO"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgLogoAsesor" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@id/vFooterAsesor"
+            app:layout_constraintTop_toBottomOf="@id/toolbarAsesor">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/tvWelcomeAsesor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="Bienvenido Asesor"
+                    android:textColor="@color/brand_primary"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <!-- BOTÓN / TARJETA: CREAR NUEVO PEDIDO -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCrearPedidoAsesor"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="📦   CREAR NUEVO PEDIDO"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
+                <!-- BOTÓN / TARJETA: COTIZAR ENVÍO -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCotizarAsesor"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="📊   COTIZAR ENVÍO"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
+                <!-- BOTÓN / TARJETA: GESTIONAR Y RESPONDER PQRS -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGestionarPQRSAsesor"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="🗂️   GESTIONAR Y RESPONDER PQRS"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
+                <!-- BOTÓN / TARJETA: RASTREAR PEDIDO -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRastrearAsesor"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="🔍   RASTREAR PEDIDO"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
+                <!-- BOTÓN / TARJETA: CONTACTO Y ATENCIÓN -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnContactoAsesor"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="📞   CENTRO DE ATENCIÓN"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- FOOTER MODO ASESOR -->
+        <TextView
+            android:id="@+id/vFooterAsesor"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/brand_primary"
+            android:gravity="center"
+            android:text="Modo Asesor Operativo - NOMI"
+            android:textColor="@color/app_background"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- MENÚ LATERAL (DRAWER) -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view_asesor"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/app_surface_card"
+        app:headerLayout="@layout/nav_header"
+        app:itemIconTint="@color/brand_primary"
+        app:itemTextColor="@color/text_primary"
+        app:menu="@menu/asesor_menu" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

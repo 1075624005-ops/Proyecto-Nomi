@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout_admin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/app_background">
+
+        <!-- TOOLBAR DE ENCABEZADO -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbarAdmin"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/app_surface_card"
+            android:paddingBottom="8dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/btnMenuAdmin"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="20dp"
+                android:contentDescription="Menu"
+                android:src="@android:drawable/ic_menu_sort_by_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/brand_primary" />
+
+            <ImageView
+                android:id="@+id/imgLogoAdmin"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="12dp"
+                android:contentDescription="Logo"
+                android:src="@drawable/logo_nomi"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="PANEL ADMINISTRADOR"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imgLogoAdmin" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@id/vFooterAdmin"
+            app:layout_constraintTop_toBottomOf="@id/toolbarAdmin">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/tvWelcomeAdmin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="Bienvenido Administrador"
+                    android:textColor="@color/brand_primary"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <!-- BOTÓN / TARJETA: VER TODOS LOS PEDIDOS -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnVerPedidos"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="📋   SUPERVISAR TODOS LOS PEDIDOS"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
+                <!-- BOTÓN / TARJETA: GESTIONAR MENSAJEROS -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGestionarMensajeros"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="🛵   GESTIONAR MENSAJEROS"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
+                <!-- BOTÓN / TARJETA: REGISTRAR ASESOR -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRegistrarAsesor"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="🎧   REGISTRAR NUEVO ASESOR"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
+                <!-- BOTÓN / TARJETA: AUDITORÍA DE PQRS -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGestionarPQRS"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="🗂️   AUDITORÍA DE PQRS"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
+                <!-- BOTÓN / TARJETA: GESTIÓN DE USUARIOS -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGestionarUsuarios"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="👥   GESTIÓN DE USUARIOS"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
+                <!-- BOTÓN / TARJETA: PANEL DE INDICADORES -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnIndicadoresAdmin"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="📊   PANEL DE INDICADORES GENERALES"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- FOOTER MODO ADMIN -->
+        <TextView
+            android:id="@+id/vFooterAdmin"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/brand_primary"
+            android:gravity="center"
+            android:text="Modo Administrador - NOMI"
+            android:textColor="@color/app_background"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- MENÚ LATERAL (DRAWER) -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view_admin"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/app_surface_card"
+        app:headerLayout="@layout/nav_header"
+        app:itemIconTint="@color/brand_primary"
+        app:itemTextColor="@color/text_primary"
+        app:menu="@menu/admin_menu" />
+
+</androidx.drawerlayout.widget.DrawerLayout>
