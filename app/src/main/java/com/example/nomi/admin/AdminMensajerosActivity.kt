@@ -11,14 +11,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.nomi.R
-import com.example.nomi.data.SupabaseClient
-import com.example.nomi.data.UsuarioPostgres
-import com.example.nomi.*
-import io.github.jan.supabase.postgrest.from
+import com.example.nomi.data.PerfilMensajero
+import com.example.nomi.data.SupabaseRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AdminMensajerosActivity : AppCompatActivity() {
+
+    private val repo = SupabaseRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,14 +44,7 @@ class AdminMensajerosActivity : AppCompatActivity() {
 
     private fun cargarPlanilla(container: LinearLayout) {
         lifecycleScope.launch {
-            try {
-                val client = SupabaseClient.client
-                val lista = client.from("usuarios").select {
-                    filter {
-                        eq("rol", "mensajero")
-                    }
-                }.decodeList<UsuarioPostgres>()
-
+            repo.obtenerTodosLosMensajeros().onSuccess { lista ->
                 container.removeAllViews()
                 if (lista.isEmpty()) {
                     val tv = TextView(this@AdminMensajerosActivity).apply {
@@ -61,7 +54,7 @@ class AdminMensajerosActivity : AppCompatActivity() {
                         setPadding(0, 50, 0, 0)
                     }
                     container.addView(tv)
-                    return@launch
+                    return@onSuccess
                 }
 
                 for (mensajero in lista) {
@@ -79,16 +72,18 @@ class AdminMensajerosActivity : AppCompatActivity() {
                     val layout = LinearLayout(this@AdminMensajerosActivity).apply { orientation = LinearLayout.VERTICAL }
                     
                     val tvNombre = TextView(this@AdminMensajerosActivity).apply {
-                        text = mensajero.nombre.uppercase()
+                        val nombreCompleto = "${mensajero.Nombre} ${mensajero.Apellido ?: ""}".trim()
+                        text = nombreCompleto.uppercase()
                         setTextColor(ContextCompat.getColor(context, R.color.text_primary))
                         setTypeface(null, Typeface.BOLD)
                         textSize = 16f
                     }
 
                     val tvInfo = TextView(this@AdminMensajerosActivity).apply {
-                        val area = mensajero.area ?: "N/A"
-                        val placa = mensajero.placa ?: "N/A"
-                        text = "Área: $area | Vehículo: $placa"
+                        val zona = mensajero.zona_asignada ?: "Bogotá D.C."
+                        val licencia = mensajero.licencia_conduccion ?: "No"
+                        val tipoLic = mensajero.tipo_licencia ?: "A2"
+                        text = "Zona: $zona | Licencia: $licencia ($tipoLic)"
                         setTextColor(ContextCompat.getColor(context, R.color.text_secondary))
                         textSize = 13f
                         setPadding(0, 8, 0, 0)
@@ -99,7 +94,7 @@ class AdminMensajerosActivity : AppCompatActivity() {
                     card.addView(layout)
                     container.addView(card)
                 }
-            } catch (e: Exception) {
+            }.onFailure {
                 Toast.makeText(this@AdminMensajerosActivity, "Error al cargar planilla", Toast.LENGTH_SHORT).show()
             }
         }

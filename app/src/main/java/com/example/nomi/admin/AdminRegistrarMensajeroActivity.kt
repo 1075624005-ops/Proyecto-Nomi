@@ -7,8 +7,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.nomi.R
+import com.example.nomi.data.PerfilMensajero
 import com.example.nomi.data.SupabaseRepository
-import com.example.nomi.data.UsuarioPostgres
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -37,31 +37,43 @@ class AdminRegistrarMensajeroActivity : AppCompatActivity() {
         btnCan.setOnClickListener { finish() }
 
         btnReg.setOnClickListener {
-            val nom = etNombre.text.toString().trim()
+            val nombreCompleto = etNombre.text.toString().trim()
             val ced = etCedula.text.toString().trim()
             val cor = etCorreo.text.toString().trim()
             val pla = etPlaca.text.toString().trim()
             val are = etArea.text.toString().trim()
             val pas = etPass.text.toString().trim()
 
-            if (nom.isEmpty() || ced.isEmpty() || cor.isEmpty() || pas.isEmpty()) {
-                Toast.makeText(this, "⚠️ Campos obligatorios faltantes", Toast.LENGTH_SHORT).show()
+            if (nombreCompleto.isEmpty() || ced.isEmpty() || cor.isEmpty() || pas.isEmpty()) {
+                Toast.makeText(this, "⚠️ Campos obligatorios faltantes (Nombre, Cédula, Correo y Contraseña)", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
+            val partesNombre = nombreCompleto.split(" ", limit = 2)
+            val nombre = partesNombre.getOrNull(0) ?: nombreCompleto
+            val apellido = partesNombre.getOrNull(1) ?: "N/A"
+
+            val tieneLicencia = if (pla.isNotEmpty()) "Sí" else "No"
+            val tipoLicencia = if (pla.isNotEmpty()) "A2" else "N/A"
+
             lifecycleScope.launch {
-                val nuevoM = UsuarioPostgres(
-                    id = "",
-                    nombre = nom,
-                    correo = cor,
-                    num_doc = ced,
-                    placa = pla,
-                    area = are,
-                    rol = "mensajero"
+                val nuevoM = PerfilMensajero(
+                    Nombre = nombre,
+                    Apellido = apellido,
+                    tipo_doc = "CC",
+                    numero_doc = ced,
+                    Codigo_pais = "+57",
+                    Telefono = 3000000000L,
+                    Correo_electronico = cor,
+                    direccion = "No especificada",
+                    licencia_conduccion = tieneLicencia,
+                    tipo_licencia = tipoLicencia,
+                    zona_asignada = if (are.isNotEmpty()) are else "Bogotá D.C.",
+                    disponible = true
                 )
                 
-                repo.registrarUsuario(cor, pas, nuevoM).onSuccess {
-                    Toast.makeText(this@AdminRegistrarMensajeroActivity, "✅ Mensajero registrado", Toast.LENGTH_LONG).show()
+                repo.registrarMensajero(cor, pas, nuevoM).onSuccess {
+                    Toast.makeText(this@AdminRegistrarMensajeroActivity, "✅ Mensajero registrado exitosamente", Toast.LENGTH_LONG).show()
                     finish()
                 }.onFailure { e ->
                     Toast.makeText(this@AdminRegistrarMensajeroActivity, "❌ Error: ${e.message}", Toast.LENGTH_LONG).show()

@@ -13,16 +13,28 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.nomi.R
-import com.example.nomi.data.SupabaseRepository
-import com.example.nomi.data.UsuarioPostgres
+import com.example.nomi.data.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+
+data class UsuarioGenerico(
+    val id: String?,
+    val nombreCompleto: String,
+    val correo: String,
+    val rol: String,
+    val tipoDoc: String?,
+    val numDoc: String?,
+    val telefono: String?,
+    val direccion: String?,
+    val extra1: String? = null,
+    val extra2: String? = null
+)
 
 class AdminUsuariosActivity : AppCompatActivity() {
 
     private val repo = SupabaseRepository()
-    private var listaUsuariosCompleta: List<UsuarioPostgres> = emptyList()
-    private var listaUsuariosFiltrada: MutableList<UsuarioPostgres> = mutableListOf()
+    private var listaUsuariosCompleta: MutableList<UsuarioGenerico> = mutableListOf()
+    private var listaUsuariosFiltrada: MutableList<UsuarioGenerico> = mutableListOf()
 
     private lateinit var lvUsuarios: ListView
     private lateinit var pbCarga: ProgressBar
@@ -49,7 +61,6 @@ class AdminUsuariosActivity : AppCompatActivity() {
         tvFooter = findViewById(R.id.tvFooterUsuarios)
         etBuscar = findViewById(R.id.etBuscarUsuario)
 
-        // BOTONES DE FILTRO RÁPIDO
         val btnTodos = findViewById<Button>(R.id.btnFiltroTodos)
         val btnClientes = findViewById<Button>(R.id.btnFiltroClientes)
         val btnAsesores = findViewById<Button>(R.id.btnFiltroAsesores)
@@ -79,16 +90,65 @@ class AdminUsuariosActivity : AppCompatActivity() {
         tvSinUsuarios.visibility = View.GONE
 
         lifecycleScope.launch {
-            val res = repo.obtenerTodosLosUsuarios()
-            pbCarga.visibility = View.GONE
+            listaUsuariosCompleta.clear()
 
-            res.onSuccess { usuarios ->
-                listaUsuariosCompleta = usuarios
-                filtrarLista()
-            }.onFailure { err ->
-                Toast.makeText(this@AdminUsuariosActivity, "❌ Error al cargar usuarios: ${err.message}", Toast.LENGTH_LONG).show()
-                tvSinUsuarios.visibility = View.VISIBLE
+            repo.obtenerTodosLosClientes().onSuccess { clientes ->
+                clientes.forEach { c ->
+                    listaUsuariosCompleta.add(
+                        UsuarioGenerico(
+                            id = c.id_usuario,
+                            nombreCompleto = "${c.Nombre} ${c.Apellido ?: ""}".trim(),
+                            correo = c.Correo_electronico,
+                            rol = "CLIENTE",
+                            tipoDoc = c.tipo_doc,
+                            numDoc = c.numero_doc,
+                            telefono = c.Telefono?.toString(),
+                            direccion = c.direccion
+                        )
+                    )
+                }
             }
+
+            repo.obtenerTodosLosMensajeros().onSuccess { mensajeros ->
+                mensajeros.forEach { m ->
+                    listaUsuariosCompleta.add(
+                        UsuarioGenerico(
+                            id = m.id_usuario,
+                            nombreCompleto = "${m.Nombre} ${m.Apellido ?: ""}".trim(),
+                            correo = m.Correo_electronico,
+                            rol = "MENSAJERO",
+                            tipoDoc = m.tipo_doc,
+                            numDoc = m.numero_doc,
+                            telefono = m.Telefono?.toString(),
+                            direccion = m.direccion,
+                            extra1 = "Licencia: ${m.licencia_conduccion ?: "No"} (${m.tipo_licencia ?: "A2"})",
+                            extra2 = "Zona: ${m.zona_asignada ?: "Bogotá D.C."}"
+                        )
+                    )
+                }
+            }
+
+            repo.obtenerTodosLosAsesores().onSuccess { asesores ->
+                asesores.forEach { a ->
+                    listaUsuariosCompleta.add(
+                        UsuarioGenerico(
+                            id = a.id_usuario,
+                            nombreCompleto = "${a.Nombre} ${a.Apellido ?: ""}".trim(),
+                            correo = a.Correo_electronico,
+                            rol = "ASESOR",
+                            tipoDoc = a.tipo_doc,
+                            numDoc = a.numero_doc,
+                            telefono = a.Telefono?.toString(),
+                            direccion = a.direccion,
+                            extra1 = "Código: ${a.codigo_asesor ?: "N/A"}",
+                            extra2 = "Área: ${a.area_atencion ?: "Servicio al Cliente"}"
+                        )
+                    )
+                }
+            }
+
+            pbCarga.visibility = View.GONE
+            filtrarLista()
         }
     }
 
@@ -103,9 +163,9 @@ class AdminUsuariosActivity : AppCompatActivity() {
         listaUsuariosFiltrada = listaUsuariosCompleta.filter { u ->
             val coincideRol = if (filtroRolActual == "todos") true else u.rol.lowercase().trim() == filtroRolActual
             val coincideTexto = query.isEmpty() ||
-                    u.nombre.lowercase().contains(query) ||
+                    u.nombreCompleto.lowercase().contains(query) ||
                     u.correo.lowercase().contains(query) ||
-                    (u.num_doc ?: "").lowercase().contains(query) ||
+                    (u.numDoc ?: "").lowercase().contains(query) ||
                     u.rol.lowercase().contains(query)
 
             coincideRol && coincideTexto
@@ -124,7 +184,7 @@ class AdminUsuariosActivity : AppCompatActivity() {
             tvSinUsuarios.visibility = View.GONE
             lvUsuarios.visibility = View.VISIBLE
 
-            val adapter = object : ArrayAdapter<UsuarioPostgres>(this, R.layout.item_usuario_card, listaUsuariosFiltrada) {
+            val adapter = object : ArrayAdapter<UsuarioGenerico>(this, R.layout.item_usuario_card, listaUsuariosFiltrada) {
                 override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                     val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_usuario_card, parent, false)
                     val usuario = getItem(position)
@@ -136,10 +196,10 @@ class AdminUsuariosActivity : AppCompatActivity() {
                         val tvDoc = view.findViewById<TextView>(R.id.tvDocUsuarioCard)
                         val tvTel = view.findViewById<TextView>(R.id.tvTelUsuarioCard)
 
-                        tvNombre.text = usuario.nombre
-                        tvRol.text = usuario.rol.uppercase()
+                        tvNombre.text = usuario.nombreCompleto
+                        tvRol.text = usuario.rol
                         tvCorreo.text = usuario.correo
-                        tvDoc.text = "${usuario.tipo_doc ?: "CC"}: ${usuario.num_doc ?: "-"}"
+                        tvDoc.text = "${usuario.tipoDoc ?: "CC"}: ${usuario.numDoc ?: "-"}"
                         tvTel.text = "Tel: ${usuario.telefono ?: "-"}"
 
                         view.setOnClickListener {
@@ -153,33 +213,26 @@ class AdminUsuariosActivity : AppCompatActivity() {
         }
     }
 
-    private fun mostrarDetalleUsuario(u: UsuarioPostgres) {
+    private fun mostrarDetalleUsuario(u: UsuarioGenerico) {
         val mensajeDetalle = StringBuilder()
         mensajeDetalle.append("👤 **Información General**\n")
-        mensajeDetalle.append("• Nombre: ${u.nombre}\n")
+        mensajeDetalle.append("• Nombre: ${u.nombreCompleto}\n")
         mensajeDetalle.append("• Correo: ${u.correo}\n")
-        mensajeDetalle.append("• Rol: ${u.rol.uppercase()}\n\n")
+        mensajeDetalle.append("• Rol: ${u.rol}\n\n")
 
         mensajeDetalle.append("🪪 **Identificación y Contacto**\n")
-        mensajeDetalle.append("• Documento: ${u.tipo_doc ?: "CC"} ${u.num_doc ?: "No registrado"}\n")
+        mensajeDetalle.append("• Documento: ${u.tipoDoc ?: "CC"} ${u.numDoc ?: "No registrado"}\n")
         mensajeDetalle.append("• Teléfono: ${u.telefono ?: "No registrado"}\n")
         mensajeDetalle.append("• Dirección: ${u.direccion ?: "No registrada"}\n\n")
 
-        if (u.rol.lowercase() == "mensajero") {
-            mensajeDetalle.append("🛵 **Datos de Domiciliario**\n")
-            mensajeDetalle.append("• Placa Vehículo: ${u.placa ?: "No asignada"}\n")
-            mensajeDetalle.append("• Zona / Área: ${u.area ?: "No asignada"}\n\n")
-        }
-
-        if (u.habeas_data_aceptado) {
-            mensajeDetalle.append("🔒 **Cumplimiento Legal (Habeas Data - Ley 1581)**\n")
-            mensajeDetalle.append("• Consentimiento: ACEPTADO\n")
-            mensajeDetalle.append("• Fecha: ${u.habeas_data_fecha ?: "Registrada"}\n")
-            mensajeDetalle.append("• Versión Política: ${u.habeas_data_version ?: "v1.0"}\n\n")
+        if (u.extra1 != null) {
+            mensajeDetalle.append("ℹ️ **Información Adicional**\n")
+            mensajeDetalle.append("• ${u.extra1}\n")
+            if (u.extra2 != null) mensajeDetalle.append("• ${u.extra2}\n\n")
         }
 
         mensajeDetalle.append("🔐 **Seguridad de Acceso**\n")
-        mensajeDetalle.append("• Contraseña: [Cifrada de forma segura en servidor Supabase Auth]")
+        mensajeDetalle.append("• Autenticación gestionada en Supabase Auth")
 
         AlertDialog.Builder(this)
             .setTitle("📋 Detalle Completo de Usuario")

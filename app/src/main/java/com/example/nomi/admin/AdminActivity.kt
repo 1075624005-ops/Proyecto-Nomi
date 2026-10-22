@@ -66,6 +66,12 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             startActivity(intent)
         }
 
+        // 2.1 BOTÓN REGISTRAR ASESOR
+        findViewById<Button>(R.id.btnGestionarAsesores)?.setOnClickListener {
+            val intent = Intent(this, AdminRegistrarAsesorActivity::class.java)
+            startActivity(intent)
+        }
+
         // 3. BOTÓN AUDITORÍA DE PQRS
         findViewById<Button>(R.id.btnGestionarPQRS)?.setOnClickListener {
             val intent = Intent(this, AdminListaPQRSActivity::class.java)

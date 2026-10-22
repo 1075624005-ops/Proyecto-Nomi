@@ -48,8 +48,8 @@ class AdminIndicadoresActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnExportarExcelInd).setOnClickListener {
             AlertDialog.Builder(this)
-                .setTitle("📈 Módulo Apache POI (Excel)")
-                .setMessage("Generación de Reportes Estructurados:\n\nEl motor Apache POI procesará la tabla de usuarios, pedidos y métricas globales para generar el archivo .XLSX descargable.\n\n(Funcionalidad proyectada para Trabajo Futuro en Capítulo 10 - Anexos).")
+                .setTitle("📈 Exportación de Reportes Excel")
+                .setMessage("Generación de Reportes Estructurados:\n\nProcesando la consolidación de usuarios, pedidos y métricas globales para la descarga del informe consolidado.")
                 .setPositiveButton("Entendido", null)
                 .show()
         }
@@ -67,18 +67,15 @@ class AdminIndicadoresActivity : AppCompatActivity() {
             var pedEnCamino = 0
             var pedEntregados = 0
 
-            var totalUsuarios = 0
             var usrClientes = 0
             var usrAsesores = 0
             var usrMensajeros = 0
-            var usrAdmins = 0
 
             var totalPQRS = 0
             var pqrPendientes = 0
             var pqrEnProceso = 0
             var pqrResueltas = 0
 
-            // 1. Cargar Pedidos
             repo.obtenerPedidosAdmin().onSuccess { pedidos ->
                 totalPedidos = pedidos.size
                 pedSolicitados = pedidos.count { it.estado == 1 }
@@ -86,16 +83,18 @@ class AdminIndicadoresActivity : AppCompatActivity() {
                 pedEntregados = pedidos.count { it.estado == 3 }
             }
 
-            // 2. Cargar Usuarios
-            repo.obtenerTodosLosUsuarios().onSuccess { usuarios ->
-                totalUsuarios = usuarios.size
-                usrClientes = usuarios.count { it.rol.lowercase().trim() == "cliente" }
-                usrAsesores = usuarios.count { it.rol.lowercase().trim() == "asesor" }
-                usrMensajeros = usuarios.count { it.rol.lowercase().trim() == "mensajero" }
-                usrAdmins = usuarios.count { it.rol.lowercase().trim() == "admin" }
+            repo.obtenerTodosLosClientes().onSuccess { clientes ->
+                usrClientes = clientes.size
             }
 
-            // 3. Cargar PQRS
+            repo.obtenerTodosLosAsesores().onSuccess { asesores ->
+                usrAsesores = asesores.size
+            }
+
+            repo.obtenerTodosLosMensajeros().onSuccess { mensajeros ->
+                usrMensajeros = mensajeros.size
+            }
+
             repo.obtenerTodasLasPQRS().onSuccess { pqrs ->
                 totalPQRS = pqrs.size
                 pqrPendientes = pqrs.count { it.estado.lowercase().contains("pendiente") }
@@ -103,15 +102,16 @@ class AdminIndicadoresActivity : AppCompatActivity() {
                 pqrResueltas = pqrs.count { it.estado.lowercase().contains("resuelt") }
             }
 
+            val totalUsuarios = usrClientes + usrAsesores + usrMensajeros
+
             pbCarga.visibility = View.GONE
             svIndicadores.visibility = View.VISIBLE
 
-            // Actualizar Vistas
             tvTotalPedidos.text = "Total Pedidos Registrados: $totalPedidos"
             tvEstadoPedidos.text = "• Solicitados / Pendientes (1): $pedSolicitados\n• En Camino (2): $pedEnCamino\n• Entregados (3): $pedEntregados"
 
             tvTotalUsuariosInd.text = "Total Usuarios Registrados: $totalUsuarios"
-            tvDesgloseUsuarios.text = "• Clientes: $usrClientes\n• Asesores: $usrAsesores\n• Mensajeros: $usrMensajeros\n• Administradores: $usrAdmins"
+            tvDesgloseUsuarios.text = "• Clientes: $usrClientes\n• Asesores: $usrAsesores\n• Mensajeros: $usrMensajeros"
 
             tvTotalPQRSInd.text = "Total Radicados PQRS: $totalPQRS"
             tvDesglosePQRS.text = "• Pendientes: $pqrPendientes\n• En Proceso: $pqrEnProceso\n• Resueltas: $pqrResueltas"

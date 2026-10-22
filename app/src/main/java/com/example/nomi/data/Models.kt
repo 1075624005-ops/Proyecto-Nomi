@@ -2,58 +2,82 @@ package com.example.nomi.data
 
 import kotlinx.serialization.Serializable
 
+// --- MODELOS EXACTOS DE TABLAS DE PERFIL EN SUPABASE ---
+
 @Serializable
-data class UsuarioPostgres(
-    val id: String, // UUID generado por Supabase
-    val nombre: String,
-    val correo: String,
-    val tipo_doc: String? = null,
-    val num_doc: String? = null,
-    val telefono: String? = null,
+data class PerfilCliente(
+    val id_usuario: String? = null,
+    val Nombre: String,
+    val Apellido: String? = "",
+    val tipo_doc: String? = "CC",
+    val numero_doc: String? = null,
+    val Codigo_pais: String? = "+57",
+    val Telefono: Long? = null,
+    val Correo_electronico: String,
+    val direccion: String? = null
+)
+
+@Serializable
+data class PerfilMensajero(
+    val id_usuario: String? = null,
+    val Nombre: String,
+    val Apellido: String? = "",
+    val tipo_doc: String? = "CC",
+    val numero_doc: String? = null,
+    val Codigo_pais: String? = "+57",
+    val Telefono: Long? = null,
+    val Correo_electronico: String,
     val direccion: String? = null,
-    val rol: String = "cliente",
-    val placa: String? = null,
-    val area: String? = null,
-    val habeas_data_aceptado: Boolean = false,
-    val habeas_data_fecha: String? = null,
-    val habeas_data_version: String? = "v1.0"
-)
-
-// --- ESTRUCTURA ESPECIALIZADA OPCIÓN B (TABLAS PADRE E HIJAS PARA MODELO ER Y ACADÉMICO) ---
-
-@Serializable
-data class ClienteDetallePostgres(
-    val id: Int? = null,
-    val usuario_id: String,
-    val habeas_data_aceptado: Boolean = true,
-    val habeas_data_fecha: String? = null,
-    val habeas_data_version: String? = "v1.0"
+    val licencia_conduccion: String? = null,
+    val tipo_licencia: String? = "A2",
+    val zona_asignada: String? = "Bogotá D.C.",
+    val disponible: Boolean? = true
 )
 
 @Serializable
-data class MensajeroDetallePostgres(
-    val id: Int? = null,
-    val usuario_id: String,
-    val placa: String? = null,
-    val vehiculo: String? = "Moto",
-    val area_cobertura: String? = null
-)
-
-@Serializable
-data class AsesorDetallePostgres(
-    val id: Int? = null,
-    val usuario_id: String,
+data class PerfilAsesor(
+    val id_usuario: String? = null,
+    val Nombre: String,
+    val Apellido: String? = "",
+    val tipo_doc: String? = "CC",
+    val numero_doc: String? = null,
+    val Codigo_pais: String? = "+57",
+    val Telefono: Long? = null,
+    val Correo_electronico: String,
+    val direccion: String? = null,
     val codigo_asesor: String? = null,
     val area_atencion: String? = "Servicio al Cliente"
 )
 
-// --- TABLA PEDIDOS COMPLETA (VINCULADA CON CLIENTE Y MENSAJERO) ---
+@Serializable
+data class PerfilAdmin(
+    val id_usuario: String? = null,
+    val Nombre: String,
+    val Apellido: String? = "",
+    val tipo_doc: String? = "CC",
+    val numero_doc: String? = null,
+    val Codigo_pais: String? = "+57",
+    val Telefono: Long? = null,
+    val Correo_electronico: String,
+    val direccion: String? = null,
+    val nivel_acceso: String? = "Superusuario"
+)
+
+// --- RESULTADO DE AUTENTICACIÓN SEGÚN EL ROL ENCONTRADO ---
+sealed class UsuarioResultado {
+    data class Admin(val perfil: PerfilAdmin) : UsuarioResultado()
+    data class Asesor(val perfil: PerfilAsesor) : UsuarioResultado()
+    data class Mensajero(val perfil: PerfilMensajero) : UsuarioResultado()
+    data class Cliente(val perfil: PerfilCliente) : UsuarioResultado()
+}
+
+// --- ESTRUCTURA DE PEDIDOS ---
 
 @Serializable
 data class PedidoPostgres(
     val num_guia: String,                       // Primary Key (ej. N050001)
-    val id_cliente: String? = null,             // Foreign Key -> usuarios.id
-    val id_mensajero: String? = null,           // Foreign Key -> usuarios.id
+    val id_cliente: String? = null,             // Foreign Key -> perfil_cliente.id_usuario
+    val id_mensajero: String? = null,           // Foreign Key -> perfil_mensajero.id_usuario
     val rem_nombre: String? = null,
     val rem_tel: String? = null,
     val rem_dir: String? = null,

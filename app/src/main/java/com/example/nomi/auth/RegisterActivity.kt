@@ -3,18 +3,15 @@ package com.example.nomi.auth
 import android.app.AlertDialog
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import java.text.SimpleDateFormat
-import java.util.*
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.nomi.R
+import com.example.nomi.data.PerfilCliente
 import com.example.nomi.data.SupabaseRepository
-import com.example.nomi.data.UsuarioPostgres
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -34,7 +31,6 @@ class RegisterActivity : AppCompatActivity() {
         val scroll = findViewById<ScrollView>(R.id.scrollRegister)
         val container = findViewById<ViewGroup>(R.id.containerRegister)
 
-        // ACTIVAR AUTO-SUBIDA AL TOCAR CAMPOS EN REGISTRO DE USUARIO
         activarAutoSubida(container, scroll)
 
         val etNombre     = findViewById<EditText>(R.id.etNombre)
@@ -48,7 +44,6 @@ class RegisterActivity : AppCompatActivity() {
         val btnRegistrar = findViewById<Button>(R.id.btnRegistrar)
         val tvVolver     = findViewById<TextView>(R.id.tvVolverLogin)
 
-        // ── Habeas Data ──────────────────────────────────
         val cbHabeasData  = findViewById<CheckBox>(R.id.cbHabeasData)
         val tvVerPolitica = findViewById<TextView>(R.id.tvVerPolitica)
 
@@ -56,7 +51,6 @@ class RegisterActivity : AppCompatActivity() {
             mostrarPoliticaDatos()
         }
 
-        // Opciones ampliadas de tipo de documento
         val opcionesDoc = arrayOf(
             "CC - Cédula de Ciudadanía",
             "NIT - Número de Identificación Tributaria",
@@ -79,16 +73,16 @@ class RegisterActivity : AppCompatActivity() {
         tvVolver.setOnClickListener { finish() }
 
         btnRegistrar.setOnClickListener {
-            val nombre    = etNombre.text.toString().trim()
+            val nombreCompleto = etNombre.text.toString().trim()
             val tipoDoc   = etTipoDoc.text.toString().trim()
             val numDoc    = etCedula.text.toString().trim()
-            val telefono  = etTelefono.text.toString().trim()
+            val telefonoStr = etTelefono.text.toString().trim()
             val correo    = etCorreo.text.toString().trim()
             val direccion = etDireccion.text.toString().trim()
             val password  = etPassword.text.toString().trim()
             val confirmar = etConfirmar.text.toString().trim()
 
-            if (nombre.isEmpty() || tipoDoc.isEmpty() || numDoc.isEmpty() || telefono.isEmpty() ||
+            if (nombreCompleto.isEmpty() || tipoDoc.isEmpty() || numDoc.isEmpty() || telefonoStr.isEmpty() ||
                 correo.isEmpty() || direccion.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "⚠️ Por favor complete todos los campos, incluyendo el Tipo de Documento", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -109,28 +103,27 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // 🚀 REGISTRO CON POSTGRESQL (SUPABASE)
+            val partesNombre = nombreCompleto.split(" ", limit = 2)
+            val nombre = partesNombre.getOrNull(0) ?: nombreCompleto
+            val apellido = partesNombre.getOrNull(1) ?: "N/A"
+            val telefonoLong = telefonoStr.toLongOrNull() ?: 0L
+
             lifecycleScope.launch {
-                val fechaAceptacion = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-                
-                val nuevoUsuario = UsuarioPostgres(
-                    id = "", // Se actualizará en el repositorio con el ID de Auth
-                    nombre = nombre,
-                    correo = correo,
+                val nuevoCliente = PerfilCliente(
+                    Nombre = nombre,
+                    Apellido = apellido,
                     tipo_doc = tipoDoc,
-                    num_doc = numDoc,
-                    telefono = telefono,
-                    direccion = direccion,
-                    rol = "cliente",
-                    habeas_data_aceptado = true,
-                    habeas_data_fecha = fechaAceptacion,
-                    habeas_data_version = "v1.0"
+                    numero_doc = numDoc,
+                    Codigo_pais = "+57",
+                    Telefono = telefonoLong,
+                    Correo_electronico = correo,
+                    direccion = direccion
                 )
 
-                val resultado = repo.registrarUsuario(correo, password, nuevoUsuario)
+                val resultado = repo.registrarCliente(correo, password, nuevoCliente)
                 
                 resultado.onSuccess {
-                    Toast.makeText(this@RegisterActivity, "✅ Registro exitoso", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@RegisterActivity, "✅ Registro de cliente exitoso", Toast.LENGTH_LONG).show()
                     finish()
                 }.onFailure { error ->
                     Toast.makeText(this@RegisterActivity, "❌ Error: ${error.message}", Toast.LENGTH_LONG).show()
@@ -150,10 +143,8 @@ class RegisterActivity : AppCompatActivity() {
                             v.getDrawingRect(childRect)
                             scrollView.offsetDescendantRectToMyCoords(v, childRect)
                             if (childRect.top < 250) {
-                                // Si es un campo superior (como Nombre) -> Se mantiene arriba sin saltos
                                 scrollView.smoothScrollTo(0, 0)
                             } else {
-                                // Si es un campo inferior (Correo, Dirección, Contraseña, Confirmar) -> Sube por encima del teclado
                                 scrollView.smoothScrollTo(0, childRect.top - 80)
                             }
                         }, 200)
@@ -167,50 +158,21 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun mostrarPoliticaDatos() {
         val politica = """
-            POLÍTICA DE TRATAMIENTO DE DATOS PERSONALES
-            Versión 1.0 — App Nomi
-
-            1. RESPONSABLE DEL TRATAMIENTO
-            NOMI - Soluciones a tu alcance - S.A.S.
-            Correo de contacto: [nomisas@nomi.com]
-
-            2. DATOS QUE RECOLECTAMOS
-            - Nombre completo
-            - Tipo y número de documento de identidad
-            - Correo electrónico
-            - Número de teléfono
-            - Dirección
-
-            3. FINALIDAD DEL TRATAMIENTO
-            Sus datos se usan para:
-            - Gestionar su cuenta en la aplicación Nomi
-            - Procesar pedidos y PQRS
-            - Enviar notificaciones del servicio
-            - Cumplir obligaciones legales
-
-            4. DERECHOS DEL TITULAR (Ley 1581 de 2012)
-            Usted puede en cualquier momento:
-            - Conocer, actualizar y rectificar sus datos
-            - Solicitar la supresión de sus datos
-            - Revocar la autorización otorgada
-            - Presentar quejas ante la SIC
-
-            5. CÓMO EJERCER SUS DERECHOS
-            Escriba a: [nomisas@nomi.com]
-            Le responderemos en máximo 15 días hábiles.
-
-            6. VIGENCIA
-            Esta política rige a partir de su aceptación.
+            POLÍTICA DE TRATAMIENTO DE DATOS PERSONALES DE NOMI S.A.S.
+            
+            En cumplimiento de la Ley 1581 de 2012 y el Decreto 1377 de 2013:
+            
+            1. FINALIDAD: Nomi recolecta sus datos personales para la prestación del servicio de envíos, mensajería y paquetes, facturación y soporte.
+            
+            2. DERECHOS: Como titular puede conocer, actualizar, rectificar y solicitar la supresión de sus datos personales.
+            
+            3. CONTACTO: Puede enviar sus solicitudes al correo nomi@nomi.com.
         """.trimIndent()
 
         AlertDialog.Builder(this)
-            .setTitle("📋 Política de Datos Personales")
+            .setTitle("📄 Política de Tratamiento de Datos")
             .setMessage(politica)
-            .setPositiveButton("Entendido y Acepto") { dialog, _ ->
-                findViewById<CheckBox>(R.id.cbHabeasData).isChecked = true
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cerrar", null)
+            .setPositiveButton("Aceptar") { dialog, _ -> dialog.dismiss() }
             .show()
     }
 

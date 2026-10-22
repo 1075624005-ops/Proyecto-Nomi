@@ -107,6 +107,9 @@
             android:name="com.example.nomi.admin.AdminRegistrarMensajeroActivity"
             android:exported="false" />
         <activity
+            android:name="com.example.nomi.admin.AdminRegistrarAsesorActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.nomi.main.SplashActivity"
             android:exported="true">
             <intent-filter>

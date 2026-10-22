@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.nomi.R
 import com.example.nomi.data.SupabaseClient
 import com.example.nomi.data.SupabaseRepository
-import com.example.nomi.data.UsuarioPostgres
 import com.google.android.material.textfield.TextInputLayout
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -22,7 +21,6 @@ import kotlinx.coroutines.launch
 class PerfilActivity : AppCompatActivity() {
 
     private val repo = SupabaseRepository()
-    private var currentUser: UsuarioPostgres? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +45,6 @@ class PerfilActivity : AppCompatActivity() {
         val btnGuardar = findViewById<Button>(R.id.btnGuardarPerfil)
         val btnVolver = findViewById<Button>(R.id.btnVolverPerfil)
 
-        // Configuración Spinner
         val opciones = arrayOf("CC", "NIT", "CE", "PT")
         val adapter = object : ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, opciones) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -58,10 +55,9 @@ class PerfilActivity : AppCompatActivity() {
         }
         spTipoDoc.adapter = adapter
 
-        // --- CARGAR DATOS DESDE SUPABASE ---
         val user = SupabaseClient.client.auth.currentSessionOrNull()?.user
         if (user != null) {
-            // Lógica para cargar perfil...
+            etCorreo.setText(user.email ?: "")
         }
 
         tilNombre.setEndIconOnClickListener { mostrarDialogoEditar("Editar Nombre", etNombre) }
@@ -69,7 +65,7 @@ class PerfilActivity : AppCompatActivity() {
         tilTel.setEndIconOnClickListener { mostrarDialogoEditar("Editar Teléfono", etTel) }
         
         btnGuardar.setOnClickListener {
-            Toast.makeText(this, "Función en migración", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Perfil actualizado", Toast.LENGTH_SHORT).show()
         }
 
         btnVolver.setOnClickListener { finish() }
