@@ -45,6 +45,10 @@
 
         <!-- Actividades de Administración y PQRS -->
         <activity
+            android:name="com.example.nomi.admin.AdminCrearPlanillaActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name="com.example.nomi.admin.AdminListaPQRSActivity"
             android:exported="false" />
         <activity
@@ -99,6 +103,9 @@
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.example.nomi.main.MessengerHomeActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.nomi.main.MessengerPlanillasActivity"
             android:exported="false" />
         <activity
             android:name="com.example.nomi.admin.AdminMensajerosActivity"

@@ -66,6 +66,12 @@ class AdminActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             startActivity(intent)
         }
 
+        // 2.2 BOTÓN CREAR PLANILLA DE DESPACHO
+        findViewById<Button>(R.id.btnCrearPlanilla)?.setOnClickListener {
+            val intent = Intent(this, AdminCrearPlanillaActivity::class.java)
+            startActivity(intent)
+        }
+
         // 2.1 BOTÓN REGISTRAR ASESOR
         findViewById<Button>(R.id.btnGestionarAsesores)?.setOnClickListener {
             val intent = Intent(this, AdminRegistrarAsesorActivity::class.java)

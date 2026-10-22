@@ -61,6 +61,13 @@ class MessengerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             startActivity(intent)
         }
 
+        // 1.1 BOTÓN PLANILLAS DE DESPACHO
+        findViewById<Button>(R.id.btnPlanillasMensajero).setOnClickListener {
+            val intent = Intent(this, MessengerPlanillasActivity::class.java)
+            intent.putExtra("correo", correoMensajero)
+            startActivity(intent)
+        }
+
         // 2. BOTÓN HISTORIAL DE ENTREGAS FINALIZADAS
         findViewById<Button>(R.id.btnHistorialEntregas).setOnClickListener {
             AlertDialog.Builder(this)

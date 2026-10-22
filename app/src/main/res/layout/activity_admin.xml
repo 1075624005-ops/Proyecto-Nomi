@@ -118,6 +118,24 @@
                     app:strokeColor="@color/brand_primary"
                     app:strokeWidth="1dp" />
 
+                <!-- BOTÓN / TARJETA: CREAR PLANILLA DE DESPACHO -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCrearPlanilla"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/app_surface_card"
+                    android:gravity="center_vertical|start"
+                    android:paddingStart="20dp"
+                    android:text="📦   CREAR PLANILLA DE DESPACHO"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_primary"
+                    app:strokeWidth="1dp" />
+
                 <!-- BOTÓN / TARJETA: REGISTRAR ASESOR -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnGestionarAsesores"

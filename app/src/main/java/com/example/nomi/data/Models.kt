@@ -71,13 +71,25 @@ sealed class UsuarioResultado {
     data class Cliente(val perfil: PerfilCliente) : UsuarioResultado()
 }
 
-// --- ESTRUCTURA DE PEDIDOS ---
+// --- ESTRUCTURA DE PEDIDOS Y PLANILLAS ---
+
+@Serializable
+data class PlanillaPostgres(
+    val id_planilla: String,
+    val cd_origen: String,
+    val cd_destino: String,
+    val id_mensajero: String? = null,
+    val vehiculo: String? = null,
+    val estado: String = "Creada",
+    val fecha_creacion: String? = null
+)
 
 @Serializable
 data class PedidoPostgres(
     val num_guia: String,                       // Primary Key (ej. N050001)
     val id_cliente: String? = null,             // Foreign Key -> perfil_cliente.id_usuario
     val id_mensajero: String? = null,           // Foreign Key -> perfil_mensajero.id_usuario
+    val id_planilla: String? = null,            // Foreign Key -> planillas.id_planilla
     val rem_nombre: String? = null,
     val rem_tel: String? = null,
     val rem_dir: String? = null,
@@ -90,7 +102,7 @@ data class PedidoPostgres(
     val peso_kg: String? = null,
     val tipo_servicio: String? = null,
     val modalidad_pago: String? = "contraentrega",
-    val estado: Int = 1,                        // 1=Solicitado, 2=En Ruta, 3=Entregado
+    val estado: Int = 1,                        // 1=Solicitado, 2=En Planilla/En Ruta, 3=Entregado
     val costo: Double? = 0.0
 )
 

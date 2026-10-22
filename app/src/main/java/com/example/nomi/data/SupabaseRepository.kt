@@ -138,6 +138,63 @@ class SupabaseRepository {
         }
     }
 
+    // --- GESTIÓN DE PLANILLAS (MANIFESTS) ---
+
+    suspend fun crearPlanilla(planilla: PlanillaPostgres): Result<Boolean> = withContext(Dispatchers.IO) {
+        try {
+            client.from("planillas").insert(planilla)
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun obtenerPlanillas(): Result<List<PlanillaPostgres>> = withContext(Dispatchers.IO) {
+        try {
+            val lista = client.from("planillas").select().decodeList<PlanillaPostgres>()
+            Result.success(lista)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun obtenerPlanillasPorMensajero(idMensajero: String): Result<List<PlanillaPostgres>> = withContext(Dispatchers.IO) {
+        try {
+            val lista = client.from("planillas").select {
+                filter { eq("id_mensajero", idMensajero) }
+            }.decodeList<PlanillaPostgres>()
+            Result.success(lista)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun asignarPedidoAPlanilla(numGuia: String, idPlanilla: String): Result<Boolean> = withContext(Dispatchers.IO) {
+        try {
+            client.from("pedidos").update(
+                { set("id_planilla", idPlanilla) }
+            ) {
+                filter { eq("num_guia", numGuia) }
+            }
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun actualizarEstadoPlanilla(idPlanilla: String, nuevoEstado: String): Result<Boolean> = withContext(Dispatchers.IO) {
+        try {
+            client.from("planillas").update(
+                { set("estado", nuevoEstado) }
+            ) {
+                filter { eq("id_planilla", idPlanilla) }
+            }
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     // --- GESTIÓN DE PEDIDOS ---
 
     suspend fun crearPedido(pedido: PedidoPostgres): Result<Boolean> = withContext(Dispatchers.IO) {

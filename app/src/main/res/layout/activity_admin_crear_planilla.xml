@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvTituloCrearPlanilla"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="CREAR PLANILLA DE DESPACHO"
+        android:textColor="@color/brand_primary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@id/btnGenerarPlanilla"
+        app:layout_constraintTop_toBottomOf="@id/tvTituloCrearPlanilla">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
+
+            <!-- ID PLANILLA -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:hint="ID de Planilla (ej. PLN-2023-01)"
+                app:boxStrokeColor="@color/brand_primary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etIdPlanilla"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- CD ORIGEN -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:hint="Centro de Distribución (CD) Origen"
+                app:boxStrokeColor="@color/brand_primary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etCdOrigen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bogotá - Oficina Principal"
+                    android:inputType="text"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- CD DESTINO -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:hint="CD o Zona Destino"
+                app:boxStrokeColor="@color/brand_primary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etCdDestino"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Medellín - Bodega Norte"
+                    android:inputType="text"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- VEHÍCULO -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="Vehículo (Placa / Tipo)"
+                app:boxStrokeColor="@color/brand_primary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etVehiculo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Camión Furgón - ABC-123"
+                    android:inputType="text"
+                    android:textColor="@color/text_primary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- SELECCIONAR MENSAJERO -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seleccionar Mensajero / Conductor:"
+                android:textColor="@color/brand_primary"
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp" />
+
+            <Spinner
+                android:id="@+id/spinnerMensajeros"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_input_rounded"
+                android:layout_marginBottom="16dp" />
+
+            <!-- SELECCIONAR ENVIOS (POOL) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seleccionar Envíos para la Planilla:"
+                android:textColor="@color/brand_primary"
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp" />
+
+            <LinearLayout
+                android:id="@+id/containerEnviosSeleccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGenerarPlanilla"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:backgroundTint="@color/brand_cyan"
+        android:text="GENERAR Y DESPACHAR PLANILLA"
+        android:textColor="@color/text_primary"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
