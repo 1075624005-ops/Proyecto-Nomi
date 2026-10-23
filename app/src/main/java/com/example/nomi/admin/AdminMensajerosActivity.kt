@@ -83,7 +83,8 @@ class AdminMensajerosActivity : AppCompatActivity() {
                         val zona = mensajero.zona_asignada ?: "Bogotá D.C."
                         val licencia = mensajero.licencia_conduccion ?: "No"
                         val tipoLic = mensajero.tipo_licencia ?: "A2"
-                        text = "Zona: $zona | Licencia: $licencia ($tipoLic)"
+                        val disp = if (mensajero.disponible == true) "Disponible: Sí" else "Disponible: No"
+                        text = "Zona: $zona | Licencia: $licencia ($tipoLic)\n$disp"
                         setTextColor(ContextCompat.getColor(context, R.color.text_secondary))
                         textSize = 13f
                         setPadding(0, 8, 0, 0)

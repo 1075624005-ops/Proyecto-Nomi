@@ -1,179 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollLogin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background"
-    android:padding="24dp">
+    android:fillViewport="true"
+    android:clipToPadding="false">
 
-    <!-- LOGO -->
-    <ImageView
-        android:id="@+id/imgLogo"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="32dp"
-        android:contentDescription="Logo Nomi"
-        android:src="@drawable/logo_nomi"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- NOMBRE APP -->
-    <TextView
-        android:id="@+id/tvAppName"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerLogin"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="NOMI"
-        android:textColor="@color/text_primary"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgLogo" />
+        android:padding="24dp"
+        android:paddingBottom="40dp">
 
-    <!-- SUBTÍTULO -->
-    <TextView
-        android:id="@+id/tvSubtitulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SOLUCIONES A TU ALCANCE"
-        android:textColor="@color/brand_primary"
-        android:textSize="12sp"
-        android:letterSpacing="0.1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvAppName" />
+        <!-- LOGO -->
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="32dp"
+            android:contentDescription="Logo Nomi"
+            android:src="@drawable/logo_nomi"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- BIENVENIDA -->
-    <TextView
-        android:id="@+id/tvBienvenido"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="¡Bienvenido!"
-        android:textColor="@color/text_primary"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSubtitulo" />
-
-    <!-- CAMPO CORREO -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilUsuario"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:hint="Correo electrónico"
-        android:textColorHint="@color/text_secondary"
-        app:boxStrokeColor="@color/brand_primary"
-        app:boxStrokeWidth="1.5dp"
-        app:hintTextColor="@color/brand_primary"
-        app:cornerRadius="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvBienvenido">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etUsuario"
-            android:layout_width="match_parent"
+        <!-- NOMBRE APP -->
+        <TextView
+            android:id="@+id/tvAppName"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
+            android:layout_marginTop="8dp"
+            android:text="NOMI"
             android:textColor="@color/text_primary"
-            android:textSize="15sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgLogo" />
 
-    <!-- CAMPO CONTRASEÑA -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilPassword"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="Contraseña"
-        android:textColorHint="@color/text_secondary"
-        app:boxStrokeColor="@color/brand_primary"
-        app:boxStrokeWidth="1.5dp"
-        app:hintTextColor="@color/brand_primary"
-        app:cornerRadius="12dp"
-        app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/brand_primary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tilUsuario">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
+        <!-- SUBTÍTULO -->
+        <TextView
+            android:id="@+id/tvSubtitulo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
+            android:text="SOLUCIONES A TU ALCANCE"
+            android:textColor="@color/brand_primary"
+            android:textSize="12sp"
+            android:letterSpacing="0.1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAppName" />
+
+        <!-- BIENVENIDA -->
+        <TextView
+            android:id="@+id/tvBienvenido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="¡Bienvenido!"
             android:textColor="@color/text_primary"
-            android:textSize="15sp" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSubtitulo" />
 
-    <!-- INDICADOR DE CARGA -->
-    <ProgressBar
-        android:id="@+id/pbLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        android:indeterminateTint="@color/brand_primary"
-        app:layout_constraintBottom_toTopOf="@id/btnLogin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tilPassword" />
+        <!-- CAMPO CORREO -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilUsuario"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="Correo electrónico"
+            android:textColorHint="@color/text_secondary"
+            app:boxStrokeColor="@color/brand_primary"
+            app:boxStrokeWidth="1.5dp"
+            app:hintTextColor="@color/brand_primary"
+            app:cornerRadius="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvBienvenido">
 
-    <!-- BOTÓN LOGIN -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnLogin"
-        style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="0dp"
-        android:layout_height="54dp"
-        android:layout_marginTop="28dp"
-        android:backgroundTint="@color/brand_primary"
-        android:text="INICIAR SESIÓN"
-        android:textColor="@color/text_primary"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:cornerRadius="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tilPassword" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:autofillHints="emailAddress"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- OLVIDÓ CONTRASEÑA -->
-    <TextView
-        android:id="@+id/tvOlvido"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:padding="8dp"
-        android:text="¿Olvidó su contraseña?"
-        android:textColor="@color/brand_primary"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnLogin" />
+        <!-- CAMPO CONTRASEÑA -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPassword"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="Contraseña"
+            android:textColorHint="@color/text_secondary"
+            app:boxStrokeColor="@color/brand_primary"
+            app:boxStrokeWidth="1.5dp"
+            app:hintTextColor="@color/brand_primary"
+            app:cornerRadius="12dp"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/brand_primary"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/brand_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilUsuario">
 
-    <!-- BOTÓN CREAR USUARIO (Estilo Outlined) -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnCrearUsuario"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="0dp"
-        android:layout_height="54dp"
-        android:layout_marginTop="16dp"
-        android:text="CREAR USUARIO"
-        android:textColor="@color/brand_primary"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:cornerRadius="12dp"
-        app:strokeColor="@color/brand_primary"
-        app:strokeWidth="1.5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvOlvido" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:autofillHints="password"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- INDICADOR DE CARGA -->
+        <ProgressBar
+            android:id="@+id/pbLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            android:indeterminateTint="@color/brand_primary"
+            app:layout_constraintBottom_toTopOf="@id/btnLogin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilPassword" />
+
+        <!-- BOTÓN LOGIN -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogin"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="28dp"
+            android:backgroundTint="@color/brand_primary"
+            android:text="INICIAR SESIÓN"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilPassword" />
+
+        <!-- OLVIDÓ CONTRASEÑA -->
+        <TextView
+            android:id="@+id/tvOlvido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:text="¿Olvidó su contraseña?"
+            android:textColor="@color/brand_primary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnLogin" />
+
+        <!-- BOTÓN CREAR USUARIO (Estilo Outlined) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCrearUsuario"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="16dp"
+            android:text="CREAR USUARIO"
+            android:textColor="@color/brand_primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:strokeColor="@color/brand_primary"
+            app:strokeWidth="1.5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvOlvido" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

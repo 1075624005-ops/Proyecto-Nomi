@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".NomiApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -80,7 +81,8 @@
             android:exported="false" />
         <activity
             android:name="com.example.nomi.admin.AsesorActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.example.nomi.admin.AdminUsuariosActivity"
             android:exported="false"
@@ -112,10 +114,12 @@
             android:exported="false" />
         <activity
             android:name="com.example.nomi.admin.AdminRegistrarMensajeroActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.example.nomi.admin.AdminRegistrarAsesorActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.example.nomi.main.SplashActivity"
             android:exported="true">

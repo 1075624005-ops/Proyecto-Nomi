@@ -1,13 +1,13 @@
 package com.example.nomi.auth
 
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.nomi.R
 import com.example.nomi.data.SupabaseRepository
@@ -16,7 +16,6 @@ import com.example.nomi.admin.AdminActivity
 import com.example.nomi.admin.AsesorActivity
 import com.example.nomi.main.MessengerHomeActivity
 import com.example.nomi.main.HomeActivity
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -27,9 +26,11 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        lifecycleScope.launch {
-            delay(2000)
-            hideSystemUI()
+        val scrollLogin     = findViewById<ScrollView>(R.id.scrollLogin)
+        val containerLogin  = findViewById<ViewGroup>(R.id.containerLogin)
+
+        if (scrollLogin != null && containerLogin != null) {
+            activarAutoSubida(containerLogin, scrollLogin)
         }
 
         val etCorreo        = findViewById<EditText>(R.id.etUsuario)
@@ -147,9 +148,27 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun hideSystemUI() {
-        val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
-        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    private fun activarAutoSubida(root: ViewGroup, scrollView: ScrollView) {
+        for (i in 0 until root.childCount) {
+            val child = root.getChildAt(i)
+            if (child is EditText) {
+                child.setOnFocusChangeListener { v, hasFocus ->
+                    if (hasFocus) {
+                        scrollView.postDelayed({
+                            val childRect = Rect()
+                            v.getDrawingRect(childRect)
+                            scrollView.offsetDescendantRectToMyCoords(v, childRect)
+                            if (childRect.top < 250) {
+                                scrollView.smoothScrollTo(0, 0)
+                            } else {
+                                scrollView.smoothScrollTo(0, childRect.top - 80)
+                            }
+                        }, 200)
+                    }
+                }
+            } else if (child is ViewGroup) {
+                activarAutoSubida(child, scrollView)
+            }
+        }
     }
 }

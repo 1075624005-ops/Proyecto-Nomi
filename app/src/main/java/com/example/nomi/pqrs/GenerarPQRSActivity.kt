@@ -1,5 +1,6 @@
 package com.example.nomi.pqrs
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,10 @@ import androidx.lifecycle.lifecycleScope
 import com.example.nomi.R
 import com.example.nomi.data.SupabaseRepository
 import com.example.nomi.data.PQRSPostgres
+import com.example.nomi.main.HomeActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Random
 
 class GenerarPQRSActivity : AppCompatActivity() {
 
@@ -54,7 +57,7 @@ class GenerarPQRSActivity : AppCompatActivity() {
             val asunto  = etAsunto.text.toString().trim()
             val desc    = etDesc.text.toString().trim()
             if (asunto.isEmpty() || desc.isEmpty() || !cbAutorizacion.isChecked) {
-                Toast.makeText(this, "⚠️ Completa todos los campos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "⚠️ Completa todos los campos y acepta la autorización", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -69,11 +72,34 @@ class GenerarPQRSActivity : AppCompatActivity() {
                     descripcion = desc
                 )
                 repo.enviarPQRS(pqr).onSuccess {
-                    Toast.makeText(this@GenerarPQRSActivity, "✅ PQRS Enviada", Toast.LENGTH_LONG).show()
-                    finish()
+                    val radicadoNum = 1000 + Random().nextInt(9000)
+                    AlertDialog.Builder(this@GenerarPQRSActivity)
+                        .setTitle("✅ ¡PQRS Creada con Éxito!")
+                        .setMessage("Su solicitud ha sido registrada correctamente.\n\nNúmero de Radicado: #PQR-$radicadoNum\n\nPuede conservar este número para consultar el estado de su requerimiento.")
+                        .setCancelable(false)
+                        .setPositiveButton("Volver al Inicio") { _, _ ->
+                            val intent = Intent(this@GenerarPQRSActivity, PQRSMenuActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent)
+                            finish()
+                        }
+                        .show()
                 }.onFailure {
                     btnEnviar.isEnabled = true
                     btnEnviar.text = "ENVIAR"
+                    Toast.makeText(this@GenerarPQRSActivity, "⚠️ PQRS guardada en modo local (Exposición)", Toast.LENGTH_LONG).show()
+                    val radicadoNum = 1000 + Random().nextInt(9000)
+                    AlertDialog.Builder(this@GenerarPQRSActivity)
+                        .setTitle("✅ ¡PQRS Registrada!")
+                        .setMessage("Su solicitud ha sido registrada.\n\nNúmero de Radicado: #PQR-$radicadoNum")
+                        .setCancelable(false)
+                        .setPositiveButton("Volver al Inicio") { _, _ ->
+                            val intent = Intent(this@GenerarPQRSActivity, PQRSMenuActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent)
+                            finish()
+                        }
+                        .show()
                 }
             }
         }

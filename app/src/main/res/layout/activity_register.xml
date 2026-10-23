@@ -8,7 +8,6 @@
     android:layout_height="match_parent"
     android:background="@color/app_background"
     android:clipToPadding="false"
-    android:paddingBottom="300dp"
     android:isScrollContainer="true"
     android:fillViewport="true">
 
@@ -17,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="24dp"
+        android:paddingBottom="40dp"
         android:focusable="true"
         android:focusableInTouchMode="true">
 
@@ -52,7 +52,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:hint="Nombre completo"
+            android:hint="Nombre"
             android:textColorHint="@color/text_secondary"
             app:boxBackgroundColor="@color/app_background"
             app:boxStrokeColor="@color/text_primary"
@@ -66,6 +66,34 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- APELLIDO -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilApellido"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Apellido"
+            android:textColorHint="@color/text_secondary"
+            app:boxBackgroundColor="@color/app_background"
+            app:boxStrokeColor="@color/text_primary"
+            app:boxStrokeWidth="1.5dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:cornerRadius="12dp"
+            app:hintTextColor="@color/text_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilNombre">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etApellido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
@@ -90,7 +118,7 @@
             app:hintTextColor="@color/text_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilNombre">
+            app:layout_constraintTop_toBottomOf="@id/tilApellido">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTipoDoc"
@@ -131,6 +159,35 @@
                 android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- CÓDIGO PAÍS -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilCodigoPais"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Código País (ej. +57)"
+            android:textColorHint="@color/text_secondary"
+            app:boxBackgroundColor="@color/app_background"
+            app:boxStrokeColor="@color/text_primary"
+            app:boxStrokeWidth="1.5dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:cornerRadius="12dp"
+            app:hintTextColor="@color/text_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilCedula">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCodigoPais"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="+57"
+                android:inputType="text"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <!-- TELÉFONO -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilTelefono"
@@ -148,7 +205,7 @@
             app:hintTextColor="@color/text_primary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilCedula">
+            app:layout_constraintTop_toBottomOf="@id/tilCodigoPais">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTelefono"
@@ -230,6 +287,8 @@
             app:boxStrokeWidthFocused="2dp"
             app:cornerRadius="12dp"
             app:hintTextColor="@color/text_primary"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/brand_primary"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/brand_primary"
             app:layout_constraintEnd_toEndOf="parent"
@@ -260,6 +319,8 @@
             app:boxStrokeWidthFocused="2dp"
             app:cornerRadius="12dp"
             app:hintTextColor="@color/text_primary"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/brand_primary"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/brand_primary"
             app:layout_constraintEnd_toEndOf="parent"

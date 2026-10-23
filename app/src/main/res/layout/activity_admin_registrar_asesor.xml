@@ -2,9 +2,11 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollRegisterA"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_background"
+    android:clipToPadding="false"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +29,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="40dp"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/tvRegAsesorTitle">
 
@@ -37,7 +40,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:background="@drawable/bg_input_rounded"
-                android:hint="Nombre Completo"
+                android:hint="Nombre"
+                android:paddingStart="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
+
+            <EditText
+                android:id="@+id/etApellidoRegA"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_input_rounded"
+                android:hint="Apellido"
+                android:paddingStart="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
+
+            <!-- TIPO DOC -->
+            <EditText
+                android:id="@+id/etTipoDocRegA"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_input_rounded"
+                android:hint="Tipo de Documento (Seleccionar)"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none"
                 android:paddingStart="16dp"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_secondary" />
@@ -50,6 +79,18 @@
                 android:background="@drawable/bg_input_rounded"
                 android:hint="Cédula / Documento ID"
                 android:inputType="number"
+                android:paddingStart="16dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_secondary" />
+
+            <EditText
+                android:id="@+id/etCodigoPaisRegA"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_input_rounded"
+                android:hint="Código País (ej. +57)"
+                android:text="+57"
                 android:paddingStart="16dp"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_secondary" />
@@ -96,7 +137,9 @@
                 android:layout_height="52dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bg_input_rounded"
-                android:hint="Código de Asesor (ej. AS-101)"
+                android:hint="Código de Asesor (Auto)"
+                android:focusable="false"
+                android:clickable="true"
                 android:paddingStart="16dp"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_secondary" />
@@ -107,31 +150,47 @@
                 android:layout_height="52dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bg_input_rounded"
-                android:hint="Área de Atención (ej. Servicio al Cliente)"
+                android:hint="Área de Atención (Seleccionar)"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none"
                 android:paddingStart="16dp"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_secondary" />
 
             <!-- SEGURIDAD -->
-            <EditText
-                android:id="@+id/etPassRegA"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPassRegA"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bg_input_rounded"
-                android:hint="Contraseña Provisional"
-                android:inputType="textPassword"
-                android:paddingStart="16dp"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_secondary" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Contraseña"
+                android:textColorHint="@color/text_secondary"
+                app:boxStrokeColor="@color/brand_primary"
+                app:boxStrokeWidth="1.5dp"
+                app:cornerRadius="12dp"
+                app:endIconMode="password_toggle"
+                app:endIconTint="@color/brand_primary"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/brand_primary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPassRegA"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textColor="@color/text_primary"
+                    android:textSize="15sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnFinalizarRegA"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:backgroundTint="@color/brand_primary"
-                android:text="REGISTRAR ASESOR EN SUPABASE"
+                android:text="REGISTRAR ASESOR"
                 android:textColor="@color/text_primary"
                 android:textStyle="bold"
                 app:cornerRadius="12dp" />

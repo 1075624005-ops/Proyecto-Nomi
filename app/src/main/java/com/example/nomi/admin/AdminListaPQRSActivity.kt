@@ -8,37 +8,36 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.nomi.R
 import com.example.nomi.data.SupabaseRepository
-import com.example.nomi.*
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AdminListaPQRSActivity : AppCompatActivity() {
 
     private val repo = SupabaseRepository()
+    private lateinit var container: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_lista_pqrs)
 
-        lifecycleScope.launch {
-            delay(2000)
-            hideSystemUI()
-        }
-
-        val container = findViewById<LinearLayout>(R.id.containerAdminPQRS)
+        container = findViewById(R.id.containerAdminPQRS)
         val btnVolver = findViewById<Button>(R.id.btnVolverLista)
 
-        cargarListaDesdeSupabase(container)
+        cargarListaDesdeSupabase()
 
         btnVolver.setOnClickListener { finish() }
     }
 
-    private fun cargarListaDesdeSupabase(container: LinearLayout) {
+    override fun onResume() {
+        super.onResume()
+        if (::container.isInitialized) {
+            cargarListaDesdeSupabase()
+        }
+    }
+
+    private fun cargarListaDesdeSupabase() {
         lifecycleScope.launch {
             val resultado = repo.obtenerTodasLasPQRS()
             
@@ -46,10 +45,12 @@ class AdminListaPQRSActivity : AppCompatActivity() {
             
             resultado.onSuccess { lista ->
                 if (lista.isEmpty()) {
-                    val tv = TextView(this@AdminListaPQRSActivity)
-                    tv.text = "No hay PQRS registradas."
-                    tv.setTextColor(Color.GRAY)
-                    tv.gravity = android.view.Gravity.CENTER
+                    val tv = TextView(this@AdminListaPQRSActivity).apply {
+                        text = "No hay PQRS registradas."
+                        setTextColor(Color.GRAY)
+                        gravity = android.view.Gravity.CENTER
+                        setPadding(0, 50, 0, 0)
+                    }
                     container.addView(tv)
                     return@onSuccess
                 }
@@ -58,7 +59,7 @@ class AdminListaPQRSActivity : AppCompatActivity() {
                     val idStr = pqr.id.toString()
                     val asunto = pqr.asunto
                     val estado = pqr.estado
-                    val nombre = pqr.nombre_usuario
+                    val nombre = pqr.nombre_usuario.ifEmpty { pqr.correo_usuario }
 
                     val card = CardView(this@AdminListaPQRSActivity).apply {
                         val p = LinearLayout.LayoutParams(-1, -2)
@@ -106,11 +107,5 @@ class AdminListaPQRSActivity : AppCompatActivity() {
                 Toast.makeText(this@AdminListaPQRSActivity, "Error al cargar datos", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    private fun hideSystemUI() {
-        val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
-        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 }

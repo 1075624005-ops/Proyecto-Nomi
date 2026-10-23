@@ -1,8 +1,10 @@
 package com.example.nomi.pedidos
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
@@ -80,6 +82,10 @@ class CotizarActivity : AppCompatActivity() {
             val format = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
             format.maximumFractionDigits = 0
             tvResultado.text = format.format(precio)
+        }
+
+        findViewById<View>(R.id.btnContactoCotizar)?.setOnClickListener {
+            startActivity(Intent(this, com.example.nomi.main.ContactenosActivity::class.java))
         }
     }
 

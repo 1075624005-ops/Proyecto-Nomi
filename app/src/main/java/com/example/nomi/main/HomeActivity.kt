@@ -13,8 +13,6 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.nomi.R
 import com.example.nomi.auth.PerfilActivity
@@ -25,7 +23,6 @@ import com.example.nomi.pqrs.PQRSMenuActivity
 import com.example.nomi.main.ContactenosActivity
 import com.example.nomi.data.SupabaseClient
 import io.github.jan.supabase.auth.auth
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -38,10 +35,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        lifecycleScope.launch {
-            delay(2000)
-            hideSystemUI()
-        }
+        // Recibir datos de sesión al inicio
+        nombreUsuario = intent.getStringExtra("nombre")
+        correoUsuario = intent.getStringExtra("correo")
 
         drawerLayout = findViewById(R.id.drawer_layout)
         val navView = findViewById<NavigationView>(R.id.nav_view)
@@ -81,6 +77,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         btnPQRS.setOnClickListener { 
             val intent = Intent(this, PQRSMenuActivity::class.java)
+            intent.putExtra("nombre", nombreUsuario)
             intent.putExtra("correo", correoUsuario)
             startActivity(intent)
         }
@@ -89,10 +86,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(Intent(this, ContactenosActivity::class.java))
         }
 
-        // Recibir datos de sesión
-        nombreUsuario = intent.getStringExtra("nombre")
-        correoUsuario = intent.getStringExtra("correo")
-        
         val headerView = navView.getHeaderView(0)
         if (headerView != null) {
             val tvNavName = headerView.findViewById<TextView>(R.id.tvNavName)
@@ -132,6 +125,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_pqrs -> {
                 val intent = Intent(this, PQRSMenuActivity::class.java)
+                intent.putExtra("nombre", nombreUsuario)
                 intent.putExtra("correo", correoUsuario)
                 startActivity(intent)
             }
@@ -166,11 +160,5 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             super.onBackPressed()
         }
-    }
-
-    private fun hideSystemUI() {
-        val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
-        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 }

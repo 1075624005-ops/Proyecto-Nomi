@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.nomi.R
 import com.example.nomi.auth.LoginActivity
+import com.example.nomi.data.LocalDemoStorage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -18,6 +19,8 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+
+        LocalDemoStorage.init(this)
 
         lifecycleScope.launch {
             delay(2000)

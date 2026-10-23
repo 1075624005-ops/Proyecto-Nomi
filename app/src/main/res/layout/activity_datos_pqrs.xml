@@ -2,7 +2,7 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main"
+    android:id="@+id/scrollDatosPQR"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_main"
@@ -101,13 +101,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rgTipoPersona" />
 
-        <Spinner
-            android:id="@+id/spTipoDocPQR"
+        <EditText
+            android:id="@+id/etTipoDocPQR"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="6dp"
             android:background="@drawable/bg_input_rounded"
-            android:backgroundTint="@color/brand_cyan"
+            android:hint="Seleccionar tipo de documento"
+            android:focusable="false"
+            android:clickable="true"
+            android:inputType="none"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:textColor="@color/text_white"
+            android:textColorHint="@color/text_muted"
+            android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@id/lbTipoDoc" />
 
         <!-- NÚMERO DOCUMENTO -->
@@ -124,7 +132,7 @@
             android:textColor="@color/text_white"
             android:textColorHint="@color/text_muted"
             android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/spTipoDocPQR" />
+            app:layout_constraintTop_toBottomOf="@id/etTipoDocPQR" />
 
         <!-- NOMBRE -->
         <EditText
@@ -164,7 +172,7 @@
             android:layout_height="48dp"
             android:layout_marginTop="12dp"
             android:background="@drawable/bg_input_rounded"
-            android:hint="Dirección de notificación"
+            android:hint="Dirección"
             android:paddingStart="14dp"
             android:paddingEnd="14dp"
             android:textColor="@color/text_white"

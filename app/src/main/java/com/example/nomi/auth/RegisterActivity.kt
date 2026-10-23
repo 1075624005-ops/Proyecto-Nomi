@@ -6,13 +6,10 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.nomi.R
 import com.example.nomi.data.PerfilCliente
 import com.example.nomi.data.SupabaseRepository
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
@@ -23,19 +20,18 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        lifecycleScope.launch {
-            delay(2000)
-            hideSystemUI()
-        }
-
         val scroll = findViewById<ScrollView>(R.id.scrollRegister)
         val container = findViewById<ViewGroup>(R.id.containerRegister)
 
-        activarAutoSubida(container, scroll)
+        if (scroll != null && container != null) {
+            activarAutoSubida(container, scroll)
+        }
 
         val etNombre     = findViewById<EditText>(R.id.etNombre)
+        val etApellido   = findViewById<EditText>(R.id.etApellido)
         val etTipoDoc    = findViewById<EditText>(R.id.etTipoDoc)
         val etCedula     = findViewById<EditText>(R.id.etCedula)
+        val etCodigoPais = findViewById<EditText>(R.id.etCodigoPais)
         val etTelefono   = findViewById<EditText>(R.id.etTelefono)
         val etCorreo     = findViewById<EditText>(R.id.etCorreo)
         val etDireccion  = findViewById<EditText>(R.id.etDireccion)
@@ -73,7 +69,8 @@ class RegisterActivity : AppCompatActivity() {
         tvVolver.setOnClickListener { finish() }
 
         btnRegistrar.setOnClickListener {
-            val nombreCompleto = etNombre.text.toString().trim()
+            val nombre    = etNombre.text.toString().trim()
+            val apellido  = etApellido.text.toString().trim()
             val tipoDoc   = etTipoDoc.text.toString().trim()
             val numDoc    = etCedula.text.toString().trim()
             val telefonoStr = etTelefono.text.toString().trim()
@@ -82,9 +79,9 @@ class RegisterActivity : AppCompatActivity() {
             val password  = etPassword.text.toString().trim()
             val confirmar = etConfirmar.text.toString().trim()
 
-            if (nombreCompleto.isEmpty() || tipoDoc.isEmpty() || numDoc.isEmpty() || telefonoStr.isEmpty() ||
+            if (nombre.isEmpty() || apellido.isEmpty() || tipoDoc.isEmpty() || numDoc.isEmpty() || telefonoStr.isEmpty() ||
                 correo.isEmpty() || direccion.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "⚠️ Por favor complete todos los campos, incluyendo el Tipo de Documento", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "⚠️ Por favor complete todos los campos (Nombre, Apellido, Documento, etc.)", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -103,9 +100,7 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val partesNombre = nombreCompleto.split(" ", limit = 2)
-            val nombre = partesNombre.getOrNull(0) ?: nombreCompleto
-            val apellido = partesNombre.getOrNull(1) ?: "N/A"
+            val codigoPais = etCodigoPais.text.toString().trim()
             val telefonoLong = telefonoStr.toLongOrNull() ?: 0L
 
             lifecycleScope.launch {
@@ -114,7 +109,7 @@ class RegisterActivity : AppCompatActivity() {
                     Apellido = apellido,
                     tipo_doc = tipoDoc,
                     numero_doc = numDoc,
-                    Codigo_pais = "+57",
+                    Codigo_pais = if (codigoPais.isNotEmpty()) codigoPais else "+57",
                     Telefono = telefonoLong,
                     Correo_electronico = correo,
                     direccion = direccion
@@ -174,11 +169,5 @@ class RegisterActivity : AppCompatActivity() {
             .setMessage(politica)
             .setPositiveButton("Aceptar") { dialog, _ -> dialog.dismiss() }
             .show()
-    }
-
-    private fun hideSystemUI() {
-        val windowInsetsController = WindowInsetsControllerCompat(window, window.decorView)
-        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-        windowInsetsController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 }
