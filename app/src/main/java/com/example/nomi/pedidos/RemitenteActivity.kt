@@ -53,6 +53,7 @@ class RemitenteActivity : AppCompatActivity() {
             }
 
             val intent = Intent(this, DestinatarioActivity::class.java)
+            this.intent.extras?.let { intent.putExtras(it) }
             intent.putExtra("rem_nombre", nombre)
             intent.putExtra("rem_tel", tel)
             intent.putExtra("rem_correo", correo)

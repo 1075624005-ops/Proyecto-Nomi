@@ -107,6 +107,7 @@ class FinalizarPedidoActivity : AppCompatActivity() {
 
                 // Abrir Rótulo PDF / Guía de envío para TODOS los métodos de pago
                 val intentRotulo = Intent(this@FinalizarPedidoActivity, RotuloActivity::class.java)
+                this@FinalizarPedidoActivity.intent.extras?.let { intentRotulo.putExtras(it) }
                 intentRotulo.putExtra("guia", guiaGenerada)
                 intentRotulo.putExtra("rem_nombre", remNombre)
                 intentRotulo.putExtra("rem_dir", remDir)

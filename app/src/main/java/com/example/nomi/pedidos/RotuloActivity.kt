@@ -106,7 +106,25 @@ class RotuloActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnIrInicio).setOnClickListener {
-            // Regresa al panel principal según la sesión o finaliza la pila
+            val rol = intent.getStringExtra("rol")?.lowercase() ?: ""
+            val esAsesor = intent.getBooleanExtra("es_asesor", false) || rol == "asesor"
+            val esAdmin = rol == "admin"
+            val esMensajero = rol == "mensajero"
+            val nombre = intent.getStringExtra("nombre")
+            val correo = intent.getStringExtra("correo")
+
+            val intentDestino = when {
+                esAsesor -> Intent(this, com.example.nomi.admin.AsesorActivity::class.java)
+                esAdmin -> Intent(this, com.example.nomi.admin.AdminActivity::class.java)
+                esMensajero -> Intent(this, com.example.nomi.main.MessengerHomeActivity::class.java)
+                else -> Intent(this, com.example.nomi.main.HomeActivity::class.java)
+            }
+
+            intentDestino.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            if (!nombre.isNullOrEmpty()) intentDestino.putExtra("nombre", nombre)
+            if (!correo.isNullOrEmpty()) intentDestino.putExtra("correo", correo)
+            intentDestino.putExtra("rol", rol)
+            startActivity(intentDestino)
             finish()
         }
     }

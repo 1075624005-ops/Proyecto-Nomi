@@ -79,6 +79,7 @@ class DestinatarioActivity : AppCompatActivity() {
             val codLocalidad = if (localidadSeleccionada.length >= 2) localidadSeleccionada.substring(0, 2) else "01"
 
             val intent = Intent(this, DetallesPedidoActivity::class.java)
+            this.intent.extras?.let { intent.putExtras(it) }
             intent.putExtra("rem_nombre", remNombre)
             intent.putExtra("rem_tel", remTel)
             intent.putExtra("rem_correo", remCorreo)
