@@ -173,8 +173,11 @@
                 android:layout_height="52dp"
                 android:layout_marginTop="12dp"
                 android:background="@drawable/bg_input_rounded"
-                android:hint="Zona Asignada (ej. Bogotá D.C.)"
+                android:hint="Zona Asignada (Seleccionar)"
                 android:text="Bogotá D.C."
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none"
                 android:paddingStart="16dp"
                 android:textColor="@color/text_primary"
                 android:textColorHint="@color/text_secondary" />
@@ -192,15 +195,16 @@
                 app:boxStrokeWidth="1.5dp"
                 app:cornerRadius="12dp"
                 app:endIconMode="password_toggle"
-                app:endIconTint="@color/brand_primary"
-                app:passwordToggleEnabled="true"
-                app:passwordToggleTint="@color/brand_primary">
+                app:endIconTint="@color/brand_primary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassRegM"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="52dp"
                     android:inputType="textPassword"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp" />
             </com.google.android.material.textfield.TextInputLayout>

@@ -157,31 +157,43 @@ class DetallesPedidoActivity : AppCompatActivity() {
             val largo = etLargo.text.toString().toDoubleOrNull() ?: 0.0
             val alto = etAlto.text.toString().toDoubleOrNull() ?: 0.0
             val pesoReal = etPeso.text.toString().toDoubleOrNull() ?: 0.0
+            val valDecClean = etValorDec.text.toString().replace("[^0-9]".toRegex(), "")
+            val valDec = valDecClean.toDoubleOrNull() ?: 0.0
 
-            if (ancho > 0 && largo > 0 && alto > 0 && pesoReal > 0) {
-                val pesoVol = (ancho * largo * alto) / 5000
-                val pesoFinal = if (pesoReal > pesoVol) pesoReal else pesoVol
-
-                val costoBase: Double = when {
-                    pesoFinal <= 1.0 -> 10000.0
-                    pesoFinal <= 2.0 -> 13000.0
-                    pesoFinal <= 3.0 -> 16000.0
-                    else -> 16000.0 + (ceil(pesoFinal - 3.0) * 3000.0)
-                }
-
-                rbEstandar.text = "Económico (2 dias hábiles): ${format.format(costoBase)}"
-                rbExpress.text  = "Express (1 día Habile): ${format.format(costoBase * 1.4)}"
-                rbPremium.text  = "Premium (Menos de 24 Horas): ${format.format(costoBase * 1.8)}"
-
-                rgOpciones.visibility = View.VISIBLE
-                rbEstandar.tag = costoBase
-                rbExpress.tag  = costoBase * 1.4
-                rbPremium.tag  = costoBase * 1.8
-
-                Toast.makeText(this, "Tarifas actualizadas", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Ingrese medidas y peso para cotizar", Toast.LENGTH_SHORT).show()
+            if (ancho <= 0 || largo <= 0 || alto <= 0 || pesoReal <= 0) {
+                Toast.makeText(this, "⚠️ Ingrese las medidas (ancho, largo, alto) y el peso del paquete", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            if (valDecClean.isEmpty() || valDec <= 0) {
+                Toast.makeText(this, "⚠️ Ingrese el Valor Declarado ($) antes de calcular el costo", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val pesoVol = (ancho * largo * alto) / 5000
+            val pesoFinal = if (pesoReal > pesoVol) pesoReal else pesoVol
+
+            var costoBase: Double = when {
+                pesoFinal <= 1.0 -> 10000.0
+                pesoFinal <= 2.0 -> 13000.0
+                pesoFinal <= 3.0 -> 16000.0
+                else -> 16000.0 + (ceil(pesoFinal - 3.0) * 3000.0)
+            }
+
+            // Seguro del 1% para valores declarados superiores a $100.000
+            val seguro = if (valDec > 100000.0) (valDec - 100000.0) * 0.01 else 0.0
+            costoBase += seguro
+
+            rbEstandar.text = "Económico (2 días hábiles): ${format.format(costoBase)}"
+            rbExpress.text  = "Express (1 día Hábil): ${format.format(costoBase * 1.4)}"
+            rbPremium.text  = "Premium (Menos de 24 Horas): ${format.format(costoBase * 1.8)}"
+
+            rgOpciones.visibility = View.VISIBLE
+            rbEstandar.tag = costoBase
+            rbExpress.tag  = costoBase * 1.4
+            rbPremium.tag  = costoBase * 1.8
+
+            Toast.makeText(this, "✅ Tarifas calculadas con éxito", Toast.LENGTH_SHORT).show()
         }
 
 

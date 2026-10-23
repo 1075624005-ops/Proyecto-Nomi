@@ -55,12 +55,13 @@ object RotuloPdfGenerator {
                 tvEstadoPago?.text = "PAGO CONTRAENTREGA"
                 tvMontoPago?.text = "COBRAR ${format.format(datos.costo)}"
             } else {
-                tvEstadoPago?.text = "PAGO INMEDIATO CONFIRMADO"
-                tvMontoPago?.text = "PAGADO - NO COBRAR"
+                tvEstadoPago?.text = "PAGADO - CONTADO"
+                tvMontoPago?.text = "PAGADO - $ 0 A COBRAR"
             }
 
             // Ocultar los botones de acción para que no aparezcan dentro del documento PDF impreso
             v.findViewById<View>(R.id.btnImprimirRotulo)?.visibility = View.GONE
+            v.findViewById<View>(R.id.btnVerQrPago)?.visibility = View.GONE
             v.findViewById<View>(R.id.btnIrInicio)?.visibility = View.GONE
 
             val widthPx = (400 * context.resources.displayMetrics.density).toInt()

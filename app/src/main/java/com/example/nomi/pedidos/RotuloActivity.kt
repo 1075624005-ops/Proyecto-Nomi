@@ -73,12 +73,32 @@ class RotuloActivity : AppCompatActivity() {
 
         val tvEstadoPago = findViewById<TextView>(R.id.tvEstadoPago)
         val tvMontoPago = findViewById<TextView>(R.id.tvMontoPago)
+        val btnVerQr = findViewById<Button>(R.id.btnVerQrPago)
+
         if (esContraentrega) {
             tvEstadoPago.text = "PAGO CONTRAENTREGA"
             tvMontoPago.text = "COBRAR ${format.format(costo)}"
+            btnVerQr?.visibility = android.view.View.GONE
         } else {
-            tvEstadoPago.text = "PAGO INMEDIATO CONFIRMADO"
-            tvMontoPago.text = "PAGADO - NO COBRAR"
+            tvEstadoPago.text = "PAGADO - CONTADO"
+            tvMontoPago.text = "PAGADO - $ 0 A COBRAR"
+            btnVerQr?.visibility = android.view.View.VISIBLE
+            btnVerQr?.setOnClickListener {
+                val intentPago = Intent(this, PagoInmediatoActivity::class.java).apply {
+                    putExtra("guia", guia)
+                    putExtra("rem_nombre", remNombre)
+                    putExtra("rem_dir", remDir)
+                    putExtra("dest_nombre", destNombre)
+                    putExtra("dest_dir", destDir)
+                    putExtra("dest_tel", destTel)
+                    putExtra("dest_localidad_nom", nomLocalidad)
+                    putExtra("ped_desc", desc)
+                    putExtra("ped_tipo_envio", tipoEnvio)
+                    putExtra("ped_peso", peso)
+                    putExtra("ped_costo", costo)
+                }
+                startActivity(intentPago)
+            }
         }
 
         findViewById<Button>(R.id.btnImprimirRotulo).setOnClickListener {

@@ -122,10 +122,14 @@ class AdminRegistrarAsesorActivity : AppCompatActivity() {
                             val childRect = Rect()
                             v.getDrawingRect(childRect)
                             scrollView.offsetDescendantRectToMyCoords(v, childRect)
-                            if (childRect.top > 200) {
-                                scrollView.smoothScrollTo(0, childRect.top - 80)
+                            val scrollY = scrollView.scrollY
+                            val viewTop = childRect.top
+                            val viewBottom = childRect.bottom
+                            val scrollHeight = scrollView.height
+                            if (viewTop < scrollY || viewBottom > (scrollY + scrollHeight - 100)) {
+                                scrollView.smoothScrollTo(0, maxOf(0, viewTop - 100))
                             }
-                        }, 100)
+                        }, 200)
                     }
                 }
             } else if (child is ViewGroup) {

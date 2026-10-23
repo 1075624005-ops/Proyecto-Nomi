@@ -130,10 +130,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(intent)
             }
             R.id.nav_rastrear -> {
-                Toast.makeText(this, "🚧 Función en mantenimiento / Próximamente disponible", Toast.LENGTH_LONG).show()
+                val intent = Intent(this, RastrearActivity::class.java)
+                startActivity(intent)
             }
             R.id.nav_pedidos -> {
-                Toast.makeText(this, "🚧 Función en mantenimiento / Próximamente disponible", Toast.LENGTH_LONG).show()
+                val intent = Intent(this, com.example.nomi.admin.AdminListaPedidosActivity::class.java)
+                startActivity(intent)
             }
 
             R.id.nav_logout -> {
@@ -154,6 +156,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    @Deprecated("Deprecated in Java")
+    @Suppress("DEPRECATION")
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)

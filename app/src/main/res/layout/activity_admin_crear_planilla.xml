@@ -82,7 +82,7 @@
                     android:id="@+id/etCdDestino"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Medellín - Bodega Norte"
+                    android:text="Bogotá - Centro de Distribución"
                     android:inputType="text"
                     android:textColor="@color/text_primary" />
             </com.google.android.material.textfield.TextInputLayout>

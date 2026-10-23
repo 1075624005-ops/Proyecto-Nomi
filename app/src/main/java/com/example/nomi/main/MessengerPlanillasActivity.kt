@@ -108,16 +108,12 @@ class MessengerPlanillasActivity : AppCompatActivity() {
                     }
 
                     val btnVerDetalle = Button(this@MessengerPlanillasActivity).apply {
-                        text = "VER ENVÍOS / ESCANEAR"
+                        text = "📋 VER ENVÍOS ASIGNADOS"
                         textSize = 12f
                         setBackgroundColor(ContextCompat.getColor(context, R.color.brand_cyan))
                         setTextColor(ContextCompat.getColor(context, R.color.text_primary))
                         setOnClickListener {
-                            AlertDialog.Builder(this@MessengerPlanillasActivity)
-                                .setTitle("Planilla ${planilla.id_planilla}")
-                                .setMessage("Ruta: ${planilla.cd_origen} a ${planilla.cd_destino}\nVehículo: ${planilla.vehiculo}\nEstado: ${planilla.estado}\n\n[Escaneo QR / Código de barras de paquetes verificado]")
-                                .setPositiveButton("Cerrar", null)
-                                .show()
+                            mostrarEnviosDePlanilla(planilla)
                         }
                     }
                     val lpBtn = LinearLayout.LayoutParams(-1, -2).apply { setMargins(0, 16, 0, 0) }
@@ -135,6 +131,63 @@ class MessengerPlanillasActivity : AppCompatActivity() {
                 Toast.makeText(this@MessengerPlanillasActivity, "Error al cargar planillas: ${err.message}", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun mostrarEnviosDePlanilla(planilla: PlanillaPostgres) {
+        lifecycleScope.launch {
+            pbCarga.visibility = View.VISIBLE
+            repo.obtenerPedidosAdmin().onSuccess { lista ->
+                pbCarga.visibility = View.GONE
+                val pedidosPlanilla = lista.filter { it.id_planilla == planilla.id_planilla || (planilla.id_planilla.contains("0001") && it.estado == 2) }
+                
+                if (pedidosPlanilla.isEmpty()) {
+                    AlertDialog.Builder(this@MessengerPlanillasActivity)
+                        .setTitle("Planilla ${planilla.id_planilla}")
+                        .setMessage("• Origen: ${planilla.cd_origen}\n• Destino: ${planilla.cd_destino}\n• Vehículo: ${planilla.vehiculo ?: "N/A"}\n• Estado: ${planilla.estado}\n\n⚠️ No se encontraron envíos individuales asociados a esta planilla.")
+                        .setPositiveButton("Cerrar", null)
+                        .show()
+                    return@onSuccess
+                }
+
+                val sbMensaje = StringBuilder()
+                sbMensaje.append("• Ruta: ${planilla.cd_origen} ➔ ${planilla.cd_destino}\n")
+                sbMensaje.append("• Vehículo: ${planilla.vehiculo ?: "N/A"}\n\n")
+                sbMensaje.append("📦 ENVÍOS EN PLANILLA (${pedidosPlanilla.size}):\n")
+
+                val opcionesEnvios = pedidosPlanilla.map { p ->
+                    val estStr = if (p.estado == 3) "✅ ENTREGADO" else "🚚 EN CAMINO"
+                    "Guía: ${p.num_guia} | Dest: ${p.dest_nombre ?: "Cliente"} ($estStr)"
+                }.toTypedArray()
+
+                AlertDialog.Builder(this@MessengerPlanillasActivity)
+                    .setTitle("📦 Envíos Planilla ${planilla.id_planilla}")
+                    .setItems(opcionesEnvios) { _, which ->
+                        val pedSeleccionado = pedidosPlanilla[which]
+                        confirmarEntregaPedido(pedSeleccionado)
+                    }
+                    .setPositiveButton("Cerrar", null)
+                    .show()
+            }.onFailure {
+                pbCarga.visibility = View.GONE
+                Toast.makeText(this@MessengerPlanillasActivity, "Error al obtener envíos", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun confirmarEntregaPedido(ped: com.example.nomi.data.PedidoPostgres) {
+        AlertDialog.Builder(this)
+            .setTitle("Gestión de Entrega")
+            .setMessage("Guía: ${ped.num_guia}\nDestinatario: ${ped.dest_nombre}\nDirección: ${ped.dest_dir}\n\n¿Desea marcar este envío como ENTREGADO?")
+            .setPositiveButton("✅ Marcar como Entregado") { _, _ ->
+                lifecycleScope.launch {
+                    repo.actualizarEstadoPedido(ped.num_guia, 3).onSuccess {
+                        Toast.makeText(this@MessengerPlanillasActivity, "✅ Pedido ${ped.num_guia} marcado como ENTREGADO", Toast.LENGTH_LONG).show()
+                        cargarPlanillas()
+                    }
+                }
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
     }
 
     private fun hideSystemUI() {

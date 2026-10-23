@@ -42,7 +42,7 @@ class AdminRegistrarMensajeroActivity : AppCompatActivity() {
         val btnReg       = findViewById<Button>(R.id.btnFinalizarRegM)
         val btnCan       = findViewById<Button>(R.id.btnCancelarRegM)
 
-        // Selectores tipo diálogo para Tipo Doc, Licencia y Tipo Licencia
+        // Selectores tipo diálogo para Tipo Doc, Licencia, Tipo Licencia y Zona
         val opcionesDoc = arrayOf("CC - Cédula de Ciudadanía", "NIT - NIT", "CE - Cédula de Extranjería", "PAS - Pasaporte")
         etTipoDoc.setOnClickListener {
             AlertDialog.Builder(this)
@@ -69,6 +69,16 @@ class AdminRegistrarMensajeroActivity : AppCompatActivity() {
                 .setTitle("Seleccionar Tipo de Licencia")
                 .setItems(opcionesTipoLic) { _, which ->
                     etTipoLic.setText(opcionesTipoLic[which])
+                }
+                .show()
+        }
+
+        val opcionesZona = arrayOf("Bogotá D.C.", "Medellín", "Cali", "Barranquilla", "Bucaramanga", "Eje Cafetero", "Otras Zonas")
+        etZona.setOnClickListener {
+            AlertDialog.Builder(this)
+                .setTitle("Seleccionar Zona Asignada")
+                .setItems(opcionesZona) { _, which ->
+                    etZona.setText(opcionesZona[which])
                 }
                 .show()
         }
@@ -132,10 +142,14 @@ class AdminRegistrarMensajeroActivity : AppCompatActivity() {
                             val childRect = Rect()
                             v.getDrawingRect(childRect)
                             scrollView.offsetDescendantRectToMyCoords(v, childRect)
-                            if (childRect.top > 200) {
-                                scrollView.smoothScrollTo(0, childRect.top - 80)
+                            val scrollY = scrollView.scrollY
+                            val viewTop = childRect.top
+                            val viewBottom = childRect.bottom
+                            val scrollHeight = scrollView.height
+                            if (viewTop < scrollY || viewBottom > (scrollY + scrollHeight - 100)) {
+                                scrollView.smoothScrollTo(0, maxOf(0, viewTop - 100))
                             }
-                        }, 100)
+                        }, 200)
                     }
                 }
             } else if (child is ViewGroup) {

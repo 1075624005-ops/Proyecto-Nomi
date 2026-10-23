@@ -10,14 +10,10 @@ object LocalDemoStorage {
     private lateinit var appContext: Context
 
     // Correos mock antiguos que deben filtrarse siempre
-    private val CORREOS_MOCK_PROHIBIDOS = setOf(
-        "se@gmail.com", "op@gmail.com", "bq@gmail.com", "cliente@nomi.com", "anonimo@nomi.com"
-    )
+    private val CORREOS_MOCK_PROHIBIDOS = emptySet<String>()
 
     fun init(context: Context) {
         appContext = context.applicationContext
-        // Limpiar lista de clientes local para iniciar prueba desde cero
-        getPrefs()?.edit()?.remove("lista_clientes")?.apply()
     }
 
     fun limpiarClientes() {
@@ -91,11 +87,19 @@ object LocalDemoStorage {
     fun obtenerPedidos(): List<PedidoPostgres> {
         val prefs = getPrefs() ?: return emptyList()
         val json = prefs.getString("lista_pedidos", null) ?: return emptyList()
-        return try {
+        val lista: List<PedidoPostgres> = try {
             Json { ignoreUnknownKeys = true }.decodeFromString(json)
         } catch (_: Exception) {
             emptyList()
         }
+        // Filtrar guías de prueba antiguas para limpiar la vista
+        val guiasPruebaAntiguas = setOf("N050001", "N010001")
+        return lista.filter { !guiasPruebaAntiguas.contains(it.num_guia) }
+    }
+
+    fun limpiarPedidos() {
+        getPrefs()?.edit()?.remove("lista_pedidos")?.apply()
+        getPrefs()?.edit()?.remove("lista_planillas")?.apply()
     }
 
     // --- PLANILLAS ---

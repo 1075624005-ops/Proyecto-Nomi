@@ -84,10 +84,15 @@ class MessengerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             startActivity(intent)
         }
 
-        // 4. BOTÓN CENTRO DE SOPORTE
-        findViewById<Button>(R.id.btnSoporteMensajero).setOnClickListener {
-            startActivity(Intent(this, ContactenosActivity::class.java))
-        }
+        onBackPressedDispatcher.addCallback(this, object : androidx.activity.OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    finish()
+                }
+            }
+        })
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -128,16 +133,6 @@ class MessengerHomeActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            @Suppress("DEPRECATION")
-            super.onBackPressed()
-        }
     }
 
     private fun hideSystemUI() {

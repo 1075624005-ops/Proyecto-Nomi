@@ -63,9 +63,9 @@ class AsesorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
             startActivity(intent)
         }
 
-        // 4. BOTÓN RASTREAR PEDIDO
+        // 4. BOTÓN RASTREAR Y SUPERVISAR PEDIDOS
         findViewById<Button>(R.id.btnRastrearAsesor).setOnClickListener {
-            startActivity(Intent(this, RastrearActivity::class.java))
+            startActivity(Intent(this, AdminListaPedidosActivity::class.java))
         }
 
         // 5. BOTÓN CENTRO DE ATENCIÓN / CONTACTO
@@ -88,7 +88,7 @@ class AsesorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
                 startActivity(intent)
             }
             R.id.asesor_rastrear -> {
-                startActivity(Intent(this, RastrearActivity::class.java))
+                startActivity(Intent(this, AdminListaPedidosActivity::class.java))
             }
             R.id.asesor_logout -> {
                 lifecycleScope.launch {
@@ -109,11 +109,11 @@ class AsesorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
     }
 
     @Deprecated("Deprecated in Java")
+    @Suppress("DEPRECATION")
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            @Suppress("DEPRECATION")
             super.onBackPressed()
         }
     }

@@ -70,7 +70,23 @@ class PagoInmediatoActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnYaTransferi).setOnClickListener {
-            Toast.makeText(this, "Notificando pago vía Whatsapp...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "✅ Pago notificado. Abriendo Rótulo / Comprobante PDF...", Toast.LENGTH_SHORT).show()
+            val intentRotulo = Intent(this, RotuloActivity::class.java).apply {
+                putExtra("guia", guia)
+                putExtra("rem_nombre", intent.getStringExtra("rem_nombre") ?: "-")
+                putExtra("rem_dir", intent.getStringExtra("rem_dir") ?: "-")
+                putExtra("dest_nombre", intent.getStringExtra("dest_nombre") ?: "-")
+                putExtra("dest_dir", intent.getStringExtra("dest_dir") ?: "-")
+                putExtra("dest_tel", intent.getStringExtra("dest_tel") ?: "-")
+                putExtra("dest_localidad_nom", intent.getStringExtra("dest_localidad_nom") ?: "-")
+                putExtra("ped_desc", intent.getStringExtra("ped_desc") ?: "-")
+                putExtra("ped_tipo_envio", intent.getStringExtra("ped_tipo_envio") ?: "-")
+                putExtra("ped_peso", intent.getStringExtra("ped_peso") ?: "0")
+                putExtra("ped_costo", costo)
+                putExtra("ped_pago_contraentrega", false)
+            }
+            startActivity(intentRotulo)
+            finish()
         }
 
         findViewById<Button>(R.id.btnCancelarPago).setOnClickListener { finish() }

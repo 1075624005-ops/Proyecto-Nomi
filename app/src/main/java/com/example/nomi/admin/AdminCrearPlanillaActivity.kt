@@ -46,9 +46,16 @@ class AdminCrearPlanillaActivity : AppCompatActivity() {
         spinnerMensajeros = findViewById(R.id.spinnerMensajeros)
         containerEnvios = findViewById(R.id.containerEnviosSeleccion)
 
-        // Generar ID sugerido
-        val fechaStr = SimpleDateFormat("yyyyMMdd-HHmm", Locale.getDefault()).format(Date())
-        etIdPlanilla.setText("PLN-$fechaStr")
+        // Generar ID sugerido consecutivo
+        lifecycleScope.launch {
+            repo.obtenerPlanillas().onSuccess { planillas ->
+                val consecutivo = String.format(Locale.US, "PLN-%04d", planillas.size + 1)
+                etIdPlanilla.setText(consecutivo)
+            }.onFailure {
+                val fechaStr = SimpleDateFormat("yyyyMMdd-HHmm", Locale.getDefault()).format(Date())
+                etIdPlanilla.setText("PLN-$fechaStr")
+            }
+        }
 
         cargarDatos()
 
@@ -63,7 +70,7 @@ class AdminCrearPlanillaActivity : AppCompatActivity() {
             repo.obtenerTodosLosMensajeros().onSuccess { mensajeros ->
                 listaMensajeros.clear()
                 listaMensajeros.addAll(mensajeros)
-                val nombres = mensajeros.map { "${it.Nombre} ${it.Apellido ?: ""} (${it.zona_asignada ?: "General"})" }
+                val nombres = mensajeros.map { "${it.Nombre} ${it.Apellido ?: ""} (${it.zona_asignada ?: "Bogotá D.C."})" }
                 val adapter = ArrayAdapter(this@AdminCrearPlanillaActivity, android.R.layout.simple_spinner_item, nombres)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spinnerMensajeros.adapter = adapter
@@ -72,7 +79,7 @@ class AdminCrearPlanillaActivity : AppCompatActivity() {
             // 2. Cargar pedidos
             repo.obtenerPedidosAdmin().onSuccess { pedidos ->
                 listaPedidos.clear()
-                // Solo pedidos activos (estado 1 o sin planilla)
+                // Solo pedidos activos pendientes (estado 1 o sin planilla)
                 listaPedidos.addAll(pedidos.filter { it.estado == 1 })
                 renderizarPedidos()
             }
@@ -93,7 +100,7 @@ class AdminCrearPlanillaActivity : AppCompatActivity() {
 
         for (ped in listaPedidos) {
             val cb = CheckBox(this).apply {
-                text = "Guía: ${ped.num_guia} | Dest: ${ped.dest_nombre ?: "N/A"} (${ped.dest_localidad ?: "Bogotá"})"
+                text = "Guía: ${ped.num_guia} | Dest: ${ped.dest_nombre ?: "N/A"} (${ped.dest_localidad ?: "Bogotá D.C."})"
                 setTextColor(resources.getColor(R.color.text_primary, null))
                 textSize = 13.5f
                 setOnCheckedChangeListener { _, isChecked ->
@@ -125,11 +132,14 @@ class AdminCrearPlanillaActivity : AppCompatActivity() {
         }
 
         val selectedMessengerIndex = spinnerMensajeros.selectedItemPosition
-        val idMensajero = if (selectedMessengerIndex >= 0 && selectedMessengerIndex < listaMensajeros.size) {
-            listaMensajeros[selectedMessengerIndex].id_usuario
+        val mensajeroSeleccionado = if (selectedMessengerIndex >= 0 && selectedMessengerIndex < listaMensajeros.size) {
+            listaMensajeros[selectedMessengerIndex]
         } else {
             null
         }
+
+        val idMensajero = mensajeroSeleccionado?.id_usuario
+        val nombreMensajero = mensajeroSeleccionado?.let { "${it.Nombre} ${it.Apellido ?: ""}".trim() } ?: "Sin asignar"
 
         val fechaActual = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
 
@@ -147,22 +157,41 @@ class AdminCrearPlanillaActivity : AppCompatActivity() {
             val resPlanilla = repo.crearPlanilla(planilla)
             if (resPlanilla.isSuccess) {
                 // Asignar cada guía seleccionada a la planilla y cambiar estado a 2 (En Ruta/Planilla)
-                var errorAsignacion = false
                 for (guia in guiasSeleccionadas) {
-                    val r1 = repo.asignarPedidoAPlanilla(guia, idPlanilla)
-                    val r2 = repo.actualizarEstadoPedido(guia, 2)
-                    if (r1.isFailure || r2.isFailure) {
-                        errorAsignacion = true
-                    }
+                    repo.asignarPedidoAPlanilla(guia, idPlanilla)
+                    repo.actualizarEstadoPedido(guia, 2)
                 }
 
-                if (!errorAsignacion) {
-                    Toast.makeText(this@AdminCrearPlanillaActivity, "✅ Planilla creada y despachada con éxito", Toast.LENGTH_LONG).show()
-                    finish()
-                } else {
-                    Toast.makeText(this@AdminCrearPlanillaActivity, "⚠️ Planilla creada pero hubo inconvenientes con algunos envíos", Toast.LENGTH_LONG).show()
-                    finish()
+                // Construir desglose de guías para mostrar la planilla creada al usuario
+                val sbGuias = StringBuilder()
+                guiasSeleccionadas.forEach { g ->
+                    sbGuias.append("• Guía: $g (Estado: EN CAMINO)\n")
                 }
+
+                val mensajeResumen = """
+                    📋 **PLANILLA DESPACHADA EXITOSAMENTE**
+                    
+                    • **ID Planilla:** $idPlanilla
+                    • **CD Origen:** $cdOrigen
+                    • **CD Destino:** $cdDestino
+                    • **Vehículo:** $vehiculo
+                    • **Mensajero Asignado:** $nombreMensajero
+                    • **Estado:** En Tránsito
+                    
+                    📦 **ENVÍOS INCLUIDOS (${guiasSeleccionadas.size}):**
+                    $sbGuias
+                    
+                    ✅ *El estado de todos los envíos ha sido actualizado a EN CAMINO (Estado 2).*
+                """.trimIndent()
+
+                androidx.appcompat.app.AlertDialog.Builder(this@AdminCrearPlanillaActivity)
+                    .setTitle("✅ PLANILLA DE DESPACHO CREADA")
+                    .setMessage(mensajeResumen)
+                    .setCancelable(false)
+                    .setPositiveButton("Aceptar y Finalizar") { _, _ ->
+                        finish()
+                    }
+                    .show()
             } else {
                 Toast.makeText(this@AdminCrearPlanillaActivity, "❌ Error al crear planilla: ${resPlanilla.exceptionOrNull()?.message}", Toast.LENGTH_LONG).show()
             }

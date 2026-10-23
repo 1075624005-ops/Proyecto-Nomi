@@ -171,15 +171,16 @@
                 app:boxStrokeWidth="1.5dp"
                 app:cornerRadius="12dp"
                 app:endIconMode="password_toggle"
-                app:endIconTint="@color/brand_primary"
-                app:passwordToggleEnabled="true"
-                app:passwordToggleTint="@color/brand_primary">
+                app:endIconTint="@color/brand_primary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassRegA"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="52dp"
                     android:inputType="textPassword"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
                     android:textColor="@color/text_primary"
                     android:textSize="15sp" />
             </com.google.android.material.textfield.TextInputLayout>
